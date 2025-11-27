@@ -1,0 +1,162 @@
+<!-- <div>
+
+
+    <div teacher="ui-grid-row">
+        <div teacher="ui-grid-col-2">
+            <label for="teachere">Teacher</label>
+        </div>
+        <div teacher="ui-grid-col-9">
+            <p-autoComplete [(ngModel)]="selectedTeacher"
+                (onDropdownClick)="teacherDropdown.handleDropdownClick($event)"
+                [suggestions]="teacherDropdown.filteredTeachers" [dropdown]="true"
+                id="teacher" (completeMethod)="teacherDropdown.filter($event)"
+                name="teacher" field="name" [size]="30" placeholder="Professeur"
+                [minLength]="1" #teacher="ngModel" required></p-autoComplete>
+            <div [hidden]="teacher.valid || teacher.pristine"
+                class="alert alert-danger">Teacher Requise</div>
+        </div>
+        <div teacher="ui-grid-col-1"></div>
+    </div>
+    
+</div> -->
+
+
+
+<form (ngSubmit)="envoyer()">
+
+    <div class="ui-grid ui-grid-responsive ui-fluid">
+    
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-1">
+                <label i18n="@@teacher" for="teacher">Professeur</label>
+            </div>
+            <div class="ui-grid-col-1"></div>
+            <div class="ui-grid-col-4">
+
+                <p-autoComplete 
+                [(ngModel)]="selectedTeacher"
+                (onDropdownClick)="teacherDropdown.handleDropdownClick($event)"
+                [suggestions]="teacherDropdown.filteredTeachers" 
+                [dropdown]="true"
+                id="teacher" 
+                (completeMethod)="teacherDropdown.filter($event)"
+                name="teacher" 
+                field="name" 
+                [size]="30" 
+                placeholder="Professeur"
+                [minLength]="1" 
+                #teacher="ngModel" 
+                required>
+            </p-autoComplete>
+            <!-- <div *ngIf="teacher.invalid && (teacher.dirty || teacher.touched)" class="alert alert-danger">
+                Teacher Requise
+            </div> -->
+                
+            </div>
+            <div class="ui-grid-col-1"></div>
+            <div class="ui-grid-col-1">
+                <label i18n="@@dateSc" for="dateSc">Date :</label>
+            </div>
+            <div class="ui-grid-col-4">
+                <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="dateSc" [(ngModel)]="theEndDate"
+                        [showIcon]="true" name="dateSc"
+                        #dateSc="ngModel"></p-calendar>
+                
+                    <div [hidden]="dateSc.valid || dateSc.pristine"
+                        class="alert alert-danger" i18n="@@dateScRequired">Date requise</div>
+            </div>
+            <div class="ui-grid-col-1"></div>
+        </div>
+    </div>
+    <br>
+    <div class="ui-grid ui-grid-responsive ui-fluid">
+    
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-1">
+                <label i18n="@@teacher" for="teacher">Arrivé :</label>
+            </div>
+            <div class="ui-grid-col-1"></div>
+            <div class="ui-grid-col-4">
+
+                <div class="ui-grid-row">
+                    
+                    <div class="ui-grid-col-3">
+                        <p-dropdown [options]="hours" [(ngModel)]="startHours" autoWidth="false" name="stfr" [style]="{'width':'100%'}" ></p-dropdown>
+                    </div>
+                    <div class="ui-grid-col-3" style="margin-left: 4px;margin-right: 4px;">
+                      <p-dropdown [options]="minutes" [(ngModel)]="startMinutes" autoWidth="false" name="stmin" [style]="{'width':'100%'}" ></p-dropdown>
+                    </div>
+                    <div class="ui-grid-col-3" style="margin-left: 5px;"></div>
+                  </div>
+                
+            </div>
+            <div class="ui-grid-col-1"></div>
+            <div class="ui-grid-col-1">
+                <button type="button" (click)="clean()" style="
+            background-color: #4a86ad; 
+            color: white; 
+            border: none; 
+            border-radius: 50%; 
+            width: 40px; 
+            height: 40px; 
+            font-size: 16px; 
+            cursor: pointer; 
+            transition: background-color 0.3s;
+        ">
+            X
+        </button>
+
+                <!-- <label i18n="@@dateJ" for="dateJ">Date :</label> -->
+            </div>
+            <div class="ui-grid-col-4">
+                <span style="font-weight: bolder;">SORTIE DU PROCESSUS</span>           
+            </div>
+            <div class="ui-grid-col-1"></div>
+        </div>
+    
+    </div>
+
+    <br>
+
+    <div class="ui-grid ui-grid-responsive ui-fluid">
+    
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-1">
+                <label i18n="@@teacher" for="teacher">Départ :</label>
+            </div>
+            <div class="ui-grid-col-1"></div>
+            <div class="ui-grid-col-4">
+
+                <div class="ui-grid-row">
+                    
+                    <div class="ui-grid-col-3">
+                        <p-dropdown [options]="hours" [(ngModel)]="endHours" name="endhr" autoWidth="false" [style]="{'width':'100%'}" ></p-dropdown>
+                    </div>
+                    <div class="ui-grid-col-3" style="margin-left: 4px;margin-right: 4px;">
+                      <p-dropdown [options]="minutes" [(ngModel)]="endMinutes" name="endmin" autoWidth="false" [style]="{'width':'100%'}" ></p-dropdown>
+                    </div>
+                    <div class="ui-grid-col-3">
+                        <button pButton type="submit" label="Envoyer" style="background-color:#4a86ad ;color: white; padding:2px;"></button>
+                    </div>
+                  </div>
+                
+            </div>
+            <div class="ui-grid-col-1"></div>
+            <div class="ui-grid-col-1">
+                <!-- <label i18n="@@dateJ" for="dateJ">Date :</label> -->
+            </div>
+            <div class="ui-grid-col-4">
+                
+                    <span style="font-weight: bolder; color:red" *ngIf="msgError">{{message}}</span>
+                    <span style="font-weight: bolder; color : green" *ngIf="!msgError">{{message}}</span>
+
+               <!-- <p-message severity="warn" text="{{ message }}"></p-message> -->
+
+            </div>
+            <div class="ui-grid-col-1"></div>
+        </div>
+    
+    </div>
+    
+</form>
+

@@ -1,0 +1,304 @@
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<p-dialog header="Evaluation" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+	width="700">
+	<div class="ui-grid ui-grid-responsive ui-fluid">
+		<div>
+
+			<div class="ui-grid-row form-group">
+				<div class="ui-grid-col-4">
+					<label i18n="@@startDate" for="startDate">Date de début : </label>
+				</div>
+				<div class="ui-grid-col-7">
+					<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="startDate" name="startDate"
+					[showIcon]="true" [(ngModel)]="evaluation.startDate" #startDate="ngModel" required></p-calendar>
+				</div>
+				<div class="ui-grid-col-1"></div>
+			</div>
+
+			<div class="ui-grid-row form-group">
+				<div class="ui-grid-col-4">
+					<label i18n="@@endDate" for="endDate">Date de fin : </label>
+				</div>
+				<div class="ui-grid-col-7">
+					<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="endDate" name="endDate"
+						[showIcon]="true" [(ngModel)]="evaluation.endDate" #endDate="ngModel" required></p-calendar>
+				</div>
+				<div class="ui-grid-col-1"></div>
+			</div>
+
+			<div class="ui-grid-row form-group">
+				<div class="ui-grid-col-4">
+				  	<label i18n="@@schoolYear" for="schoolYear">Année Scolaire</label>
+				</div>
+				<div class="ui-grid-col-7">
+					<p-autoComplete [(ngModel)]="evaluation.schoolYear" (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+						[suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear"
+						(completeMethod)="schoolYearDropdown.filter($event)"
+						name="schoolYear" field="year" [size]="30"
+						placeholder="{{SCHOOLYEAR}}" [minLength]="1" #schoolYear="ngModel" required></p-autoComplete>
+					<div [hidden]="schoolYear.valid || schoolYear.pristine" class="alert alert-danger" i18n="@@schoolYearRequired">
+						Annee
+						scolaire Requise</div>
+				</div>
+				<div class="ui-grid-col-1"></div>
+			</div>
+
+			<div class="ui-grid-row form-group">
+				<div class="ui-grid-col-4">
+					<label i18n="@@cycle" for="cycle">Niveau : </label>
+				</div>
+				<div class="ui-grid-col-7">
+					<p-autoComplete [(ngModel)]="evaluation.cycle"
+						(onDropdownClick)="cycleDropdown.handleDropdownClick($event)"
+						[suggestions]="cycleDropdown.filteredCycles" [dropdown]="true"
+						id="cycle" (completeMethod)="cycleDropdown.filter($event)"
+						name="cycle" field="name" [size]="30" placeholder="{{CYCLE}}"
+						[minLength]="1" #cycle="ngModel" required></p-autoComplete>
+					<div [hidden]="cycle.valid || cycle.pristine"
+						class="alert alert-danger" i18n="@@cycleRequired">Cycle
+						Requis</div>
+				</div>
+				<div class="ui-grid-col-1"></div>
+			</div>
+
+			<div class="ui-grid-row form-group">
+				<div class="ui-grid-col-4">
+					<label i18n="@@semestreGroup" for="semestreGroup">Groupe de semestres : </label>
+				</div>
+				<div class="ui-grid-col-7">
+					<p-autoComplete [(ngModel)]="evaluation.semestreGroup"
+						(onDropdownClick)="semestreGroupDropdown.handleDropdownClick($event)"
+						[suggestions]="semestreGroupDropdown.filteredSemestreGroups"
+						[dropdown]="true" id="semestreGroup"
+						(completeMethod)="semestreGroupDropdown.filter($event)" name="semestreGroup"
+						field="name" [size]="30" placeholder="{{SEMESTRE_GROUP}}" [minLength]="1"
+						#semestreGroup="ngModel" required></p-autoComplete>
+					<div [hidden]="semestreGroup.valid || semestreGroup.pristine"
+						class="alert alert-danger" i18n="@@semestreGroupRequired">Groupe de semestres
+						Requis</div>
+				</div>
+				<div class="ui-grid-col-1"></div>
+			</div>
+
+			<div class="ui-grid-row form-group">
+				<div class="ui-grid-col-4">
+				  <label i18n="@@examType" for="examType">Type d'examen</label>
+				</div>
+				<div class="ui-grid-col-7">
+					<p-autoComplete [(ngModel)]="evaluation.examType" (onDropdownClick)="examTypeDropdown.handleDropdownClick($event)"
+						[suggestions]="examTypeDropdown.filteredExamTypes" [dropdown]="true" id="examType"
+						(completeMethod)="examTypeDropdown.filter($event)" name="examType" field="name" [size]="30"
+						placeholder="{{TYPE_EXAM}}" [minLength]="1" #examType="ngModel" required></p-autoComplete>
+					<div [hidden]="examType.valid || examType.pristine" class="alert alert-danger" i18n="@@examTypeRequired">Type
+						d'exam Requis</div>
+				</div>
+				<div class="ui-grid-col-1"></div>
+			</div>
+
+			<div class="ui-grid-row form-group">
+				<div class="ui-grid-col-4">
+					<label i18n="@@wording" for="wording">Libellé : </label>
+				</div>
+				<div class="ui-grid-col-7">
+					<input pInputText id="wording" class="form-control" placeholder="Libellé de l'évaluation"
+          				[(ngModel)]="evaluation.wording" required />
+				</div>
+				<div class="ui-grid-col-1"></div>
+			</div>
+
+			<div class="ui-grid-row form-group">
+				<div class="ui-grid-col-4">
+					<label i18n="@@hourlyCost" for="hourlyCost">Coût horaire des surveillants : </label>
+				</div>
+				<div class="ui-grid-col-7">
+					<input type="number" pInputText id="hourlyCost" name="hourlyCost" class="form-control"
+						[(ngModel)]="evaluation.hourlyCost" #hourlyCost="ngModel" required 
+						placeholder="Coût horaire des surveillants de l'évaluation"/>
+				</div>
+				<div class="ui-grid-col-1"></div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="ui-grid-row form-group">
+			<div class="ui-grid-col-12">
+					<button type="button" pButton icon="fa fa-check" 
+						(click)="save()" [disabled]="evaluation.status"
+						label="{{printLabel}}"></button>
+					<button type="button" pButton icon="fa fa-close" 
+						(click)="delete()" [disabled]="evaluation.status"
+						label="Supprimer"></button>
+			</div>
+	</div>
+
+
+	<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+</p-dialog>
+
+
+<p-dataTable [value]="evaluations" selectionMode="single" [(selection)]="selectedEvaluation"
+	expandableRows="true" [paginator]="true" [rows]="12" (onRowSelect)="onRowSelect($event)"
+	(onRowExpand)="getListeSurveillants($event)" [responsive]="true">
+	<p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}">
+
+	</p-column>
+	<p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+		[style]="col.style" [filter]="col.filter">
+		<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+			<span class="col-date">{{ data[ col.field ] | date:'dd/MM/yyyy' }}</span>
+		</ng-template>
+		<ng-template *ngIf="col.type === 'Currency'" let-col let-data="rowData" pTemplate type="body">
+			<span class="col-currency">{{ data[col.field ] |number : '1.2-2' }}</span>
+		</ng-template>
+	</p-column>
+	
+	<p-column field="status" header="Etat" sortable=true filter=true [style]="{'width':'8%'}">
+		<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+		  <div class="label-main" *ngIf="data.status">
+			<label class="label label-success" style="padding: 5px; border-radius: 5px;">Payé</label>
+		  </div>
+		  <div class="label-main" *ngIf="!data.status">
+			<label class="label label-primary" style="padding: 5px; border-radius: 5px;">Non payé</label>
+		  </div>
+		</ng-template>
+	</p-column>
+	
+
+	<ng-template let-evaluation let-rowIndex="rowIndex" pTemplate="rowexpansion">
+
+		<button type="button" class="btn btn-primary">
+			<span class="badge badge-light">1</span> Opération
+		</button>
+
+		<br /> <br />
+
+		<button pButton type="button" icon="fa fa-check" label="Payer" [disabled]="evaluation.status"
+				title="Payer" (click)="updateEvaluation(evaluation, rowIndex)">
+		</button>
+			
+		<br /> <br />
+
+		<button type="button" class="btn btn-primary">
+			<span class="badge badge-light">2</span> Documents disponibles
+		</button>
+
+		<br /><br />
+
+		<!-- Boutons de téléchargements des documents -->
+		<div class="ui-grid-row form-group">
+			<div class="ui-grid-col-3">
+				<button pButton type="button" icon="fa fa-print" label="{{ printEtatRecapitulatifPaiementSurveillantsLabel }}"
+					title="Générer l'état global de paie" (click)="printEtatGlobalDocument()" 
+					[disabled]="isPrintEtatRecapitulatifPaiementSurveillantsDisabled">
+				</button>
+			</div>
+		</div>
+
+		<div class="ui-grid-row form-group">
+			<div class="ui-grid-col-3">
+				<a target="_blank" *ngIf="etatRecapitulatifPaiementSurveillantsName"
+					href="assets/reports/{{etatRecapitulatifPaiementSurveillantsName}}" 
+					i18n="@@downloadReport" class="btn btn-theme">
+					<i class="fa fa-download"></i>
+					Télécharger l'état
+				</a>
+			</div>
+		</div>
+
+		<button type="button" class="btn btn-primary">
+			<span class="badge badge-light">3</span> Ajouter un surveillant
+		</button>
+
+		<form (ngSubmit)="searchUser()" #searchForm="ngForm">
+			<div class="ui-grid ui-grid-responsive ui-fluid">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-10">
+						<input type="text" pInputText class="form-control"
+							   id="searchTextUser" required [(ngModel)]="searchTextUser"
+							   placeholder="{{USER_SEARCH_PARTS}}" name="searchT"
+							   #searchT="ngModel">
+					</div>
+					<div class="ui-grid-col-2">
+						<button type="button" pButton icon="fa fa-search"
+								(click)="searchUser()" label="Rechercher"
+								style="margin-top: 0px; height: 35px;"></button>
+					</div>
+				</div>
+			</div>
+		</form>
+
+		<p-dataTable [value]="surveillances" *ngIf="surveillances"
+					 expandableRows="true"
+					 [paginator]="true" [rows]="5"
+					 [responsive]="true" editable="true">
+			<p-column *ngFor="let col of surveillanceCols" [field]="col.field"
+				[header]="col.header" [sortable]="col.sortable"
+				[filter]="col.filter" [editable]="col.editable" [style]="col.style">
+			</p-column>
+	
+			<!--p-column header="Total heures" [style]="{'width':'8%'}">
+				<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+					<input type="number" pInputText id="hours" name="hours" class="form-control"
+					  #hours="ngModel" 
+					  [style]="{'align':'right'}"
+					  [(ngModel)]="surveillance.totalHours" />
+				</ng-template>
+			</p-column-->
+
+			<p-column field="id" header="actions" [style]="{'width':'10%'}">
+				<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+					<button type="button" pButton icon="fa fa-check" style="float: left"
+							(click)="addSurveillantToEvaluation(data)" label="Ajouter" 
+							[disabled]="isAddSurveillantToEvaluationButton || evaluation.status">
+					</button>
+				</ng-template>
+			</p-column>
+		</p-dataTable>
+
+		<br />
+
+		<button type="button" class="btn btn-primary">
+			<span class="badge badge-light">4</span> Les surveillants de l'évaluation
+		</button>
+
+		<p-dataTable [value]="surveillantsEvaluation" *ngIf="surveillantsEvaluation"
+					 [paginator]="true" [rows]="15" [responsive]="true" editable="true">
+			<p-column *ngFor="let col of surveillanceCols" [field]="col.field"
+				[header]="col.header" [sortable]="col.sortable"
+				[filter]="col.filter" [editable]="col.editable" [style]="col.style">
+			</p-column>
+
+			<p-column field="id" header="actions" [style]="{'width':'20%'}">
+				<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+					<button type="button" pButton icon="fa fa-check" style="float: left"
+							(click)="addSurveillantToEvaluation(data)" label="Modifier" 
+							[disabled]="isAddSurveillantToEvaluationButton || evaluation.status">
+					</button>
+					<button type="button" pButton icon="fa fa-minus" style="float: left"
+							(click)="removeUserToSurveillance(data)" label="Retirer" 
+							[disabled]="isAddSurveillantToEvaluationButton || evaluation.status"
+							style="background: red; color: white;">
+					</button>
+				</ng-template>
+			</p-column>
+		</p-dataTable>
+
+		<div class="alert alert-danger" *ngIf="!surveillantsEvaluation" style="margin-top: 0px;">
+			Aucun surveillant ajouté !
+		</div>
+
+		<br />
+
+	</ng-template>
+
+	<ng-template pTemplate="paginatorLeft">
+		<button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"></button>
+	</ng-template>
+	<ng-template pTemplate="paginatorRight">
+		<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+	</ng-template>
+</p-dataTable>

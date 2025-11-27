@@ -1,0 +1,60 @@
+<p-growl [(value)]="msgs"></p-growl>
+
+<form (ngSubmit)="search()" #searchForm="ngForm">
+
+  <div class="ui-grid ui-grid-responsive ui-fluid" [hidden]="currentUser.role>2 && currentUser.role!=8 
+      && currentUser.role!=9 && currentUser.role!=10 && currentUser.role!=13 && currentUser.role!=14">
+    <div class="ui-grid-row">
+     
+      <div class="ui-grid-col-5">
+        <p-autoComplete [(ngModel)]="theSchoolYear" (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+          [suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear"
+          (completeMethod)="schoolYearDropdown.filter($event)" name="schoolYear" field="year" [size]="30"
+          placeholder="{{SCHOOLYEAR}}" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+      </div>
+      <div class="ui-grid-col-5">
+        <p-autoComplete [(ngModel)]="theClass" (onDropdownClick)="classDropdown.handleDropdownClick($event)"
+          [suggestions]="classDropdown.filteredClasses" [dropdown]="true" id="classe"
+          (completeMethod)="classDropdown.filter($event)" name="classe" field="name" [size]="30"
+          placeholder="Session/Classe" [minLength]="1" #classe="ngModel"></p-autoComplete>
+      </div>
+      <div class="ui-grid-col-2">
+        <button type="button" pButton icon="fa fa-search" (click)="search()" label="Go"
+          style="margin-top: 0px; height: 35px;"></button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<p-dataTable [value]="anyViews" selectionMode="single" expandableRows="true" [paginator]="true" [rows]="15"
+  [responsive]="true" (onRowExpand)="getStudentParent($event)" (onRowSelect)="onRowSelect($event)" [(selection)]="selectedUser">
+  <p-column expander="true" styleClass="col-icon" [style]="{'width':'3%'}"></p-column>
+  <p-column *ngFor="let col of cols" [style]="col.style" [field]="col.field" [header]="col.header"
+    [sortable]="col.sortable" [filter]="col.filter">
+   
+       
+  </p-column>
+  <p-column field="status1" header="Etat" [style]="{'width':'8%'}" [sortable]="true">
+    <ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+      <div class="label-main" *ngIf="data.status1 === 0">
+        <label class="label label-success" style="padding: 5px; border-radius: 5px;">Présent</label>
+      </div>
+      <div class="label-main" *ngIf="data.status1 === 1">
+        <label class="label label-warning" style="padding: 5px; border-radius: 5px;">Sorti</label>
+      </div>
+      <div class="label-main" *ngIf="data.status1 === 2">
+        <label class="label label-danger" style="padding: 5px; border-radius: 5px;">Absent</label>
+      </div>
+    </ng-template>
+  </p-column>
+ 
+  <ng-template let-subject pTemplate="rowexpansion">
+    <p-dataTable [value]="parentview" selectionMode="single" expandableRows="false" [responsive]="true">
+
+      <p-column *ngFor="let col of parentCols" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+        [filter]="col.filter">
+      </p-column>
+
+    </p-dataTable>
+  </ng-template>
+</p-dataTable>

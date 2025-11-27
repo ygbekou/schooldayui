@@ -1,0 +1,18 @@
+<form (ngSubmit)="search()" #searchForm="ngForm">
+	<div class="ui-grid ui-grid-responsive ui-fluid"
+		[hidden]="user.role > 2">
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-10">
+				<input type="text" pInputText class="form-control" id="searchT"
+					required [(ngModel)]="searchText"
+					placeholder="{{COURSE_SEARCH_TEXT}}" name="searchT"
+					#searchT="ngModel">
+			</div>
+			<div class="ui-grid-col-2">
+				<button type="button" pButton icon="fa fa-search" (click)="search()"
+					label="Go" style="margin-top: 0px; height: 35px;"></button>
+			</div>
+		</div>
+
+	</div>
+</form>

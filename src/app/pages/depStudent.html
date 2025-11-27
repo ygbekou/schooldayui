@@ -1,0 +1,77 @@
+<div class="page-wrapper">
+  <header class="page-heading clearfix">
+    <h1 i18n="@@adminSpace" class="heading-title pull-left">
+      <img class="thumb" src="assets/images/scoolday.png" alt="" />
+    </h1>
+    <div class="breadcrumbs pull-right">
+      <ul class="breadcrumbs-list">
+        <li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+          ici:</li>
+        <li><a i18n="@@homeLink" href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+        <li><a i18n="@@admin" href="#">DEP</a><i class="fa fa-angle-right"></i></li>
+        <li i18n="@@information" class="current">Etudiants</li>
+      </ul>
+    </div>
+    <!--//breadcrumbs-->
+  </header>
+  <div class="page-content">
+    <div [hidden]="currentUser.role===1||currentUser.role===8" class="alert alert-danger"
+      i18n="@@youNeedToBeConnectedAsAdmin">Vous
+      devez etre connecte en tant que DEP pour voir ce contenu</div>
+    <div class="row page-row" [hidden]="!(currentUser.role===1||currentUser.role===8)">
+      <app-dep-menu></app-dep-menu>
+      <!--//page-sidebar-->
+      <div class="content-wrapper col-md-10 col-sm-8">
+        <button *ngIf="user.id>0" type="button" class="btn btn-primary">
+          <span><img width="25" src="assets/images/user/{{user.pic}}" alt="" /> </span>{{user.firstName +' '+ user.lastName
+					+(user.phone==null?'':' | Contact: '+user.phone
+					)+(user.email==null?'':' | E-mail: '+user.email)}}
+        </button>
+        <p-tabView id="tabList" (onChange)="onTabChange($event)">
+
+          <p-tabPanel header="{{SEARCH}}" leftIcon="fa fa-search" [selected]="activeTab === 0">
+            <app-admin-user-list (onUserSelected)="onUserSelected($event)" [role]="3"></app-admin-user-list>
+          </p-tabPanel>
+          <p-tabPanel header="{{PROFILE}}" leftIcon="fa fa-male" [selected]="activeTab === 1" *ngIf="user.id > 0">
+            <p-tabView>
+              <p-tabPanel header="{{PERSONAL}}" leftIcon="fa fa-male">
+                <app-user-personalInfo [user]="user"></app-user-personalInfo>
+              </p-tabPanel>
+              <p-tabPanel header="{{CONTACT}}" leftIcon="fa fa-male">
+                <app-user-contactInfo [user]="user"></app-user-contactInfo>
+              </p-tabPanel>
+              <p-tabPanel header="{{SCHOOLING}}" leftIcon="fa fa-male">
+                <app-manage-student [user]="user"></app-manage-student>
+              </p-tabPanel>
+            </p-tabView>
+          </p-tabPanel>
+          <p-tabPanel header="{{INSCRIPTION_PAYMENT}}" leftIcon="fa fa-money" *ngIf="user.id > 0">
+            <app-admin-registration></app-admin-registration>
+          </p-tabPanel>
+          <p-tabPanel header="{{LMD_COURSE}}" leftIcon="fa fa-briefcase" *ngIf="user.id > 0" >
+            <app-admin-stcourse></app-admin-stcourse>
+          </p-tabPanel>
+          <p-tabPanel header="{{SCHOOL_RESULTS}}" leftIcon="fa fa-briefcase" *ngIf="user.id > 0">
+            <app-student-results></app-student-results>
+          </p-tabPanel>
+          <p-tabPanel header="{{ABSENCES}}" leftIcon="fa fa-bolt" *ngIf="user.id > 0">
+            <app-admin-schooling></app-admin-schooling>
+          </p-tabPanel>
+          <p-tabPanel header="Documents" leftIcon="fa fa-briefcase" *ngIf="user.id > 0">
+            <app-admin-studentdocs></app-admin-studentdocs>
+          </p-tabPanel>
+          <p-tabPanel header="Exceptions" leftIcon="fa fa-briefcase" *ngIf="user.id > 0">
+            <app-admin-prerequisitwaiver></app-admin-prerequisitwaiver>
+          </p-tabPanel>
+          <p-tabPanel header="{{PRESENCES}}" leftIcon="fa fa-bolt" *ngIf="user.id > 0">
+            <app-admin-presence [user]="user"></app-admin-presence>
+          </p-tabPanel>
+        </p-tabView>
+      </div>
+      <!--//content-wrapper-->
+    </div>
+    <!--//page-row-->
+  </div>
+  <!--//page-content-->
+</div>
+<!--//page-->

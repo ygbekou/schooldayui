@@ -1,0 +1,37 @@
+
+<form (ngSubmit)="saveInvoiceContact()" #personalInfoForm="ngForm">
+	<div class="form-group">
+		<label i18n="@@lastName" for="lastName">Nom:</label> <input
+			type="text" pInputText class="form-control" id="lastName" required
+			[(ngModel)]="proforma.invoiceContact.lastName" name="lastName" #lastName="ngModel">
+		<div [hidden]="lastName.valid || lastName.pristine"
+			class="alert alert-danger">Nom Requis</div>
+	</div>
+	<div class="form-group">
+		<label i18n="@@firstName" for="firstName">Prenom:</label> <input
+			type="text" pInputText class="form-control" id="firstName" required
+			[(ngModel)]="proforma.invoiceContact.firstName" name="firstName" #firstName="ngModel">
+		<div [hidden]="firstName.valid || firstName.pristine"
+			class="alert alert-danger">Prenom Requis</div>
+	</div>
+	<div class="form-group">
+		<label i18n="@@email" for="email">E-mail</label> <input type="email"
+			pInputText class="form-control" id="email" [(ngModel)]="proforma.invoiceContact.email" required
+			name="email" #email="ngModel">
+	</div>
+
+	<div class="form-group">
+		<label i18n="@@userName" for="userName">Contact</label> <input
+			type="userName" pInputText class="form-control" id="userName" required
+			[(ngModel)]="proforma.invoiceContact.phone" name="userName" #userName="ngModel">
+	</div>
+
+	<br />
+	<button [disabled]="!personalInfoForm.form.valid" pButton type="submit"
+		label="{{SAVE_LABEL}}"></button>
+
+	<br> <br>
+	<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+	<div *ngIf="success" class="alert alert-success">{{success}}</div>
+</form>
+

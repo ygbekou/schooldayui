@@ -1,0 +1,292 @@
+
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="lookUpTable">
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@name" for="name">Nom</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="name" [(ngModel)]="lookUpTable.name" required />
+		</div>
+	</div>
+
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'EVENT_TYPE'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@showOnReport" for="flag1">Montrer Sur Bulletin</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-checkbox [(ngModel)]="lookUpTable.flag1" binary="true" id="flag1"></p-checkbox>
+		</div>
+	</div>
+
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'TIME_PERIOD'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@beginTime" for="beginTime">Debut</label>
+		</div>
+		<div class="ui-grid-col-4">
+			<div class="ui-grid-row">
+				<p-spinner size="4" [(ngModel)]="lookUpTable.integer1" [min]="0"
+					[max]="24"></p-spinner>
+				:
+				<p-spinner size="4" [(ngModel)]="lookUpTable.integer2" [min]="0"
+					[max]="59"></p-spinner>
+			</div>
+		</div>
+	</div>
+
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'TIME_PERIOD'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@endTime" for="endTime">Fin</label>
+		</div>
+		<div class="ui-grid-col-4">
+			<div class="ui-grid-row">
+				<p-spinner size="4" [(ngModel)]="lookUpTable.integer3" [min]="0"
+					[max]="24"></p-spinner>
+				:
+				<p-spinner size="4" [(ngModel)]="lookUpTable.integer4" [min]="0"
+					[max]="59"></p-spinner>
+			</div>
+		</div>
+	</div>
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'DEPARTMENT'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@display" for="flag1">Afficher</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-checkbox [(ngModel)]="lookUpTable.flag1" binary="true" id="flag1"></p-checkbox>
+		</div>
+
+	</div>
+
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'DEPARTMENT'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@rank" for="rank">Rang</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="rank" [(ngModel)]="lookUpTable.integer1"
+				 />
+		</div>
+	</div>
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'CATEGORY'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@parentCategory" for="parentCategory">Categorie
+				Parent</label>
+		</div>
+		<div class="ui-grid-col-7">
+			<p-autoComplete [(ngModel)]="selectedParentCategory"
+				(onDropdownClick)="categoryDropdown.handleDropdownClick($event)"
+				[suggestions]="categoryDropdown.filteredCategories"
+				[dropdown]="true" id="parentCategory"
+				(completeMethod)="categoryDropdown.filter($event)"
+				name="parentCategory" field="name" [size]="30" placeholder="Parent"
+				[minLength]="1"></p-autoComplete>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'CATEGORY'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@loanPeriod" for="loanPeriod">Nombre de jours
+				par period</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="loanPeriod" [(ngModel)]="lookUpTable.integer3" />
+		</div>
+	</div>
+
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'CATEGORY'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@fine" for="fine">Amende</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="fine" [(ngModel)]="lookUpTable.double1" />
+		</div>
+	</div>
+
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'CATEGORY'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@nbrDaysPerFine" for="nbrDaysPerFine">Nombre de
+				jours par Amende</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="nbrDaysPerFine"
+				[(ngModel)]="lookUpTable.integer2" />
+		</div>
+	</div>
+
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'ROOM'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@building" for="building">Building</label>
+		</div>
+		<div class="ui-grid-col-7">
+			<p-autoComplete [(ngModel)]="selectedBuilding"
+				(onDropdownClick)="buildingDropdown.handleDropdownClick($event)"
+				[suggestions]="buildingDropdown.filteredBuildings" [dropdown]="true"
+				id="building" (completeMethod)="buildingDropdown.filter($event)"
+				name="building" field="name" [size]="30" placeholder="Building"
+				[minLength]="1"></p-autoComplete>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'COMPANY'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@phone" for="phone">Téléphone</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="phone" [(ngModel)]="lookUpTable.string1"
+				required />
+		</div>
+	</div>
+
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'COMPANY'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@email" for="email">Email</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="email" [(ngModel)]="lookUpTable.string3"
+				required />
+		</div>
+	</div>
+
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'COMPANY'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@contact" for="contact">Contact</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="contact" [(ngModel)]="lookUpTable.string4"
+				required />
+		</div>
+	</div>
+
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'COMPANY'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@address" for="address">Adresse</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<textarea id="address" [(ngModel)]="lookUpTable.string2"
+				#address="ngModel" [rows]="3" pInputTextarea autoResize="autoResize"
+				style="min-height: 61px" required></textarea>
+		</div>
+	</div>
+
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'FEE'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@cost" for="contact">Coût</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="cost" [(ngModel)]="lookUpTable.double1"
+				required />
+		</div>
+	</div>
+
+	<div class="ui-grid-row"
+		 *ngIf="selectedTableName && selectedTableName['name'] == 'INFORMATION_CHANNEL'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@descriptionCanal" for="descriptionCanal">Description</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<textarea id="descriptionCanal" [(ngModel)]="lookUpTable.string1"
+					  #address="ngModel" [rows]="3" pInputTextarea autoResize="autoResize"
+					  style="min-height: 61px"></textarea>
+		</div>
+	</div>
+
+
+	
+
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'BANK'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@phone" for="phone">Téléphone</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="phone" [(ngModel)]="lookUpTable.string1"
+				required />
+		</div>
+	</div>
+
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'BANK'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@email" for="email">Email</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="email" [(ngModel)]="lookUpTable.string2"
+				required />
+		</div>
+	</div>
+
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'BANK'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@address" for="address">Adresse</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<textarea id="address" [(ngModel)]="lookUpTable.string3"
+				#address="ngModel" [rows]="3" pInputTextarea autoResize="autoResize"
+				style="min-height: 61px" required></textarea>
+		</div>
+	</div>
+	
+
+	<div class="ui-grid-row"
+		*ngIf="selectedTableName && selectedTableName['name'] == 'PERSON_TYPE'">
+		<div class="ui-grid-col-4">
+			<label i18n="@@percent" for="flag1">Pourcentage à retenir</label>
+		</div>
+		<div class="ui-grid-col-7">
+			<p-dropdown [options]="typePersonPercents" [(ngModel)]="lookUpTable.double1"
+			autoWidth="false" [style]="{'width':'100%'}" ></p-dropdown>
+		</div>
+	</div>
+
+
+</div>
+<br />
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+<div class="ui-grid-row">
+	<div class="ui-grid-col-12">
+		<p-dropdown [options]="tableNames" [(ngModel)]="selectedTableName"
+			(onChange)="getAll()" autoWidth="false" [style]="{'width':'25%'}"></p-dropdown>
+	</div>
+</div>
+
+<p-dataTable [value]="lookUpTables" selectionMode="single"
+	[(selection)]="selectedLookUpTable" expandableRows="true"
+	(onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15"
+	[responsive]="true"> <p-column *ngFor="let col of cols"
+	[field]="col.field" [header]="col.header" [sortable]="col.sortable"
+	[filter]="col.filter"> </p-column> <ng-template
+	pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>

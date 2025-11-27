@@ -1,0 +1,631 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<div class="row page-row">
+			<div class="col-md-9 col-sm-8">
+				<h1 class="heading-title pull-left">
+					{{college.name}} <span
+						style="position: relative; left: 2%; top: 10px;"> <iframe
+						src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2FcollegeSingle%3Fid%3D2&width=450&layout=standard&action=like&size=large&show_faces=false&share=true&height=35&appId"
+						width="450" height="35" style="border: none; overflow: hidden"
+						scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+				</span>
+				</h1>
+			</div>
+
+			<div class="col-md-3 col-sm-4">
+				<div class="breadcrumbs pull-right">
+					<ul class="breadcrumbs-list">
+
+						<li class="breadcrumbs-label">Vous etes ici:</li>
+						<li><a href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+						<li class="current">Filière</li>
+
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<div class="row page-row">
+			<div class="course-wrapper col-md-8 col-sm-7">
+				<article class="course-item">
+					<p class="featured-image page-row">
+						<img class="img-responsive"
+							 src="assets/images/college/{{college.pic}}" alt="" />
+					</p>
+					<div class="page-row box box-border">
+						<ul class="list-unstyled no-margin-bottom">
+							<li><strong>Nom officiel : </strong> <em>{{college.officialName}}</em></li>
+							<li><strong>Durée de la formation : </strong> <em>{{college.duree}}</em></li>
+						<!--	<li *ngIf="college.collegeType==2 && (college.cycle.code == 'LP' || college.cycle.code == 'MP')"><strong>Nombre de credits : </strong> <em>{{college.credit}}</em></li> -->
+							<li><strong>Public cible : </strong> <em>{{college.ciblePublic}} </em></li>
+							<li><strong>Modalités d'études : </strong> <em>{{college.session}} </em></li>
+							<li><strong>Prochaines rentrées : </strong> <em>{{college.nextSchoolyear}} </em></li>
+							<!-- <li><strong>Prix : </strong> <em>{{college.prix}} </em></li> -->
+						</ul>
+					</div>
+
+					<!--//page-row-->
+					<div class="page-row">
+						<div [innerHTML]="college.description"></div>
+					</div>
+
+					<p class="featured-image page-row" *ngIf="college.cycle.name =='Masters'">
+						<a href="assets/images/decoupage_master.jpg" target="_blank"  title="">
+							<img class="img-responsive"
+							src="assets/images/decoupage_master.jpg" alt="" />
+						</a>
+					</p>
+
+					<p class="featured-image page-row" *ngIf="college.id == 10">
+
+						<a href="assets/images/admin_reseaux/CARSC-15 -SESSION-DU-17-AVRIL-2023.png" target="_blank"  title="">
+							<img class="img-responsive"
+								src="assets/images/admin_reseaux/CARSC-15 -SESSION-DU-17-AVRIL-2023.png" alt=""/>
+						</a>
+						
+						<a href="assets/images/admin_reseaux/CARSC-15-SESSION-DU-06 DEC-2022.png" target="_blank"  title="">
+							<img class="img-responsive"
+								src="assets/images/admin_reseaux/CARSC-15-SESSION-DU-06 DEC-2022.png" alt=""/>
+						</a>
+						
+					</p>
+
+					<p class="featured-image page-row" *ngIf="college.id == 56">
+						<a href="assets/images/admin_reseaux/LPDWM-15 -SESSION-DU-17-AVRIL-2023.png" target="_blank"  title="">
+							<img class="img-responsive"
+								src="assets/images/admin_reseaux/LPDWM-15 -SESSION-DU-17-AVRIL-2023.png" alt="" width="100%"/>
+						</a>
+					</p>
+
+
+					<p class="featured-image page-row" *ngIf="college.id == 49">
+						<a href="assets/images/admin_reseaux/LPRC-15 -SESSION-DU-17-AVRIL-2023.png" target="_blank"  title="">
+							<img class="img-responsive"
+								src="assets/images/admin_reseaux/LPRC-15 -SESSION-DU-17-AVRIL-2023.png" alt="" />
+						</a>
+					</p>
+
+					<!--<p class="featured-image page-row" *ngIf="college.id == 50">
+						<a href="assets/images/admin_reseaux/LPRC-15.png" target="_blank"  title="">
+							<img class="img-responsive"
+								src="assets/images/admin_reseaux/LPRC-15.png" alt="" />
+						</a>
+					</p>-->
+
+					<p class="featured-image page-row" *ngIf="college.id == 47">
+						<a href="assets/images/Programme_de_formations/Licences/LPDWMIMDM-24.png" target="_blank"  title="">
+							<img class="img-responsive"
+								src="assets/images/Programme_de_formations/Licences/LPDWMIMDM-24.png" alt="" />
+						</a>
+					</p>
+<!--
+					<p class="featured-image page-row" *ngIf="college.id == 56">
+						<a href="assets/images/Programme_de_formations/Licences/LPDWM-15.png" target="_blank"  title="">
+							<img class="img-responsive"
+								src="assets/images/Programme_de_formations/Licences/LPDWM-15.png" alt="" />
+						</a>
+					</p>-->
+
+					<p class="featured-image page-row" *ngIf="college.id == 76">
+						<a href="assets/images/Programme_de_formations/Certificats/CWIMDG-15.png" target="_blank"  title="">
+							<img class="img-responsive"
+								src="assets/images/Programme_de_formations/Certificats/CWIMDG-15.png" alt="" />
+						</a>
+					</p>
+
+					<p class="featured-image page-row" *ngIf="college.id == 11">
+						<a href="assets/images/Programme_de_formations/Masters/MASTER_CYBERSECURITE_PROGRAMME_PROMOTION_2022.png" target="_blank"  title="">
+							<img class="img-responsive"
+								src="assets/images/Programme_de_formations/Masters/MASTER_CYBERSECURITE_PROGRAMME_PROMOTION_2022.png" alt="" />
+						</a>
+						<a href="assets/images/Programme_de_formations/Masters/MASTER_CYBERSECURITE_PROGRAMME_PROMOTION_2021.png" target="_blank"  title="">
+							<img class="img-responsive"
+								src="assets/images/Programme_de_formations/Masters/MASTER_CYBERSECURITE_PROGRAMME_PROMOTION_2021.png" alt="" />
+						</a>
+					</p>
+
+					<p class="featured-image page-row" *ngIf="college.id == 62">
+						<a href="assets/images/Programme_de_formations/Certificats/TLDW-12.png" target="_blank"  title="">
+							<img class="img-responsive"
+								src="assets/images/Programme_de_formations/Certificats/TLDW-12.png" alt="" />
+						</a>
+					</p>
+
+
+
+					<!--//page-row-->
+					<div class="tabbed-info page-row">
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#tab1" data-toggle="tab">Structure du programme </a></li>
+							<li><a href="#tab2" data-toggle="tab">Tarif Standard</a></li>
+							<li *ngIf="college.isMeta"><a href="#tab5" data-toggle="tab">Tarif META</a></li>
+							<li><a href="#tab6" data-toggle="tab">Tarif E-learning</a></li>
+								<!--
+							<li *ngIf="college.name == 'Certificat en Administration Réseaux, Systèmes & Cybersécurite En 15 Mois + 3 Mois de Projet'"><a href="#tab4" data-toggle="tab">Calendrier des sessions en cours</a></li>
+								-->
+								<li *ngIf="college.id == 10"><a href="#tab4" data-toggle="tab">Calendrier</a></li>
+								<li *ngIf="college.id == 56"><a href="#tab4" data-toggle="tab">Calendrier</a></li>
+								<li *ngIf="college.id == 49"><a href="#tab4" data-toggle="tab">Calendrier</a></li>
+								<li *ngIf="college.id == 11"><a href="#tab4" data-toggle="tab">Calendrier</a></li>
+								<!--<li *ngIf="college.id == 50"><a href="#tab4" data-toggle="tab">Calendrier</a></li>-->
+								<li><a href="#tab3" data-toggle="tab">Conditions d'admission</a></li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="tab1">
+								<p>Les cours suivants sont enseignes dans cette filiere.</p>
+								<div class="table-responsive">
+
+									<p-dataTable [value]="courses" sortField="level"
+												 selectionMode="single" [(selection)]="selectedCourse"
+												 (onRowSelect)="onRowSelect($event)" rowGroupMode="subheader"
+												 groupField="level" expandableRowGroups="true"
+												 [sortableRowGroup]="false"> <ng-template
+											pTemplate="rowgroupheader" let-rowData>{{rowData['level']}}</ng-template>
+										<p-column [style]="{'width':'15%'}" field="code" header="Code"></p-column>
+										<p-column [style]="{'width':'48%'}" field="name" header="Nom"></p-column>
+										<p-column [style]="{'width':'10%','text-align':'center'}"
+												  field="credit" header="Crédits"
+												  *ngIf="college.collegeType==2">
+										</p-column>
+										<!--  <p-column [style]="{'width':'23%', 'text-align':'center'}" field="groupeCode" header="Type UE"></p-column> -->
+										<p-column [style]="{'width':'10%','text-align':'center'}"
+												field="maxMark" header="Noté sur"
+												*ngIf="college.collegeType<2">
+										</p-column>
+										<p-column *ngIf="college.collegeType==2" [style]="{'width':'15%'}"
+												field="prereq" header="Prérequis">
+										</p-column>
+										<p-column *ngIf="college.collegeType==2"
+												[style]="{'width':'13%','text-align':'center'}"
+												field="termName" [header]="college.cycle.code == 'LP' ? 'Semestre' : 'Trimestre'">
+										</p-column>
+										<p-column *ngIf="college.collegeType==2" [style]="{'width':'10%', 'text-align':'center'}"
+												field="courseNumberHours" header="Cours">
+										</p-column>
+										<p-column *ngIf="college.collegeType==2" [style]="{'width':'13%', 'text-align':'center'}"
+												field="tpNumberHours" header="Travaux Pratiques Dirigés">
+										</p-column>
+										<p-column *ngIf="college.collegeType==2" [style]="{'width':'13%', 'text-align':'center'}"
+												field="personnalNumberHours" header="Travail Personnel">
+										</p-column>
+									</p-dataTable>
+
+								</div>
+								<p-dialog header="Objectifs du cours {{selectedCourse.code}}"
+										  [(visible)]="display" modal="true" width="600">
+									<div>
+										<!--strong> <a [routerLink]="['/subjectDetails']"
+                                            onclick="$('html, body').animate({scrollTop:0}, 'slow');"
+                                            [queryParams]="{ id:selectedCourse.id}">{{selectedCourse.name}}</a></strong-->
+										<strong> {{selectedCourse.name}}</strong>
+									</div>
+									<div [innerHTML]="selectedCourse.description"></div>
+
+									<!--a class="btn btn-theme read-more"
+                                        onclick="$('html, body').animate({scrollTop:0}, 'slow');"
+                                        [routerLink]="['/subjectDetails']"
+                                        [queryParams]="{ id:selectedCourse.id}">Voir les details du
+                                        cours<i class="fa fa-chevron-right"
+                                        style="background: transparent"></i>
+                                    </a-->
+
+									<!--a class="btn btn-cta" target="_blank" href="assets/docs/syllabus/{{subject.syllabus}}"><i
+                                        class="fa fa-download"></i>Syllabus du cours</a-->
+
+
+									<!-- Authentification de l'utilisateur -->
+									<!-- <form (ngSubmit)="login()" #loginForm="ngForm" *ngIf="loginForm">
+										<div class="form-group">
+											<label i18n="@@userNameOrEmail" for="email">Nom
+												d'utilisateur ou E-mail</label> <input type="text" pInputText
+																					   class="form-control" id="email" required [(ngModel)]="user.email"
+																					   name="email" #email="ngModel">
+											<div [hidden]="email.valid || email.pristine"
+												 class="alert alert-danger" i18n="@@userNameOrEmailRequired">Nom
+												d'utilisateur ou E-mail Requis</div>
+										</div>
+
+										<div class="form-group">
+											<label i18n="@@password" for="password2">Mot de passe</label> <input
+												type="password" class="form-control" id="password2" required
+												[(ngModel)]="user.password" name="password2" #password2="ngModel">
+										</div>
+
+										<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+										<button [disabled]="!loginForm.form.valid" pButton type="submit"
+												label="Connection"></button>
+
+										<button pButton (click)="button='password'"
+												label="Création de compte"></button>
+
+										<div *ngIf="passwordSent" class="alert alert-success">{{passwordSent}}</div>
+
+									</form>
+									-->
+
+
+
+									<!--a *ngIf="user" class="btn btn-theme" target="_blank" href="assets/docs/syllabus/IPNET SYLLABUS IT 240.pdf"><i
+                                        class="fa fa-download"></i>Syllabus du cours</a-->
+
+									<!--button *ngIf="!user" type="button" pButton icon="fa fa-download" (click)="onDownloadClik()"
+											label="Syllabus du cours"
+											style="display: inline-block; padding: 6px 12px;
+											margin-bottom: 0; font-size: 14px; font-weight: 400;
+											border-radius: 0px; height: 35px; background: #6091ba!important;
+											border: 1px solid #6091ba!important; color: #fff!important;">
+
+									</button-->
+
+									<a *ngIf="selectedCourse && selectedCourse.syllabusName" class="btn btn-theme" (click)="onDownloadClik()"><i
+											class="fa fa-download"></i>Syllabus du cours</a>
+
+									<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+								</p-dialog>
+								<!--//table-responsive-->
+							</div>
+							<div class="tab-pane" id="tab2">
+								<div [innerHTML]="college.fees"></div>
+							</div>
+							<div class="tab-pane" id="tab3">
+								<div [innerHTML]="college.admission"></div>
+							</div>
+							<div class="tab-pane" id="tab4" *ngIf="college.id == 10">
+
+								<div class="panel-group" id="accordion">
+
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion"
+													class="collapsed" aria-expanded="false"
+													href="#collapse_session_17_avril_2023"> Session du 17 Avril 2023 </a>
+											</h4>
+										</div>
+										<!--//pane-heading-->
+										<div id="collapse_session_17_avril_2023" class="panel-collapse collapse">
+											<div class="panel-body" style="padding-left: 10px;">
+
+												<a href="assets/images/admin_reseaux/CARSC-15 -SESSION-DU-17-AVRIL-2023.png" target="_blank"  title="">
+													<img class="img-responsive"
+													src="assets/images/admin_reseaux/CARSC-15 -SESSION-DU-17-AVRIL-2023.png" alt="" />
+												</a>
+
+
+											</div>
+											<!--//panel-body-->
+										</div>
+
+										<!--//panel-colapse-->
+
+									</div>
+
+
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion"
+													class="collapsed" aria-expanded="false"
+													href="#collapse_session_3_mai_2021"> Session du 3 Mai 2021 </a>
+											</h4>
+										</div>
+										<!--//pane-heading-->
+										<div id="collapse_session_3_mai_2021" class="panel-collapse collapse">
+											<div class="panel-body" style="padding-left: 10px;">
+
+												<a href="assets/images/admin_reseaux/CARSC-15-SESSION-DU-3-MAI-2021.png" target="_blank"  title="">
+													<img class="img-responsive"
+													src="assets/images/admin_reseaux/CARSC-15-SESSION-DU-3-MAI-2021.png" alt="" />
+												</a>
+
+
+											</div>
+											<!--//panel-body-->
+										</div>
+
+										<!--//panel-colapse-->
+
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion"
+													class="collapsed" aria-expanded="false"
+													href="#collapse_session_novembre_2020"> Session du 16 Novembre 2020 </a>
+											</h4>
+										</div>
+										<!--pane-heading-->
+										<div id="collapse_session_novembre_2020" class="panel-collapse collapse">
+											<div class="panel-body" style="padding-left: 10px;">
+
+												<a href="assets/images/admin_reseaux/CALENDRIER_ADMIN_RESEAUX_SYSTEMES_CYBERSECURITE_16_NOVEMBRE_2020.PNG" target="_blank"  title="">
+													<img class="img-responsive"
+													src="assets/images/admin_reseaux/CALENDRIER_ADMIN_RESEAUX_SYSTEMES_CYBERSECURITE_16_NOVEMBRE_2020.PNG" alt="" />
+												</a>
+											</div>
+											<!--//panel-body-->
+										</div>
+										<!--//panel-colapse-->
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion"
+													class="collapsed" aria-expanded="false"
+													href="#collapse_session_novembre_2019"> Session du 18 Novembre 2019 </a>
+											</h4>
+										</div>
+										<!--//pane-heading-->
+										<div id="collapse_session_novembre_2019" class="panel-collapse collapse">
+											<div class="panel-body" style="padding-left: 10px;">
+
+												<a href="assets/images/admin_reseaux/CALENDRIER_ADMIN_RESEAUX_SYSTEMES_CYBERSECURITE_18_NOVEMBRE_2019.gif" target="_blank"  title="">
+													<img class="img-responsive"
+													src="assets/images/admin_reseaux/CALENDRIER_ADMIN_RESEAUX_SYSTEMES_CYBERSECURITE_18_NOVEMBRE_2019.gif" alt="" />
+												</a>
+
+											</div>
+										<!--//panel-body-->
+										</div>
+										<!--//panel-colapse-->
+									</div>
+
+									<!--
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion"
+													class="collapsed" aria-expanded="false"
+													href="#collapse_session_08_avril_2019"> Session du 08 Avril 2019 </a>
+											</h4>
+										</div>
+
+
+										<div id="collapse_session_08_avril_2019"
+											class="panel-collapse collapse">
+											<div class="panel-body">
+
+												<a href="assets/images/admin_reseaux/CALENDRIER_ADMIN_RESEAUX_SYSTEMES_CYBERSECURITE_08_AVRIL_2019.gif" target="_blank"  title="">
+													<img class="img-responsive"
+													src="assets/images/admin_reseaux/CALENDRIER_ADMIN_RESEAUX_SYSTEMES_CYBERSECURITE_08_AVRIL_2019.gif" alt="" />
+												</a>
+
+
+											</div>
+
+										</div>
+
+									</div>
+							    	-->
+                                    <!--
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion"
+													class="collapsed" aria-expanded="false"
+													href="#collapse_session_22_octobre_2018"> Session du 22 Octobre 2018 </a>
+											</h4>
+										</div>
+
+										<div id="collapse_session_22_octobre_2018"
+											class="panel-collapse collapse">
+											<div class="panel-body">
+
+												<a href="assets/images/admin_reseaux/CALENDRIER_ADMIN_RESEAUX_SYSTEMES_CYBERSECURITE_22_OCTOBRE_2018.gif" target="_blank"  title="">
+													<img class="img-responsive"
+													src="assets/images/admin_reseaux/CALENDRIER_ADMIN_RESEAUX_SYSTEMES_CYBERSECURITE_22_OCTOBRE_2018.gif" alt="" />
+												</a>
+
+
+											</div>
+
+										</div>
+
+									</div>
+									-->
+								</div>
+							</div>
+							<div class="tab-pane" id="tab4" *ngIf="college.id == 56">
+
+							
+
+								<div class="panel-group" id="accordion">
+
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion"
+													class="collapsed" aria-expanded="false"
+													href="#collapse_lpdwm_session_17_avril_2023"> Session du 17 Avril 2023 </a>
+											</h4>
+										</div>
+										<!--//pane-heading-->
+										<div id="collapse_lpdwm_session_17_avril_2023" class="panel-collapse collapse">
+											<div class="panel-body" style="padding-left: 10px;">
+
+												<a href="assets/images/LPDWM-15 -SESSION-DU-17-AVRIL-2023.png" target="_blank"  title="">
+													<img class="img-responsive"
+													src="assets/images/LPDWM-15 -SESSION-DU-17-AVRIL-2023.png" alt="" />
+												</a>
+
+											</div>
+											<!--//panel-body-->
+										</div>
+										<!--//panel-colapse-->
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion"
+													class="collapsed" aria-expanded="false"
+													href="#collapse_lpdwm_session_3_mai_2021"> Session du 3 Mai 2021 </a>
+											</h4>
+										</div>
+										<!--//pane-heading-->
+										<div id="collapse_lpdwm_session_3_mai_2021" class="panel-collapse collapse">
+											<div class="panel-body" style="padding-left: 10px;">
+
+												<a href="assets/images/LPDWM-15 -SESSION-DU-3-MAI-2021.png" target="_blank"  title="">
+													<img class="img-responsive"
+													src="assets/images/LPDWM-15 -SESSION-DU-3-MAI-2021.png" alt="" />
+												</a>
+
+											</div>
+											<!--//panel-body-->
+										</div>
+										<!--//panel-colapse-->
+									</div>
+
+								</div>
+
+
+
+
+							</div>
+							<div class="tab-pane" id="tab5" *ngIf="college.isMeta">
+								<div [innerHTML]="college.tarifmeta"></div>
+							</div>
+							<div class="tab-pane" id="tab6">
+								<div [innerHTML]="college.tarifElearning"></div>
+							</div>
+
+
+
+
+							<div class="tab-pane" id="tab4" *ngIf="college.id == 49">
+
+								
+
+								<div class="panel-group" id="accordion">
+
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion"
+													class="collapsed" aria-expanded="false"
+													href="#collapse_lprc_session_17_avril_2023"> Session du 17 Avril 2023 </a>
+											</h4>
+										</div>
+										<!--//pane-heading-->
+										<div id="collapse_lprc_session_17_avril_2023" class="panel-collapse collapse">
+											<div class="panel-body" style="padding-left: 10px;">
+
+												<a href="assets/images/LPRC-15 -SESSION-DU-17-AVRIL-2023.png" target="_blank"  title="">
+													<img class="img-responsive"
+													src="assets/images/LPRC-15 -SESSION-DU-17-AVRIL-2023.png" alt="" />
+												</a>
+
+											</div>
+											<!--//panel-body-->
+										</div>
+										<!--//panel-colapse-->
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion"
+													class="collapsed" aria-expanded="false"
+													href="#collapse_lprc_session_3_mai_2021"> Session du 3 Mai 2021 </a>
+											</h4>
+										</div>
+										<!--//pane-heading-->
+										<div id="collapse_lprc_session_3_mai_2021" class="panel-collapse collapse">
+											<div class="panel-body" style="padding-left: 10px;">
+
+												<a href="assets/images/LPRC-15-SESSION-DU-3-MAI-2021.png" target="_blank"  title="">
+													<img class="img-responsive"
+													src="assets/images/LPRC-15-SESSION-DU-3-MAI-2021.png" alt="" />
+												</a>
+
+											</div>
+											<!--//panel-body-->
+										</div>
+										<!--//panel-colapse-->
+									</div>
+
+								</div>
+							</div>
+
+							<div class="tab-pane" id="tab4" *ngIf="college.id == 11">
+
+
+								<div class="panel-group" id="accordion">
+
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion"
+													class="collapsed" aria-expanded="false"
+													href="#collapse_lprc_session_3_mai_2021"> Session de Novembre 2020 </a>
+											</h4>
+										</div>
+										<!--//pane-heading-->
+										<div id="collapse_lprc_session_3_mai_2021" class="panel-collapse collapse">
+											<div class="panel-body" style="padding-left: 10px;">
+
+												<a href="assets/images/Programme_de_formations/Masters/MASTER_CYBERSECURITE_PROGRAMME_PROMOTION_2020.png" target="_blank"  title="">
+													<img class="img-responsive"
+													src="assets/images/Programme_de_formations/Masters/MASTER_CYBERSECURITE_PROGRAMME_PROMOTION_2020.png" alt="" />
+												</a>
+
+											</div>
+											<!--//panel-body-->
+										</div>
+										<!--//panel-colapse-->
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<!--//tabbed-info-->
+				</article>
+				<!--//course-item-->
+			</div>
+			<!--//course-wrapper-->
+			<aside
+					class="page-sidebar  col-md-3 col-md-offset-1 col-sm-4 col-sm-offset-1">
+				<section class="widget has-divider">
+					<app-prospectus></app-prospectus>
+				</section>
+				<!--//widget-->
+				<section class="widget has-divider">
+					<app-contact-short></app-contact-short>
+				</section>
+				<!--//widget-->
+				<section class="widget has-divider">
+					<h3 class="title">Nos filières</h3>
+					<ul class="list-unstyled">
+						<li *ngFor="let aCollege of colleges"><a
+								href="#/collegeSingle" (click)="setCurrentCollege(aCollege)"><i
+								class="fa fa-book"></i> {{aCollege.name}}</a></li>
+					</ul>
+				</section>
+				<!--//widget-->
+				<section class="widget has-divider">
+					<a class="btn btn-cta" [routerLink]="['/onlineRegistration']"
+					   [queryParams]="{ event:'INSCRIPTION'}"><i
+							class="fa fa-play-circle"></i>Inscription en ligne</a>
+				</section>
+				<!--//widget-->
+			</aside>
+
+		</div>
+		<!--//page-row-->
+		<iframe
+				src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2FcollegeSinglePro%3Fid%3D56&width=450&layout=standard&action=like&size=large&show_faces=false&share=true&height=35&appId"
+				width="450" height="35" style="border: none; overflow: hidden"
+				scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+
+	</div>
+
+</div>

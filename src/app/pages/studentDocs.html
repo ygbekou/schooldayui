@@ -1,0 +1,15 @@
+
+<file-uploader></file-uploader>
+<p-dataTable [value]="documents" sortField="documentType.name">
+
+<p-column header="Nom du document" field="documentType.name">
+</p-column> <p-column header="Action" field="fileName"> <ng-template
+	let-col let-doc="rowData" pTemplate="body"> <a
+	*ngIf="doc.fileName" class="btn btn-theme"
+	href="assets/docs/student_docs/{{doc[col.field]}}"> <i
+	class="fa fa-download"></i>{{DOWNLOAD}}
+</a> <a *ngIf="!doc.fileName && currentUser.userAccess != 2 " (click)="showDialogToUploadImage(doc)"
+	class="btn btn-theme"> <i class="fa fa-upload"></i>{{UPLOAD}}
+</a> <a *ngIf="doc.fileName && currentUser.userAccess != 2" (click)="deleteDoc(doc)" class="btn btn-theme">
+	<i class="fa fa-delete"></i>{{DELETE}}
+</a> </ng-template> </p-column> </p-dataTable>

@@ -1,0 +1,109 @@
+
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="450"
+	height="370">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="schooling">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@date" for="eventDate">Date</label>
+		</div>
+		<div class="ui-grid-col-9">
+			<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="eventDate" [(ngModel)]="schooling.eventDate"></p-calendar>
+		</div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@violation" for="teacher">Violation</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-autoComplete [(ngModel)]="schooling.eventType"
+				(onDropdownClick)="eventTypeDropdown.handleDropdownClick($event)"
+				[suggestions]="eventTypeDropdown.filteredEventTypes"
+				[dropdown]="true" id="eventType"
+				(completeMethod)="eventTypeDropdown.filter($event)" name="eventType"
+				field="name" [size]="30" placeholder="{{VIOLATION}}" [minLength]="1"
+				#eventType="ngModel"></p-autoComplete>
+			<div [hidden]="eventType.valid || eventType.pristine"
+				class="alert alert-danger" i18n="@@violationRequired">Violation
+				Requis</div>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@schoolYear" for="schoolYear">Annee Scolaire</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-autoComplete [(ngModel)]="schooling.schoolYear"
+				(onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+				[suggestions]="schoolYearDropdown.filteredSchoolYears"
+				[dropdown]="true" id="schoolYear"
+				(completeMethod)="schoolYearDropdown.filter($event)"
+				name="schoolYear" field="year" [size]="30"
+				placeholder="{{SCHOOLYEAR}}" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+			<div [hidden]="schoolYear.valid || schoolYear.pristine"
+				class="alert alert-danger" i18n="@@schoolYearRequired">Annee
+				Scolaire Requis</div>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@period" for="period" *ngIf="schooling.timePeriod">Heure</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-dropdown [options]="timePeriods" *ngIf="schooling.timePeriod"
+				[(ngModel)]="schooling.timePeriod.id" [style]="{'width':'100%'}"></p-dropdown>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@comments" for="description">Commentaire</label>
+		</div>
+		<div class="ui-grid-col-9">
+			<textarea pInputTextarea id="description"
+				[(ngModel)]="schooling.description" rows="5" pInputTextarea
+				autoResize="autoResize"></textarea>
+		</div>
+	</div>
+
+	<br>
+</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+
+		<p-checkbox *ngIf="schooling" [(ngModel)]="schooling.sendEmail"
+			binary="true" id="sendEmail" label="{{SEND_EMAIL}}"></p-checkbox>
+		<br />
+		<p-checkbox *ngIf="schooling" [(ngModel)]="schooling.sendSMS"
+			binary="true" id="sendSMS" label="{{SEND_SMS}}"></p-checkbox>
+	</div>
+</footer> </p-dialog>
+
+
+<p-dataTable [value]="schoolings" selectionMode="single"
+	[(selection)]="selectedSchooling" (onRowSelect)="onRowSelect($event)"
+	[paginator]="true" [rows]="15" [responsive]="true"> <p-column
+	*ngFor="let col of cols" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [filter]="col.filter"> <ng-template
+	*ngIf="col.type === 'string' || col.type === undefined" let-col
+	let-data="rowData" pTemplate type="body"> <span
+	class="col-string">{{ data[ col.field ] }}</span> </ng-template> <ng-template
+	*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+	type="body"> <span class="col-date">{{ data[
+	col.field ] | date:'dd/MM/yyyy' }}</span> </ng-template> </p-column> <ng-template
+	pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"
+	*ngIf="currentUser.role===1||currentUser.role===5||currentUser.role===8||currentUser.role===14"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>

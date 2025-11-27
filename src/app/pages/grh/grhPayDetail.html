@@ -1,0 +1,120 @@
+<p-dialog header="Détails Salaire" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="700">
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="payDetail">
+    <form (ngSubmit)="save()" #payDetailInfoForm="ngForm">
+
+      <div class="ui-grid-row form-group">
+        <div class="ui-grid-col-5">
+            <label i18n="@@baseSalary" for="baseSalary">Salaire de base : </label>
+        </div>
+        <div class="ui-grid-col-6">
+          <input type="number" pInputText id="baseSalary" name="baseSalary" class="form-control"
+            [(ngModel)]="payDetail.baseSalary" #baseSalary="ngModel" required />
+        </div>
+      </div>
+
+      <div class="ui-grid-row form-group">
+        <div class="ui-grid-col-5">
+            <label i18n="@@extraPay" for="extraPay">Sursalaire : </label>
+        </div>
+        <div class="ui-grid-col-6">
+          <input type="number" pInputText id="extraPay" name="extraPay" class="form-control"
+            [(ngModel)]="payDetail.extraPay" #extraPay="ngModel" />
+        </div>
+      </div>
+
+      <div class="ui-grid-row form-group">
+        <div class="ui-grid-col-5">
+            <label i18n="@@nbPersonInCharge" for="nbPersonInCharge">Nombre de personnes en charge : </label>
+        </div>
+        <div class="ui-grid-col-6">
+          <input type="number" pInputText id="nbPersonInCharge" name="nbPersonInCharge" class="form-control"
+            [(ngModel)]="payDetail.nbPersonInCharge" #nbPersonInCharge="ngModel" />
+        </div>
+      </div>
+
+      <div class="ui-grid-row form-group">
+        <div class="ui-grid-col-5">
+            <label i18n="@@amountOfSupport" for="amountOfSupport">Coût par personne : </label>
+        </div>
+        <div class="ui-grid-col-6">
+          <input type="number" pInputText id="amountOfSupport" name="amountOfSupport" class="form-control"
+            [(ngModel)]="payDetail.amountOfSupport" #amountOfSupport="ngModel" />
+        </div>
+      </div>
+
+      <div class="ui-grid-row form-group">
+        <div class="ui-grid-col-5">
+          <label i18n="@@status" for="status">Statut</label>
+        </div>
+        <div class="ui-grid-col-6">
+          <p-checkbox id="status" name="status" [(ngModel)]="payDetail.status" binary="true"></p-checkbox>
+        </div>
+      </div>
+
+      <input type="hidden" pInputText class="form-control" id="userId" required [(ngModel)]="employee.user.id" name="userId"
+        #userId="ngModel">
+
+      <!--button [disabled]="!payDetailInfoForm.form.valid" pButton type="submit" label="{{SAVE_LABEL}}"></button>
+      &nbsp;&nbsp;
+      <button [disabled]="employee.id > 0" pButton type="button" (click)="delete()" label="{{DELETE_LABEL}}"></button-->
+
+      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+      <div *ngIf="success" class="alert alert-success">{{success}}</div>
+
+    </form>
+  </div>
+
+
+  <footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" disabled pButton icon="fa fa-close" (click)="delete()"
+        label="{{DELETE_LABEL}}"></button>
+      <button type="button" pButton icon="fa fa-check" (click)="save()"
+        label="{{SAVE_LABEL}}"></button>
+    </div>
+  </footer> 
+</p-dialog>
+
+<p-dataTable [value]="listePayDetail" selectionMode="single"
+	[(selection)]="selectedPayDetail" expandableRows="true"
+	[paginator]="true" [rows]="10"
+	(onRowSelect)="onRowSelect($event)"
+	[responsive]="true">
+	<p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}">
+
+	</p-column>
+	<p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [style]="col.style" [filter]="col.filter">
+		<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+			<span class="col-date">{{ data[ col.field ] | date:'dd/MM/yy' }}</span>
+		</ng-template>
+	</p-column>
+
+	<p-column field="status" header="Etat" sortable=true filter=true [style]="{'width':'20%'}">
+    <ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+      <div class="label-main" *ngIf="data.status">
+        <label class="label label-success" style="padding: 5px; border-radius: 5px;">Actif</label>
+      </div>
+      <div class="label-main" *ngIf="!data.status">
+        <label class="label label-danger" style="padding: 5px; border-radius: 5px;">Inactif</label>
+      </div>
+    </ng-template>
+  </p-column>
+  
+  <ng-template pTemplate="paginatorLeft">
+    <button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"></button>
+  </ng-template>
+  <ng-template pTemplate="paginatorRight">
+    <button type="button" (click)="getListPayDetailByEmployee()" pButton icon="fa fa-refresh"></button>
+  </ng-template>
+</p-dataTable>
+
+
+<!-- Initialize Quill editor -->
+<script>
+  var quill = new Quill('#editor', {
+    theme: 'bubble'
+  });
+
+</script>

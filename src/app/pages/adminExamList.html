@@ -1,0 +1,312 @@
+<file-uploader></file-uploader>
+<p-growl [(value)]="msgs"></p-growl>
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+  width="750" *ngIf="currentUser.userAccess != 2">
+
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="exam">
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@examDate" for="examDate">Date Examen</label>
+      </div>
+      <div class="ui-grid-col-9">
+        <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="openDate" [showIcon]="false"
+          [(ngModel)]="exam.examDate"></p-calendar>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@schoolYear" for="schoolYear">Annee Scolaire</label>
+      </div>
+      <div class="ui-grid-col-9">
+        <p-autoComplete [(ngModel)]="exam.schoolYear" (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+          [suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear"
+          (completeMethod)="schoolYearDropdown.filter($event)" (onSelect)="checkCloseSemestreGroupByCycleAndSchoolyear()"
+           name="schoolYear" field="year" [size]="30"
+          placeholder="{{SCHOOLYEAR}}" [minLength]="1" #schoolYear="ngModel" required></p-autoComplete>
+        <div [hidden]="schoolYear.valid || schoolYear.pristine" class="alert alert-danger" i18n="@@schoolYearRequired">
+          Annee
+          scolaire Requise</div>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@class" for="classe">Classe</label>
+      </div>
+      <div class="ui-grid-col-9">
+        <p-autoComplete [(ngModel)]="exam.course.classe" (onDropdownClick)="classDropdown.handleDropdownClick($event)"
+          [suggestions]="classDropdown.filteredClasses" [dropdown]="true" id="classe"
+          (completeMethod)="classDropdown.filter($event)" (onSelect)="checkCloseSemestreGroupByCycleAndSchoolyear()"
+          name="classe" field="name" [size]="30"
+          placeholder="{{CLASSE}}" [minLength]="1" #classe="ngModel" required></p-autoComplete>
+        <div [hidden]="classe.valid || classe.pristine" class="alert alert-danger" i18n="@@schoolYearRequired">Classe
+          Requise</div>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@subject" for="subject">Matiere</label>
+      </div>
+      <div class="ui-grid-col-9">
+        <p-autoComplete [(ngModel)]="exam.course.subject"
+          (onDropdownClick)="subjectDropdown.handleDropdownClick($event)"
+          [suggestions]="subjectDropdown.filteredSubjects" [dropdown]="true" id="subject"
+          (completeMethod)="subjectDropdown.filter($event)" name="subject" field="name" [size]="30"
+          placeholder="{{SUBJECT}}" [minLength]="1" #subject="ngModel" required></p-autoComplete>
+        <div [hidden]="subject.valid || subject.pristine" class="alert alert-danger" i18n="@@subjectRequired">Matiere
+          Requise</div>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@examType" for="examType">Type d'examen</label>
+      </div>
+      <div class="ui-grid-col-9">
+        <p-autoComplete [(ngModel)]="exam.examType" (onDropdownClick)="examTypeDropdown.handleDropdownClick($event)"
+          [suggestions]="examTypeDropdown.filteredExamTypes" [dropdown]="true" id="examType"
+          (completeMethod)="examTypeDropdown.filter($event)" name="examType" field="name" [size]="30"
+          placeholder="{{TYPE_EXAM}}" (ngModelChange)="onExamTypeChange($event)" [minLength]="1" #examType="ngModel" required></p-autoComplete>
+        <div [hidden]="examType.valid || examType.pristine" class="alert alert-danger" i18n="@@examTypeRequired">Type
+          d'exam Requis</div>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row" *ngIf="isTpSelected">
+      <div class="ui-grid-col-2">
+        <label i18n="@@tpType" for="tpType">Quel TP ?</label>
+      </div>
+      <div class="ui-grid-col-9">
+          <p-dropdown [options]="listTpTypes" [(ngModel)]="exam.tpType" name="tpType" id="tpType" #tpType="ngModel" placeholder="Sélectionnez un Tp"></p-dropdown>
+      </div>
+      <!-- <div [hidden]="exam.tpType != null" class="alert alert-danger" i18n="@@tpTypeRequired">Type de Tp
+        Requis</div> -->
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@quater" for="term">Trimestre</label>
+      </div>
+      <div class="ui-grid-col-9">
+        <p-autoComplete [(ngModel)]="exam.term" (onDropdownClick)="termDropdown.handleDropdownClick($event)"
+          [suggestions]="termDropdown.filteredTerms" [dropdown]="true" id="term"
+          (completeMethod)="termDropdown.filter($event)" (onSelect)="checkCloseSemestreGroupByCycleAndSchoolyear()"
+          name="term" field="name" [size]="30" placeholder="{{TERM}}"
+          [minLength]="1" #term="ngModel" required></p-autoComplete>
+        <div [hidden]="term.valid || term.pristine" class="alert alert-danger" i18n="@@quaterRequired">Trimestre</div>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@description" for="name">Description</label>
+      </div>
+      <div class="ui-grid-col-9">
+        <input pInputText id="name" [(ngModel)]="exam.name" required />
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@maxMark" for="name">Note sur</label>
+      </div>
+      <div class="ui-grid-col-9">
+        <input pInputText id="maxMark" [(ngModel)]="exam.maxMark" required />
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@ratio" for="name">Compte pour %</label>
+      </div>
+      <div class="ui-grid-col-9">
+        <input pInputText id="ratio" [(ngModel)]="exam.ratio" required />
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <!-- <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@ratio" for="group1">Compte pour</label>
+      </div>
+      <div class="ui-grid-col-4">
+        <p-radioButton name="group1" value="1" label="Note d'Examen" [(ngModel)]="exam.evaluationType" inputId="opt1">
+        </p-radioButton>
+      </div>
+      <div class="ui-grid-col-5">
+        <p-radioButton name="group1" value="0" label="Note de Classe" [(ngModel)]="exam.evaluationType" inputId="opt2">
+        </p-radioButton>
+      </div>
+
+      <div class="ui-grid-col-1"></div>
+    </div> -->
+
+    <div class="ui-grid-row">
+       <div class="ui-grid-col-3">
+        <label i18n="@@publish" for="name">Publier</label>
+      </div>
+      <div class="ui-grid-col-2" >
+        <p-checkbox [(ngModel)]="exam.publishMarks" binary="true" id="publishMarks"></p-checkbox>
+      </div> 
+      <div class="ui-grid-col-4" *ngIf="isFinalExamSelected">
+        <label i18n="@@publishExamMarks" for="name">Aficher note examen</label>
+      </div>
+      <div class="ui-grid-col-2" *ngIf="isFinalExamSelected">
+        <p-checkbox [(ngModel)]="publishExamMarks" [binary]="true" id="publishExamMarks"></p-checkbox>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+    <div class="ui-grid-row" *ngIf="lmd===1">
+      <div class="ui-grid-col-3">
+        <label i18n="@@pro" for="pro">Type de session</label>
+      </div>
+      <div class="ui-grid-col-8">
+        <p-selectButton [options]="sessionTypes" [(ngModel)]="exam.course.sessionType"></p-selectButton>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <br /> <!--br /> <br /> <br /-->
+  </div>
+
+
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+  <footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" [disabled]="closeSemestreGroupByCycleAndSchoolyearStatus" (click)="delete()" label="{{DELETE_LABEL}}"></button>
+      <button type="button" pButton icon="fa fa-check" [disabled]="closeSemestreGroupByCycleAndSchoolyearStatus" (click)="save()" label="{{SAVE_LABEL}}"></button>
+    </div>
+  </footer>
+</p-dialog>
+
+
+<form (ngSubmit)="search()" #searchForm="ngForm">
+
+  <div class="ui-grid ui-grid-responsive ui-fluid" [hidden]="loggedInUser.role>2 &&loggedInUser.role!=5 &&loggedInUser.role!=8">
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-6">
+        <p-autoComplete [(ngModel)]="theSchoolYear" (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+          [suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear"
+          (completeMethod)="schoolYearDropdown.filter($event)" name="schoolYear" field="year" [size]="30"
+          placeholder="{{SCHOOLYEAR}}" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+      </div>
+      <div class="ui-grid-col-6">
+        <p-autoComplete [(ngModel)]="theTerm" (onDropdownClick)="termDropdown.handleDropdownClick($event)"
+          [suggestions]="termDropdown.filteredTerms" [dropdown]="true" id="term"
+          (completeMethod)="termDropdown.filter($event)" name="term" field="name" [size]="30" placeholder="{{TERM}}"
+          [minLength]="1" #term="ngModel"></p-autoComplete>
+      </div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-10">
+        <input type="text" pInputText class="form-control" id="searchT" required [(ngModel)]="searchText"
+          placeholder="{{EXAM_RESEARCH_PARTS}}" name="searchT" #searchT="ngModel">
+      </div>
+      <div class="ui-grid-col-2">
+        <button type="button" pButton icon="fa fa-search" (click)="search()" label="Go"
+          style="margin-top: 0px; height: 35px;"></button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<p-dataTable [value]="exams" selectionMode="single" [(selection)]="selectedExam" expandableRows="true"
+  (onRowSelect)="onRowSelect($event); checkCloseSemestreGroupByCycleAndSchoolyear()" rowExpandMode="single"
+  (onRowExpand)="getMarks($event); getMarkFiles($event); checkCloseSemestreGroupByCycleAndSchoolyear()"
+  [paginator]="true" [rows]="15" [responsive]="true">
+  <p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}"></p-column>
+  <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+    [filter]="col.filter">
+    <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body"> <span class="col-date">{{data[col.field]
+	| date:'dd/MM/yyyy'}}</span> </ng-template>
+  </p-column>
+  <p-column field="id" header="actions" [style]="{'width':'7%'}" *ngIf="currentUser.userAccess != 2">
+    <ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+      <!-- <button type="button" pButton icon="fa fa-file-o" style="float: left"
+        (click)="showDialogToUploadImage(data)"></button> -->
+        <button type="button" pButton icon="fa fa-file-o" style="float: left" (click)="downloadTemplate(data)"></button>
+    </ng-template>
+  </p-column>
+  <ng-template let-exam pTemplate="rowexpansion">
+    <div class="ui-grid ui-grid-responsive ui-fluid"
+      *ngIf='gettingMarksStatus || checkingCloseSemestreGroupByCycleAndSchoolyearStatus'>
+      Chargement...
+    </div>
+    <div *ngIf="error && closeSemestreGroupByCycleAndSchoolyearStatus" class="alert alert-danger">{{error}}</div>
+    <div class="ui-grid ui-grid-responsive ui-fluid"
+      *ngIf='!gettingMarksStatus && !checkingCloseSemestreGroupByCycleAndSchoolyearStatus'>
+
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-1"></div>
+        <div class="ui-grid-col-11">
+          <p-accordion>
+            <p-accordionTab header="Les Fichiers d'examen">
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-4">
+                  <div class="ui-grid-row">
+                    <div class="ui-grid-col-6">
+                      <button type="button" pButton icon="fa fa-print" style="float: left" (click)="printStudentList()"
+                        label="{{PRINT}}"></button>
+                    </div>
+                  </div>
+                  <br /> <br />
+                  <div class="ui-grid-row">
+                    <div class="ui-grid-col-12">
+                      <a *ngIf="reportName" target="_blank" href="assets/reports/{{reportName}}"
+                        i18n="@@downloadReport">Telecharger
+                        l'etat</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="ui-grid-col-8">
+                  <p-dataTable [value]="exam.markFiles">
+                    <p-column header="Fichier" field="fileName" [style]="{'width':'60%'}"></p-column>
+                    <p-column header="Action" field="fileName" [style]="{'width':'40%'}">
+                      <ng-template let-col let-doc="rowData" pTemplate="body"> <a *ngIf="doc.fileName"
+                          class="btn btn-theme" href="assets/docs/student_docs/{{doc.fileName}}"> <i
+                            class="fa fa-download"></i>{{DOWNLOAD}}
+                        </a> <a *ngIf="doc.fileName" (click)="deleteDoc(doc)" class="btn btn-theme"> <i
+                            class="fa fa-delete"></i>{{DELETE_LABEL}}
+                        </a> </ng-template>
+                    </p-column>
+                  </p-dataTable>
+                </div>
+              </div>
+            </p-accordionTab>
+          </p-accordion>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-1"></div>
+        <div class="ui-grid-col-11">
+          <p-dataTable [value]="marks" sortField="matricule" [editable]="true" (onEditComplete)="saveMark($event)">
+            <p-column field="matricule" header="Matricule"></p-column>
+            <p-column field="name" header="Nom" [style]="{'width':'30%'}"> </p-column>
+            <p-column field="mark" header="Note" [editable]="!closeSemestreGroupByCycleAndSchoolyearStatus && currentUser.userAccess != 2">
+            </p-column>
+            
+            <p-column field="grade" header="Mention"> </p-column>
+          </p-dataTable>
+          
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="paginatorLeft" *ngIf="currentUser.userAccess != 2">
+    <button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle" label="{{ENTER_NOTES}}"></button>
+  </ng-template>
+  <ng-template pTemplate="paginatorRight" *ngIf="currentUser.userAccess != 2">
+    <button type="button" (click)="showDialogToUploadFile()" pButton icon="fa fa-file-excel-o"
+      label="{{UPLOAD_NOTES}}"></button>
+  </ng-template>
+</p-dataTable>

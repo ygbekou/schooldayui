@@ -1,0 +1,38 @@
+<div class="ui-grid-row">
+	<div class="ui-grid-col-4">
+		<p-dropdown [options]="parentTableNames" [style]="{'width':'95%'}"
+			[(ngModel)]="selectedParentTableName" (onChange)="getParentAll()"
+			autoWidth="false" required></p-dropdown>
+	</div>
+	<div class="ui-grid-col-4">
+		<p-autoComplete [(ngModel)]="selectedParentTable"
+			(onDropdownClick)="handleDropdownClickParent($event)"
+			[suggestions]="filteredParentTables" [dropdown]="true" id="classe"
+			(completeMethod)="filterParentTables($event)"
+			(onSelect)="resetChildInfo()" name="classe" field="name" [size]="30"
+			placeholder="" [minLength]="1" #classe="ngModel" required></p-autoComplete>
+	</div>
+	<div class="ui-grid-col-4">
+		<p-dropdown [options]="childTableNames"
+			[(ngModel)]="selectedChildTableName" (onChange)="getChildAll()"
+			autoWidth="false" [style]="{'width':'95%'}" required></p-dropdown>
+	</div>
+</div>
+<br />
+<div class="ui-grid-row">
+	<div class="ui-grid-col-12">
+		<p-pickList [source]="childList1" [target]="childList2">
+		<ng-template let-lookuptable pTemplate="item">
+		<div class="ui-helper-clearfix">
+			<div style="font-size: 14px; float: right; margin: 15px 5px 0 0">{{lookuptable.name}}</div>
+		</div>
+		</ng-template> </p-pickList>
+	</div>
+</div>
+<br />
+<div class="ui-grid-row">
+	<button type="button" pButton icon="fa fa-floppy-o" (click)="save()"
+		label="{{SAVE_LABEL}}"></button>
+
+</div>
+

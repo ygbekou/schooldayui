@@ -1,0 +1,230 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<div class="row page-row">
+			<div class="col-md-9 col-sm-8">
+				<h1 class="heading-title pull-left">
+					{{news.title}}
+					<span style="position: relative;/* left: 4%*/; top: 10px;">
+					<!-- <iframe
+							src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2FcollegeSingle%3Fid%3D2&width=450&layout=standard&action=like&size=large&show_faces=false&share=true&height=35&appId"
+							width="450" height="35" style="border: none; overflow: hidden"
+							scrolling="no" frameborder="0" allowTransparency="true"></iframe> -->
+				</span>
+				</h1>
+			</div>
+
+			<div class="col-md-3 col-sm-4">
+				<div class="breadcrumbs pull-right">
+					<ul class="breadcrumbs-list">
+
+						<li class="breadcrumbs-label">Vous etes ici:</li>
+						<li><a href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+						<li class="current">Actualités</li>
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</header>
+	<div class="page-content">
+		<div class="row page-row">
+			<div class="news-wrapper col-md-8 col-sm-7">
+				<article class="news-item">
+					<p class="meta text-muted">
+						<span i18n="@@publishBy">Publie par:</span> <a href="#">{{news.author}}</a>
+						| <span i18n="@@postOn">Poste le:</span>
+						{{news.newsDate|date:'medium'}}
+					</p>
+					<p class="featured-image">
+						<img src="assets/images/news/{{news.pic}}" alt="" align="left"
+							style="margin: 0px 10px" width="50%" />
+					</p>
+					<div [innerHTML]="news.message"></div>
+					<div *ngIf="news.id === 26" >
+						<table class="table table-bordered">
+							<tr>
+								<th>N°</th>
+								<th>CONSTRUCTEUR/EDITEUR/ORGANISME</th>
+								<th>CERTIFICATION</th>
+								<th>MONTANT</th>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Oracle</td>
+								<td>Oracle Certified Junior Associate (OCJA /Java Foundations 1Z0-811)</td>
+								<td>$95 USD</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Oracle</td>
+								<td>
+									OCA (Java Oracle Certified Associate)								</td>
+								<td>$245 USD</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Fortinet</td>
+								<td>
+									Fortinet NSE 4 (Fortinet Network Security Expert 4)							</td>
+								<td>$400 USD</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>Palo Alto Networks</td>
+								<td>
+									Palo Alto Networks Certified Network Security Administrator (PCNSA)							</td>
+								<td>$175 USD</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>CISCO</td>
+								<td>
+									CCNA (Exam 200-301 CCNA)								</td>
+								<td>$300 USD</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>Oracle</td>
+								<td>
+									Cisco Certified CyberOps Associate (Exam 200-201 CBROPS)							</td>
+								<td>$300 USD</td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td>Oracle</td>
+								<td>
+									Cisco Certified DevNet Associate (Exam 200-901 DEVASC)							</td>
+								<td>$300 USD</td>
+							</tr>
+							<tr>
+								<td>8</td>
+								<td>Microsoft</td>
+								<td>
+									Microsoft Certified Azure Administrator Associate (AZ-104)								</td>
+								<td>$165 USD</td>
+							</tr>
+							<tr>
+								<td>9</td>
+								<td>Microsoft</td>
+								<td>
+									Microsoft Certified Azure Security Engineer Associate (AZ-500)								</td>
+								<td>$165 USD</td>
+							</tr>
+							<tr>
+								<td>10</td>
+								<td>CompTIA</td>
+								<td>
+									CompTIA Security+							</td>
+								<td>$370 USD</td>
+							</tr>
+							<tr>
+								<td>11</td>
+								<td>CompTIA PenTest+</td>
+								<td>
+									OCA (Java Oracle Certified Associate)								</td>
+								<td>$381 USD</td>
+							</tr>
+							<tr>
+								<td>12</td>
+								<td>CompTIA</td>
+								<td>
+									CompTIA A+ (CODES 220-1101 & 220-1102 : il faut les deux)								</td>
+								<td>$239 USD</td>
+							</tr>
+							<tr>
+								<td>13</td>
+								<td>EC-Council</td>
+								<td>
+									CEH (Certified Ethical Hacker)							</td>
+								<td>$950 USD</td>
+							</tr>
+							<tr>
+								<td>14</td>
+								<td>PMI</td>
+								<td>
+									CAPM (Certified Associate in Project Management)								</td>
+								<td>$225 USD</td>
+							</tr>
+							<tr>
+								<td>15</td>
+								<td>RedHat</td>
+								<td>
+									RHCSA (RedHat Certified System Administrator)							</td>
+								<td>$400 USD</td>
+							</tr>
+						</table>
+
+						<p>
+							<b>Article 6 :</b> L’année va du 1er Janvier au 31 Décembre. Cette mesure n’est pas rétroactive. 
+							Tous les 30 Décembre de chaque année, une version actualisée de la présente note d’information sera publiée 
+							(liste actualisée des certifications et des tarifs).
+						</p>
+						<p>
+							<b>Article 7 : Mise en application</b><br>
+							Le Directeur des Etudes et de la Programmation, le Secrétaire Général, le Chef Département Projets Etudiants, 
+							sont chargés, chacun en ce qui le concerne, de l’application de la présente note d’information qui prend 
+							effet pour compter de sa date de signature
+						</p>						
+						<a href="http://ipnetuniversity.com/docs/NOTE_INFORMATION_PRISE_EN_CHARGE_CERTIFICATIONS.pdf">Cliquez ici pour télécharger la note de service</a>
+						<div style="margin-top: 2em;"></div>
+						<img src="assets/images/certifications/img1.png" alt="JAVA SE 11" style="width: 100%;">
+						<img src="assets/images/certifications/img2.png" alt="JAVA CERTIFICATION" style="width: 100%;">
+						<img src="assets/images/certifications/img3.png" alt="MS AZURE" style="width: 100%;">
+						<img src="assets/images/certifications/img4.png" alt="FORTINET" style="width: 100%;">
+						<img src="assets/images/certifications/img5.png" alt="PALOALTO" style="width: 100%;">
+						<img src="assets/images/certifications/img6.png" alt="VMWARE" style="width: 100%;">
+						<img src="assets/images/certifications/img7.png" alt="COMPTIA" style="width: 100%;">
+						<h1>Cisco Certifications Roadmap</h1>
+						<img src="assets/images/certifications/img8.png" alt="CISCO" style="width: 100%;">	
+						<div style="margin-top: 2em;"></div>
+						<a href="http://ipnetuniversity.com/docs/NOTE_INFORMATION_PRISE_EN_CHARGE_CERTIFICATIONS.pdf">Cliquez ici pour télécharger la note de service</a>
+					</div>
+
+					<div *ngIf="news.id === 29">
+						<p class="featured-image">
+							<img src="assets/images/news/communique_meta.bmp" alt="" align="left"
+								style="margin: 0px 10px" width="100%" />
+						</p>
+					</div>
+				</article>
+				<!--//news-item-->
+			</div>
+			<!--//news-wrapper-->
+			<aside
+				class="page-sidebar  col-md-3 col-md-offset-1 col-sm-4 col-sm-offset-1 col-xs-12">
+				<section class="widget has-divider" style="padding: 20px;">
+					<h3 i18n="@@news" class="title">Actualités</h3>
+					<article class="news-item row" *ngFor="let news of first3">
+						<figure class="thumb col-md-2 col-sm-3 col-xs-3">
+							<img src="assets/images/news/{{news.pic}}" alt="" />
+						</figure>
+						<div class="details col-md-10 col-sm-9 col-xs-9">
+							<h4 class="title">
+								<a [routerLink]="['/newsSingle']"
+								[queryParams]="{ id:news.id}" (click)="setCurrentNews(news)">{{news.title}}</a>
+							</h4>
+						</div>
+					</article>
+
+				</section>
+				<!--//widget-->
+				<section class="widget has-divider"  style="padding: 20px;">
+					<app-event-short-vert></app-event-short-vert>
+				</section>
+				<!--//widget-->
+			</aside>
+		</div>
+		<!--//page-row-->
+		<span style="position: relative;/* left: 4%; top: 10px;*/">
+					<iframe
+							src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2FcollegeSingle%3Fid%3D2&width=450&layout=standard&action=like&size=large&show_faces=false&share=true&height=35&appId"
+							width="450" height="35" style="border: none; overflow: hidden"
+							scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+				</span>
+	</div>
+	<!--//page-content-->
+</div>
+<!--//page-->
+
+

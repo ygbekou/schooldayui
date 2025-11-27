@@ -1,0 +1,112 @@
+
+<div class="content container">
+	<div class="page-wrapper">
+		<header class="page-heading clearfix">
+			<h1 class="heading-title pull-left">Contact</h1>
+			<div class="breadcrumbs pull-right">
+				<ul class="breadcrumbs-list">
+					<li class="breadcrumbs-label">Vous etes ici:</li>
+					<li><a href="index.html">Accueil</a><i
+						class="fa fa-angle-right"></i></li>
+					<li class="current">Contact</li>
+				</ul>
+			</div>
+			<!--//breadcrumbs-->
+
+		</header>
+		<div class="page-content">
+			<div class="row">
+				<article class="contact-form col-md-8 col-sm-7  page-row">
+					<h3 class="title">Contactez-nous</h3>
+					<p>Vous avez des questions? Nous somme ravis de vous r�pondre</p>
+
+					<form (ngSubmit)="sendMessage()" #profileForm="ngForm">
+
+						<div class="form-group">
+							<label for="lastName">Nom:</label> <input type="text" pInputText
+								class="form-control" id="lastName" required
+								[(ngModel)]="contact.lastName" name="lastName"
+								#lastName="ngModel">
+							<div [hidden]="lastName.valid || lastName.pristine"
+								class="alert alert-danger">Nom Requis</div>
+						</div>
+						<div class="form-group">
+							<label for="firstName">Pr�nom:</label> <input type="text"
+								pInputText class="form-control" id="firstName" required
+								[(ngModel)]="contact.firstName" name="firstName"
+								#firstName="ngModel">
+							<div [hidden]="firstName.valid || firstName.pristine"
+								class="alert alert-danger">Pr�nom Requis</div>
+						</div>
+						<div class="form-group">
+							<label for="email">E-mail</label> <input type="email" pInputText
+								class="form-control" id="email" required
+								[(ngModel)]="contact.email" name="email" #email="ngModel">
+							<div [hidden]="email.valid || email.pristine"
+								class="alert alert-danger">Email Requis</div>
+						</div>
+
+						<div class="form-group">
+							<label for="phone">T�l�phone</label> <input type="text"
+								pInputText class="form-control" id="phone"
+								[(ngModel)]="contact.phone" name="phone" #phone="ngModel">
+						</div>
+
+						<div class="form-group">
+							<label for="message">Message</label>
+							<p-editor [(ngModel)]="contact.message"
+								[style]="{'height':'200px'}" name="message"></p-editor>
+						</div>
+
+						<button (click)="button=2" pButton type="submit" label="Envoyer"></button>
+
+						<br>
+						<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+						<div *ngIf="success" class="alert alert-success">{{success}}</div>
+
+					</form>
+				</article>
+				<!--//contact-form-->
+				<aside
+					class="page-sidebar  col-md-3 col-md-offset-1 col-sm-4 col-sm-offset-1">
+					<section class="widget has-divider">
+						<app-prospectus></app-prospectus>
+					</section>
+					
+					<section class="widget has-divider">
+						<app-contact-short></app-contact-short>
+					</section>
+					
+				</aside>
+				<!--//page-sidebar-->
+			</div>
+			<!--//page-row-->
+			<div class="page-row">
+				<article class="map-section">
+					<h3 class="title">Comment nous retrouver</h3>
+					<div class="gmap-wrapper" id="map">
+						<iframe
+							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d929.8471543195577!2d1.1937883582724305!3d6.202040636543221!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x10215867bd3b4385%3A0x827fbe200335495c!2sIPNET+EXPERTS+SA!5e1!3m2!1sen!2sus!4v1483067433755"
+							width="600" height="450" frameborder="0" style="border: 0"
+							allowfullscreen></iframe>
+					</div>
+					<!--//gmap-wrapper-->
+				</article>
+				<!--//map-->
+			</div>
+			<iframe
+				src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2Fcontact&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId"
+				width="450" height="80" style="border: none; overflow: hidden"
+				scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+			<!--//page-row-->
+		</div>
+		<!--//page-content-->
+	</div>
+	<!--//page-wrapper-->
+</div>
+<!--//content-->
+<script>
+	var quill = new Quill('#editor', {
+		theme : 'bubble'
+	});
+</script>

@@ -1,0 +1,107 @@
+<div class="page-wrapper">
+  <header class="page-heading clearfix">
+    <h1 i18n="@@adminSpace" class="heading-title pull-left">
+      <img class="thumb" src="assets/images/scoolday.png" alt="" />
+    </h1>
+    <div class="breadcrumbs pull-right">
+      <ul class="breadcrumbs-list">
+        <li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+          ici:</li>
+        <li><a i18n="@@homeLink" href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+        <li><a i18n="@@admin" href="#">Admin</a><i class="fa fa-angle-right"></i></li>
+        <li i18n="@@information" class="current">R�ception</li>
+      </ul>
+    </div>
+    <!--//breadcrumbs-->
+  </header>
+  <div class="page-content">
+    <!-- <div class="alert alert-danger" i18n="@@youNeedToBeConnectedAsAdmin">Vous devez etre
+      connecte
+      en tant qu'administrateur pour voir ce contenu</div> -->
+    <div class="row page-row" >
+      <app-admin-menu></app-admin-menu>
+      <!--//page-sidebar-->
+      <div class="content-wrapper col-md-10 col-sm-8">
+        
+
+        <p-tabView (onChange)="onTabChange($event)">
+          <p-tabPanel header="Données de Réference" leftIcon="fa fa-table">
+            <p-tabView id="tabList" (onChange)="onTabChange($event)">
+              
+              <p-tabPanel header="Catégorie" leftIcon="fa fa-file-video-o">
+                <app-immo-categoryMaterial></app-immo-categoryMaterial>
+              </p-tabPanel>
+
+              <p-tabPanel header="Compte Comptable" leftIcon="fa fa-file-video-o">
+                <app-immo-account></app-immo-account>
+              </p-tabPanel>
+
+              <p-tabPanel header="Nature" leftIcon="fa fa-newspaper-o">
+                <app-immo-nature></app-immo-nature>
+              </p-tabPanel>
+
+              <p-tabPanel header="Matériel" leftIcon="fa fa-file-video-o">
+                <app-immo-material></app-immo-material>
+              </p-tabPanel>
+
+              <p-tabPanel header="Marque Possible" leftIcon="fa fa-file-video-o">
+                <app-immo-material-brand></app-immo-material-brand>
+              </p-tabPanel>
+
+              <p-tabPanel header="Lieu" leftIcon="fa fa-home">
+                <app-immo-place></app-immo-place>
+              </p-tabPanel>
+              <!--<p-tabPanel header="Nature" leftIcon="fa fa-newspaper-o">
+                <app-immo-nature></app-immo-nature>
+              </p-tabPanel>
+              <p-tabPanel header="Lieu" leftIcon="fa fa-home">
+                <app-immo-location></app-immo-location>
+              </p-tabPanel>-->
+              <p-tabPanel header="Etat" leftIcon="fa fa-file-video-o">
+                <app-immo-state></app-immo-state>
+              </p-tabPanel>
+              
+              <p-tabPanel header="Fournisseur" leftIcon="fa fa-file-video-o">
+                <app-immo-vendor></app-immo-vendor>
+              </p-tabPanel>
+
+              <p-tabPanel header="Caractéristique" leftIcon="fa fa-file-video-o">
+                <app-immo-features></app-immo-features>
+              </p-tabPanel>
+
+              <p-tabPanel header="Année" leftIcon="fa fa-file-video-o">
+                <app-immo-year></app-immo-year>
+              </p-tabPanel>
+
+            </p-tabView>
+          </p-tabPanel>
+          <p-tabPanel header="Reception" leftIcon="fa fa-envelope-open">
+            <app-immo-reception></app-immo-reception>
+          </p-tabPanel>
+          <p-tabPanel header="Affectation" leftIcon="fa fa-share">
+            <app-immo-assignment></app-immo-assignment>
+          </p-tabPanel>
+          <!--<p-tabPanel header="Dossier" leftIcon="fa fa-folder-open">
+            <app-immo-folder></app-immo-folder>
+          </p-tabPanel>
+          <p-tabPanel header="Type de Fichier" leftIcon="fa fa-bars">
+            <app-immo-fileType></app-immo-fileType>
+          </p-tabPanel>
+          <p-tabPanel header="Fichier" leftIcon="fa fa-file-archive-o">
+            <app-immo-file></app-immo-file>
+          </p-tabPanel>
+          <p-tabPanel header="Affectation" leftIcon="fa fa-share">
+            <app-immo-assignement></app-immo-assignement>
+          </p-tabPanel>-->
+
+        </p-tabView>
+
+
+      </div>
+      <!--//content-wrapper-->
+    </div>
+    <!--//page-row-->
+  </div>
+  <!--//page-content-->
+</div>
+<!--//page-->

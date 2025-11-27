@@ -1,0 +1,47 @@
+<form (ngSubmit)="getPaymentGraph()" #searchForm="ngForm">
+    <div class="ui-grid ui-grid-responsive ui-fluid">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-3">
+          <p-autoComplete [(ngModel)]="schoolYear"
+            (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+            [suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear"
+            (completeMethod)="schoolYearDropdown.filter($event)" name="schoolYear" field="year" [size]="30"
+            placeholder="{{SCHOOLYEAR}}" [minLength]="1" #sYear="ngModel"></p-autoComplete>
+          <div [hidden]="sYear.valid || sYear.pristine" class="alert alert-danger"
+            i18n="@@schoolYearRequired">Annee
+            scolaire Requise</div>
+        </div>
+        <div class="ui-grid-col-1"></div>
+        <div class="ui-grid-col-1"></div>
+        <div class="ui-grid-col-2">
+          <button type="button" pButton icon="fa fa-search" (click)="getLatePaymentsBySchoolYear()"
+            label="Retards de payement" style="margin-top: 0px; height: 30px;"></button>
+        </div>
+        <div class="ui-grid-col-1"></div>
+        <div class="ui-grid-col-3">
+          <button type="button" pButton icon="fa fa-search" (click)="getLatePayments()"
+            label="Tous les retards de payement" style="margin-top: 0px; height: 30px;"></button>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-6">
+          <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+  <br />
+
+  <div class="alert alert-info" *ngIf="isLoadingData">Chargement...</div>
+
+  <p-dataTable [value]="stts" selectionMode="single" [paginator]="true" [rows]="15"
+    [responsive]="true" *ngIf="!isLoadingData">
+    <p-column *ngFor="let col of cols" [field]="col.field" [style]="col.style" [header]="col.header"
+      [sortable]="col.sortable" [filter]="col.filter">
+      <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+        <span class="col-date">{{data[col.field] | date:'dd/MM/yyyy'}}</span> </ng-template>
+    </p-column>
+  </p-dataTable>

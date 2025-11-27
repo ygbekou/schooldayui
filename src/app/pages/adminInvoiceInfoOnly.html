@@ -1,0 +1,249 @@
+<file-uploader></file-uploader>
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<div>
+
+	<div class="ui-grid-row" style="margin-top: 15px;">
+		<div class="ui-grid-col-2">
+			<button type="button" pButton icon="fa fa-check"
+				(click)="updateInvoice()" label="{{UPDATE_LABEL}}"></button>
+		</div>
+		<div class="ui-grid-col-2">
+			<button type="button" pButton icon="fa fa-print" style="float: left"
+				*ngIf="!(nInvoiceView.status==2)" (click)="printInvoice()"
+				label="{{PRINT}}"></button>
+		</div>
+		<div class="ui-grid-col-4">
+			<a *ngIf="reportName" target="_blank"
+				href="assets/reports/{{reportName}}" i18n="@@downloadReport">Telecharger
+				l'etat</a>
+		</div>
+	</div>
+
+	<div class="ui-grid-row"
+		*ngIf="nInvoiceView.userId || nInvoiceView.companyId">
+		<div class="ui-grid-col-6">
+
+			<h3 style="font-weight: bold;">Client :
+				{{nInvoiceView.customerName}}</h3>
+
+		</div>
+		<div class="ui-grid-col-6">
+
+			<h3 style="font-weight: bold;">Vendeur :
+				{{nInvoiceView.vendeurName}}</h3>
+
+		</div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-6">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label i18n="@@contact" for="contact">Référence</label>
+				</div>
+				<div class="ui-grid-col-6">
+					<input pInputText id="contact" class="form-control" readonly
+						[(ngModel)]="nInvoiceView.reference" required />
+				</div>
+				<div class="ui-grid-col-2"></div>
+			</div>
+		</div>
+
+		<div class="ui-grid-col-6">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label i18n="@@numero">Numéro</label>
+				</div>
+				<div class="ui-grid-col-8">
+					<h4 *ngIf="!nInvoiceView.number">-</h4>
+					<label *ngIf="nInvoiceView.number">{{ nInvoiceView.number
+						}}</label>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-6">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label i18n="@@tax" for="tax">Taxe (%)</label>
+				</div>
+				<div class="ui-grid-col-6">
+					<input pInputText class="form-control" id="tax" readonly
+						[(ngModel)]="nInvoiceView.tax" required />
+				</div>
+				<div class="ui-grid-col-2"></div>
+			</div>
+		</div>
+
+		<div class="ui-grid-col-6">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label i18n="@@numero">Date</label>
+				</div>
+				<div class="ui-grid-col-8">{{ nInvoiceView.invoiceDate | date:
+					'dd/MM/yyyy' }}</div>
+			</div>
+		</div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-6">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label i18n="@@discountPerc" for="discountPerc">Remise
+						globale</label>
+				</div>
+				<div class="ui-grid-col-6">
+					<input pInputText class="form-control" id="discountPerc" readonly
+						[(ngModel)]="nInvoiceView.discountPerc" />
+				</div>
+				<div class="ui-grid-col-2"></div>
+			</div>
+		</div>
+
+		<div class="ui-grid-col-6">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label i18n="@@numero">Etat </label>
+				</div>
+				<div class="ui-grid-col-8">
+					<label>{{ nInvoiceView.statusDescription }}</label>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-6">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label i18n="@@numero">Date payement</label>
+				</div>
+				<div class="ui-grid-col-8">{{ nInvoiceView.paymentDate | date:
+					'dd/MM/yyyy' }}</div>
+			</div>
+		</div>
+	</div>
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@description">Description</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<p-editor [(ngModel)]="nInvoiceView.description" readonly="readonly"
+				[style]="{'height':'150px'}"></p-editor>
+		</div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@conditionVente">Conditions de vente</label>
+		</div>
+
+		<div class="ui-grid-col-10"> 
+			<p-editor [(ngModel)]="nInvoiceView.saleCond" readonly="readonly"
+				[style]="{'height':'150px'}"></p-editor>
+		</div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@ttcToLetter">Total TTC en lettres</label>
+		</div>
+
+		<div class="ui-grid-col-10">
+			<input pInputText class="form-control" id="ttcToLetter" readonly
+				[(ngModel)]="nInvoiceView.ttcToLetter" required />
+		</div>
+	</div>
+
+	<div class="ui-grid-row" style="margin-top: 15px; font-weight: bold;"
+		*ngIf="nInvoiceView.invoiceId">
+
+		<div class="ui-grid-col-8">
+
+			<h6></h6>
+
+		</div>
+		<div class="ui-grid-col-2">
+
+			<h6 style="font-weight: bold;">TOTAL HT :</h6>
+
+		</div>
+
+		<div class="ui-grid-col-2">
+
+			<h6 style="font-weight: bold;">{{nInvoiceView.costHt| number:'1.0-0':'fr'}} F CFA</h6>
+
+		</div>
+	</div>
+
+	<div class="ui-grid-row" style="margin-top: 5px;"
+		*ngIf="nInvoiceView.invoiceId">
+
+		<div class="ui-grid-col-8">
+
+			<h6></h6>
+
+		</div>
+
+		<div class="ui-grid-col-2">
+
+			<h6 style="font-weight: bold;">TOTAL TVA ({{nInvoiceView.tax}}%)
+				:</h6>
+
+		</div>
+
+		<div class="ui-grid-col-2">
+
+			<h6 style="font-weight: bold;">{{nInvoiceView.costTax| number:'1.0-0':'fr'}} F CFA</h6>
+
+		</div>
+	</div>
+
+	<div class="ui-grid-row" style="margin-top: 5px;"
+		*ngIf="nInvoiceView.invoiceId">
+
+		<div class="ui-grid-col-8">
+
+			<h6></h6>
+
+		</div>
+
+		<div class="ui-grid-col-2">
+
+			<h6 style="font-weight: bold;">TOTAL TTC :</h6>
+
+		</div>
+
+		<div class="ui-grid-col-2">
+
+			<h6 style="font-weight: bold;">{{nInvoiceView.costTtc| number:'1.0-0':'fr'}} F CFA</h6>
+
+		</div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row" *ngIf="!(nInvoiceView.status==2)">
+		<div class="ui-grid-col-6">
+			<button type="button" pButton icon="fa fa-check"
+				(click)="updateInvoice()" label="{{UPDATE_LABEL}}"></button> 
+		</div>
+	</div>
+</div>

@@ -1,0 +1,188 @@
+<div class="page-wrapper" *ngIf="user.id > 0">
+    <header class="page-heading clearfix">
+        <div class="row page-row">
+            <div class="col-md-9 col-sm-8">
+                <h1 class="heading-title pull-left">
+                    Projets professionnels, Support IT & Digitalisation
+                    <span style="position: relative;/* left: 4%*/; top: 10px;">
+            <div class="fb-like" data-href="http://www.ipnetinstitute.com/#/projetsProfesionnels" data-width=""
+                 data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true">
+            </div>
+          </span>
+                </h1>
+            </div>
+            <div class="col-md-3 col-sm-4">
+                <div class="breadcrumbs pull-right">
+                    <ul class="breadcrumbs-list">
+
+                        <li class="breadcrumbs-label">Vous etes ici:</li>
+                        <li><a href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+                        <li class="current">projets Support IT</li>
+
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="page-content">
+        <div class="row page-row">
+            <div class="faq-wrapper col-md-9 col-sm-8">
+                <p class="featured-image page-row" style="margin-bottom: 30px;">
+                    <img class="img-responsive" src="assets/images/piliers/iPNet_iXP_System.jpg" alt="" />
+                </p>
+
+                <section class="promo box box-dark">
+	<div class="col-md-9">
+		<h2 class="section-heading">Journées Portes Ouvertes Projets Etudiants, JPOPE 2025, 30 Août 2025</h2>
+
+	</div>
+	<div class="col-md-3">
+
+		<a class="btn btn-cta"
+			style="margin-top: 18px; padding-top: 5px; padding-bottom: 5px;"
+			[routerLink]="['/jpope']"
+			><i
+			class="fa fa-play-circle"></i>Inscription en ligne</a>
+
+	</div>
+</section>
+
+                      <P style="font-size: 16px;">Ci-dessous, la liste des projets professionnels étudiants, support IT & Digitalisation</P>
+
+                   <p-dialog header="Détails du projet" [(visible)]="displayDialog"
+                   [responsive]="true" showEffect="fade" [modal]="true" width="1300"
+                   [contentStyle]="{ 'max-height': '80vh', 'overflow': 'auto' }" [positionTop]="10">
+                           
+                   <h1 class="text-dark my-4" style="font-weight: bolder;">
+                    {{ spc.projectName }}
+                </h1>
+                       <div>
+                            <div class="panel-body" style="padding-left: 10px; padding-top: 0px">
+                                <div [innerHTML]="spc.projectDescription"></div>
+                            </div>
+
+                            
+                        </div>
+
+                        <footer>
+                            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                                <button pButton label="Fermer" icon="pi pi-times" (click)="closeDialog()" class="p-button-text"></button>
+                            </div>
+                        </footer> 
+                    </p-dialog>
+
+                   <div class="row">
+                
+                        <div class="panel-group" id="accordion111">
+                            <ng-container *ngFor="let th of themes; let index = index">
+                               
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion111"
+                                                
+                                                class="collapsed" aria-expanded="false"
+                                                href="#projet{{th.id}}">
+                                                {{th.name}}
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <!--//pane-heading-->
+                                    <div id="projet{{th.id}}" class="panel-collapse collapse">
+                                        <div *ngFor="let spc of th.projets; let i = index">
+
+                                            <a class="btn btn-link text-primary"
+                                            (click)="showDialogToAdd(spc)">
+                                            <i class="fas fa-folder" style="margin: 5px;"></i>{{ spc.projectName }}
+                                         </a>
+                                         
+
+                                           
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+               
+                </div>
+                <p style="font-size: 16px;">Une méthode innovante de connexion avec le monde professionnel, pour renforcer l’employabilité et encourager l’entrepreneuriat chez les étudiants.</p>
+                <div>
+                    <img src="assets/images/liens.jpg" alt="" style="width: 1000px;">
+                </div>
+                <h3 style="margin: 10px;font-weight: bolder;">Les objectifs des projets professionnels étudiants</h3>
+                <p style="font-size: 18px; margin-top: 25px;">Former des diplômés rompus à la résolution des problèmes ("problem-solving skills"), connecter les étudiants aux entreprises et
+                    inspirer de futurs entrepreneurs :</p>
+                <ol>
+                    <li style="font-size: 20px;">Former des diplômés opérationnels :</li>
+                    <ul style="font-size: 16px;list-style-type: square;">
+                        <li>Le diplômé est rompu à la résolution des problèmes techniques, car, durant toute sa formation, il s’est entrainé, au moyen des
+                            travaux pratiques sur notre réseau informatique grandeur-nature, accessible aux étudiants 7jours/7, 365jours/365 ;</li>
+                        <li>Le diplômé est formé au travail en équipe ;</li>
+                        <li>Le diplômé est formé à la conduite, de bout en bout, de projets informatiques d’envergure.</li>
+                    </ul>
+                    <li style="font-size: 20px;">Connecter l’étudiant aux entreprises</li>
+                    <ul style="font-size: 16px; list-style-type: square;">
+                        <li> Les entreprises d’Afrique Noire Francophone (bientôt les pays Anglophones aussi) sont informées, par mass emailing, de notre démarche de projets
+                             professionnels étudiants, et peuvent consulter, sur <a href=" https://www.ipnetinstitute.com/#/projets">https://www.ipnetinstitute.com/#/projets</a>, les solutions sur lesquelles travaillent nos
+                             différentes équipes étudiants, vérifier le niveau d’avancement sur le projet (mesuré de 0% à 100%), de sorte à cibler et contacter les étudiants
+                             dont le profil les intéresse, pour une interview en vue d’un stage ou un emploi ;</li>
+                             <li>Mieux, recruteurs et directeurs informatiques du Togo et des pays de la sous-région, sont invités chaque année, à l’occasion de
+                                 « Journées portes ouvertes sur les projets étudiants », à venir découvrir les présentations et démonstrations de nos étudiants sur
+                                 leurs projets. Les prochaines journées portes ouvertes sur les projets étudiants auront lieu le 03 Septembre 2022.</li>
+
+                    </ul>
+                    <li style="font-size: 20px;">Inspirer de futurs entrepreneurs :</li>
+                            <ul style="font-size: 16px;list-style-type: square;">
+                                <li>Qui développe la passion pour un sujet accroît ses chances d’entreprendre dans le domaine ;</li>
+                                <li>Un étudiant qui travaille durant tout son cursus sur une solution informatique, qu’il a choisie lui-même, a plus de chance de
+                                    développer de l’expertise et une passion sur le sujet ;</li>
+                                    <li>La plupart des créateurs d’entreprises en informatique ont pensé leur projet sur les bancs de l’Université :
+                                         <strong>Bill Gates</strong> (Microsoft), <strong>Steve Jobs</strong> (Apple), <strong>Linus Torvalds</strong> (Linux),
+                                          <strong>Mark Zuckerberg</strong> (Facebook), pour ne citer que ceux-là.</li>
+                            </ul>
+                </ol>
+               
+
+            </div>
+            <aside class="page-sidebar  col-md-3  col-sm-4   col-xs-12">
+                <section class="widget has-divider">
+                    <app-one-video></app-one-video>
+                </section>
+                <section class="widget has-divider">
+                    <app-prospectus></app-prospectus>
+                </section>
+                <!--//widget-->
+                <section class="widget has-divider">
+                    <app-contact-short></app-contact-short>
+                </section>
+            </aside>
+            <!--//page-row-->
+        </div>
+        <!-- <img src="assets/images/jp.jpg" alt="" style="width: 980px; margin-top: -20px; margin-bottom: 30px;" /> -->
+         <!-- <img src="assets/images/Integration.jpg" alt="" style="width: 980px; margin-top: -20px; margin-bottom: 30px;" /> -->
+          <!-- <h5 style="font-size: 20px;">LEGENDE </h5>
+                    <ul style="list-style-type: square; font-size: 16px;">
+                           <li>LPCS : Licence Professionnelle Cyber Sécurité</li>
+                           <li>LPRSS : Licence Professionnelle Réseaux Système et Sécurité</li>
+                           <li>LPGL : Licence Professionnelle Génie Logiciel</li>
+                           <li>LPWIM :  Licence Professionnelle Webdesign Infographie et Multimédia</li>
+                           <li>LPDWM :  Licence Professionnelle Développement Web et Mobile </li>
+                           <li>LPGEER : Licence Professionnelle Génie Electrotechnique et Energies Renouvelables</li>
+                           <li>MPCS : Master Professionnel Cyber Sécurité</li>
+                           <li>MPRSS : Master Professionnel Réseaux Système et Sécurité</li>
+                           <li>MPGL : Master Professionnel Génie Logiciel </li>
+                           <li>ADMIN RESEAUX : Certificat en Administration Réseaux, Systèmes & Cybersécurité en 15 Mois</li>
+                       </ul> -->
+        <div class="fb-like" data-href="http://www.ipnetinstitute.com/#/projetsProfesionnels" data-width=""
+             data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+    </div>
+
+</div>
+<div *ngIf="user.id <= 0" style="margin-top: 30px;">
+    <div class="alert alert-danger"
+        i18n="@@youNeedToBeConnected">Vous devez être connecté à votre compte pour voir la liste des nouveaux projets professionnels
+    </div>
+
+</div>

@@ -1,0 +1,56 @@
+
+<section class="testimonials">
+	<h1 class="section-heading text-highlight">
+		<span i18n="@@testimonies" class="line">Témoignages</span>
+	</h1>
+	<div class="carousel-controls">
+		<a class="prev" href="#testimonials-carousel" data-slide="prev"><i
+			class="fa fa-caret-left"></i></a> <a class="next"
+			href="#testimonials-carousel" data-slide="next"><i
+			class="fa fa-caret-right"></i></a>
+	</div>
+	<!--//carousel-controls-->
+	<div class="section-content">
+		<div id="testimonials-carousel"
+			class="testimonials-carousel carousel slide">
+			<div class="carousel-inner" style="height: 380px;">
+				<div class="item active" *ngIf="activeT">
+					<blockquote class="quote">
+						<i class="fa fa-quote-left"></i>
+						<div [innerHTML]="activeT.comments"></div>
+
+					</blockquote>
+					<div class="row">
+						<p class="people col-md-8 col-sm-3 col-xs-8">
+							<span class="name">{{activeT.user.firstName +'
+								'+activeT.user.lastName}}</span><br />
+						</p>
+						<img class="profile col-md-4 pull-right"
+							src="assets/images/user/{{activeT.user.pic}}" alt="" />
+					</div>
+				</div>
+				<div class="item" *ngFor="let testimony of testimonies">
+					<blockquote class="quote">
+
+						<i class="fa fa-quote-left"></i>
+						<div [innerHTML]="testimony.comments"></div>
+
+					</blockquote>
+					<div class="row">
+						<p class="people col-md-8 col-sm-3 col-xs-8">
+							<span class="name">{{testimony.user.firstName +'
+								'+testimony.user.lastName}}</span><br />
+						</p>
+						<img class="profile col-md-4 pull-right"
+							src="assets/images/user/{{testimony.user.pic}}" alt="" />
+					</div>
+				</div>
+
+			</div>
+			<!--//carousel-inner-->
+		</div>
+		<!--//testimonials-carousel-->
+	</div>
+	<!--//section-content-->
+</section>
+<!--//testimonials-->

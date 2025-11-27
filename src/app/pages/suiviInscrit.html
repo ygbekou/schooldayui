@@ -1,0 +1,95 @@
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<form (ngSubmit)="search()" #searchForm="ngForm">
+  
+  <div class="ui-grid ui-grid-responsive ui-fluid" [hidden]="currentUser.role>2 && currentUser.role!=8 
+      && currentUser.role!=9 && currentUser.role!=10 && currentUser.role!=13">
+  <div class="ui-grid-row">
+
+      <div class="ui-grid-col-10">
+        <p-autoComplete [(ngModel)]="theSchoolYear" (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+          [suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear"
+          (completeMethod)="schoolYearDropdown.filter($event)" name="schoolYear" field="year" [size]="30"
+          placeholder="{{SCHOOLYEAR}}" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+      </div>
+       <div class="ui-grid-col-2">
+        <button type="button" pButton icon="fa fa-search" (click)="search()" label="Go"
+          style="margin-top: 0px; height: 35px;"></button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<p-dataTable [value]="anyViews" selectionMode="single"  expandableRows="true"
+  [paginator]="true" [rows]="15"  [responsive]="true"  (onRowExpand)="getLevelsBySchoolyearAndCycle($event)">
+  <p-column expander="true" styleClass="col-icon" [style]="{'width':'3%'}"></p-column>
+  <p-column *ngFor="let col of cols" [style]="col.style" [field]="col.field" [header]="col.header"
+    [sortable]="col.sortable" [filter]="col.filter">
+    <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body"> <span class="col-date">{{ data[
+	col.field ] | date:'dd/MM/yy' }}</span> </ng-template>
+  </p-column>
+
+  <ng-template let-anyView pTemplate="rowexpansion">
+    <div class="ui-grid-row">
+     <!-- <div class="ui-grid-col-2">
+          		<button pButton type="button" icon="fa fa-search"
+          			(click)="getLevelsBySchoolyearAndCycleFromScoolday()"
+                label="SCOOLDAY">
+          		</button>
+            </div>
+       <div class="ui-grid-col-2">
+          		<button pButton type="button" icon="fa fa-search"
+          			(click)="getLevelsBySchoolyearAndCycleOnSite()"
+                label="SUR SITE">
+          		</button>
+            </div> -->
+        <p-selectButton [(ngModel)]="value1" [options]="options" (onChange)="getLevels($event)"></p-selectButton>
+    </div>
+
+
+    
+     <p-dataTable [value]="levelsBySchooyear" selectionMode="single" rowExpandMode="single" [paginator]="true" [rows]="15" 
+     [responsive]="true" (onRowSelect)="getProspectByStatusAndLevel($event)">
+             
+      <p-column expander="true" styleClass="col-icon" [style]="{'width':'3%'}"></p-column>
+              <p-column *ngFor="let col of colso" [style]="col.style" [field]="col.field" [header]="col.header"
+    [sortable]="col.sortable" [filter]="col.filter" >
+    <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body"> <span class="col-date">{{ data[
+	col.field ] | date:'dd/MM/yy' }}</span> </ng-template>
+  </p-column>
+      </p-dataTable>
+  </ng-template>
+</p-dataTable>
+
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialogProspect" [responsive]="true" showEffect="fade" [modal]="true"
+  >
+  <p-dataTable [value]="prospects" selectionMode="single" rowExpandMode="single" [paginator]="true" 
+  [rows]="15" [responsive]="true">
+             
+      <p-column expander="true" styleClass="col-icon" [style]="{'width':'3%'}"></p-column>
+              <p-column *ngFor="let col of colsodia" [style]="col.style" [field]="col.field" [header]="col.header"
+    [sortable]="col.sortable" [filter]="col.filter" >
+    <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body"> <span class="col-date">{{ data[
+	col.field ] | date:'dd/MM/yy' }}</span> </ng-template>
+  </p-column>
+      </p-dataTable>
+  </p-dialog>
+
+  <!-- Ajout - 05 12 2024 -->
+
+<div style="margin-top: 40px; text-align: center;">
+
+  <strong><h4 style="margin: 10px;">Les Demandes pour donner des cours à Ipnet</h4></strong>
+  
+    <p-dataTable [value]="teachers" selectionMode="single"
+          
+    [paginator]="true" [rows]="15" [responsive]="true"> <p-column
+    *ngFor="let col of colsTeachers" [field]="col.field" [style]="col.style"
+    [header]="col.header" [sortable]="col.sortable" [filter]="col.filter"><ng-template
+  *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+  type="body"> <span class="col-date">{{ data[
+  col.field ] | date:'dd/MM/yy' }}</span> </ng-template></p-column>
+  </p-dataTable>
+
+</div>

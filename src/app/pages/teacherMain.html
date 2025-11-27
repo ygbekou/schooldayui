@@ -1,0 +1,60 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 i18n="@@espaceTeacherLink" class="heading-title pull-left">
+			<img class="thumb" src="assets/images/scoolday.png" alt="" />
+		</h1>
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+					ici:</li>
+				<li><a i18n="@@homeLink" href="index.html">Home</a><i
+					class="fa fa-angle-right"></i></li>
+				<li><a i18n="@@teacher" href="#">Enseignant</a><i
+					class="fa fa-angle-right"></i></li>
+				<li i18n="@@academicRecord" class="current">Dossier scolaire</li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<div [hidden]="user.role===2" class="alert alert-danger"
+			i18n="@@youNeedToBeConnectedAsTeacher">Vous devez etre connecte
+			en tant qu'enseignant pour voir ce contenu</div>
+		<div class="row page-row" [hidden]="!(user.role===2)">
+			<app-teacher-menu></app-teacher-menu>
+			<!--//page-sidebar-->
+			<div class="content-wrapper col-md-10 col-sm-8">
+
+				<p-tabView (onChange)="onTabChange($event)"> <p-tabPanel
+					header="{{MY_COURSES}}" leftIcon="fa fa-newspaper-o">
+				<app-admin-syllabus></app-admin-syllabus> </p-tabPanel> <p-tabPanel
+					header="{{FEEDBACKS}}" leftIcon="fa fa-microphone"> <app-admin-testimony
+					(user)="user"></app-admin-testimony> </p-tabPanel> <p-tabPanel
+					header="{{TIME_TRACKING}}" leftIcon="fa fa-calculator"
+					*ngIf="user.id > 0"> <app-manage-time-sheet></app-manage-time-sheet>
+				</p-tabPanel> 
+			          
+					<p-tabPanel header="{{PRESENCE}}" leftIcon="fa fa-bolt" *ngIf="user.id > 0">
+						<app-admin-presence [user]="user"></app-admin-presence>
+					</p-tabPanel>
+					<p-tabPanel
+					header="Présence-Etudiant" leftIcon="fa fa-calculator"
+					*ngIf="user.id > 0"> <app-manage-attendance></app-manage-attendance>
+				</p-tabPanel> 
+				<p-tabPanel
+					header="Calcul des heures de cours" leftIcon="fa fa-calculator"
+					*ngIf="user.id > 0"> <app-calcul-course-hours></app-calcul-course-hours>
+				</p-tabPanel> 
+					
+			</p-tabView>
+
+
+			</div>
+			<!--//content-wrapper-->
+		</div>
+		<!--//page-row-->
+	</div>
+	<!--//page-content-->
+</div>
+<!--//page-->

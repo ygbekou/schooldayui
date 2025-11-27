@@ -1,0 +1,41 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 i18n="@@adminSpace" class="heading-title pull-left">
+			<img class="thumb" src="assets/images/scoolday.png" alt="" />
+		</h1>
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+					ici:</li>
+				<li><a i18n="@@homeLink" href="index.html">Home</a><i
+					class="fa fa-angle-right"></i></li>
+				<li><a i18n="@@admin" href="#">Admin</a><i
+					class="fa fa-angle-right"></i></li>
+				<li i18n="@@information" class="current">Information</li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<div [hidden]="currentUser.role===1||currentUser.role===5"
+			class="alert alert-danger">Vous devez etre connecte en tant
+			qu'administrateur pour voir ce contenu</div>
+		<div class="row page-row"
+			[hidden]="!(currentUser.role===1||currentUser.role===5)">
+			<app-admin-menu></app-admin-menu>
+			<!--//page-sidebar-->
+			<div class="content-wrapper col-md-10 col-sm-8">
+				<p-tabView (onChange)="onTabChange($event)"> <p-tabPanel
+					header="{{testimonies}}" leftIcon="fa fa-newspaper-o">
+				<app-admin-testimony></app-admin-testimony> </p-tabPanel> </p-tabView>
+
+
+			</div>
+			<!--//content-wrapper-->
+		</div>
+		<!--//page-row-->
+	</div>
+	<!--//page-content-->
+</div>
+<!--//page-->

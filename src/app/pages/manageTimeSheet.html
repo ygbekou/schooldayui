@@ -1,0 +1,74 @@
+<p-growl [(value)]="msgs"></p-growl>
+<p-dataTable [value]="timeSheetEntryGroups" selectionMode="single"
+	expandableRows="true" rowExpandMode="single" [paginator]="true"
+	[rows]="15" [(selection)]="timeSheetEntryGroup" [responsive]="true"
+	(onRowExpand)="getTimeSheetEntryDetails($event)"> <p-column
+	expander="true" styleClass="col-icon" [style]="{'width':'5%'}"></p-column>
+<p-column field="timeSheetPeriod.startDate" header="Date Debut"
+	[style]="{'width':'25%'}"> <ng-template let-col
+	let-data="rowData" let-ri="rowIndex" pTemplate="body"> <span>{{data.timeSheetPeriod.startDate
+	| date:'dd/MM/yy'}}</span> </ng-template> </p-column> <p-column field="timeSheetPeriod.endDate"
+	header="Date Fin" [style]="{'width':'25%'}"> <ng-template
+	let-col let-data="rowData" let-ri="rowIndex" pTemplate="body">
+<span>{{data.timeSheetPeriod.endDate | date:'dd/MM/yy'}}</span> </ng-template> </p-column> <p-column
+	field="hours" header="Heures" [style]="{'width':'20%'}"></p-column> <p-column
+	field="timeSheetStatus.name" header="Etat" [style]="{'width':'20%'}"></p-column>
+<p-column field="approver.lastName" header="Approver Par"
+	[style]="{'width':'20%'}"> <ng-template let-col
+	let-data="rowData" let-ri="rowIndex" pTemplate="body"> <span>{{data.approver.lastName}}
+	{{data.approver.firstName}} {{data.approver.middleName}}</span> </ng-template> </p-column> <ng-template
+	let-timeSheetEntryGroup pTemplate="rowexpansion"> <p-dataTable
+	[value]="timeSheetEntryGroup.timeSheetEntries" rowGroupMode="subheader"
+	groupField="timeSheetEntryType.name" [responsive]="true">
+<ng-template pTemplate="rowgroupheader" let-rowData>{{rowData.timeSheetEntryType.name}}</ng-template>
+<p-column styleClass="col-icon" [style]="{'width':'10%'}"> <ng-template
+	let-col let-data="rowData" pTemplate type="body">
+{{data.timeSheetHourType.name}} </ng-template> </p-column> <p-column
+	*ngFor="let col of timeSheetEntryGroup.cols" [field]="col.field "
+	[header]="col.header | date:'dd/MM/yy'" [style]="col.style"
+	[sortable]="col.sortable" [filter]="col.filter"> <ng-template
+	let-col let-data="rowData" pTemplate type="body"> <p-inputMask
+	size="10" mask="9"
+	(change)="calculateTotalHours(data); calculateAllTotalHours()"
+	[style]="{'align':'right'}"
+	[disabled]="timeSheetEntryGroup.timeSheetStatus.id == 2"
+	[(ngModel)]="data[ col.field ].hours"> </p-inputMask> </ng-template> </p-column> <p-column
+	styleClass="col-icon" [style]="{'width':'10%'}" header="Total">
+<ng-template let-col let-data="rowData" pTemplate type="body">
+{{data.totalHours}} </ng-template> </p-column> </p-dataTable> <br />
+<div class="ui-grid-row">
+	<div class="ui-grid-col-2">
+		<label i18n="@@comments" for="comments">Commentaire</label>
+	</div>
+	<div class="ui-grid-col-8">
+		<textarea pInputTextarea id="comments" [rows]="15" [cols]="60"
+			[(ngModel)]="timeSheetEntryGroup.comments"> </textarea>
+	</div>
+</div>
+
+<br />
+<br />
+<div class="ui-grid-row">
+	<div class="ui-grid-col-2">
+		<button pButton type="button"
+			[disabled]="timeSheetEntryGroup.timeSheetStatus.id == 2 || saving"
+			(click)="save(timeSheetEntryGroup)" label="{{SAVE_LABEL}}">
+		</button>
+	</div>
+	<!--
+			<div class="ui-grid-col-1">
+				<button pButton type="button" [disabled]="timeSheetEntryGroup.timeSheetStatus.id == 2"
+						(click)="delete(timeSheetEntryGroup)" label="{{DELETE_LABEL}}">
+				</button>
+			</div>
+			-->
+	<div class="ui-grid-col-2">
+		<button pButton type="button" *ngIf="user.role == 1"
+			(click)="approve(timeSheetEntryGroup)" label="{{APPROVE_LABEL}}"></button>
+	</div>
+	<div class="ui-grid-col-2">
+		<button pButton type="button" *ngIf="user.role == 1"
+			(click)="reject(timeSheetEntryGroup)" label="{{REJECT_LABEL}}"></button>
+	</div>
+</div>
+</ng-template> </p-dataTable>

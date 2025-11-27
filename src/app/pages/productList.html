@@ -1,0 +1,49 @@
+
+
+<app-search-component [user]="user" [schText]="searchText"
+	(parentSearchText)="updateText($event)" [search]="searchProductFct">
+</app-search-component>
+
+<p-dataTable [value]="products" selectionMode="single"
+	[(selection)]="selectedProduct" expandableRows="true"
+	(onRowSelect)="onRowSelect($event)"
+	(onRowExpand)="getProductCopies($event)" [paginator]="true" [rows]="15"
+	[responsive]="true"> <p-column expander="true"
+	styleClass="col-icon" [style]="{'width':'5%'}"></p-column> <p-column
+	*ngFor="let col of cols" [field]="col.field" [style]="col.style"
+	[header]="col.header" [sortable]="col.sortable" [filter]="col.filter"></p-column>
+<ng-template let-product pTemplate="rowexpansion">
+
+<div class="ui-grid ui-grid-responsive ui-fluid">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-6">
+			<div class="ui-grid-row">
+				<img class="thumb" src="assets/images/product/{{product.pic}}"
+					alt="" />
+			</div>
+			<div class="ui-grid-row" [innerHTML]="product.description"></div>
+		</div>
+		<div class="ui-grid-col-6">
+			<p-dataTable [value]="product.productCopies"
+				(onEditComplete)="saveProductCopyEvent($event)" [editable]="true">
+			<p-column field="code" header="Code" [editable]="true"></p-column> <p-column
+				field="status" header="Etat"> <ng-template let-col
+				let-productCopy="rowData" pTemplate="body"> <p-toggleButton
+				[(ngModel)]="productCopy[col.field]" onLabel="Active"
+				offLabel="Inactive" onIcon="fa fa-check-square"
+				offIcon="fa fa-square" (click)="saveProductCopy(productCopy)">
+			</p-toggleButton> </ng-template> </p-column> <p-column> <ng-template let-col
+				let-productCopy="rowData" pTemplate="body">
+			<button type="button" pButton icon="fa fa-plus" style="float: left"
+				(click)="deleteProductCopy(productCopy)" label="DELETE_LABEL"></button>
+			</ng-template> </p-column> <p-footer>
+			<div class="ui-helper-clearfix" style="width: 20%">
+				<button type="button" pButton icon="fa fa-plus" style="float: left"
+					(click)="addNew()" label="{{ADD_LABEL}}"></button>
+			</div>
+			</p-footer> </p-dataTable>
+		</div>
+	</div>
+</div>
+
+</ng-template> <p-footer> </p-footer> </p-dataTable>

@@ -1,0 +1,109 @@
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<file-uploader></file-uploader>
+
+<p-dialog header="Délibération des notes" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" 
+	[modal]="true">
+
+	<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="closeSemestreGroup">
+		<div class="ui-grid-row form-group">
+				<div class="ui-grid-col-12">
+						<div class="alert alert-primary" role="alert" style="background : #6091ba!important; color: white;">
+							Délibération d'un groupe de semestres : <br />
+							Premier groupe : S1, S3 et S5 & Deuxième groupe : S2, S4, S6 pour la Licence <br />
+							Premier groupe : S1, S3 & Deuxième groupe : S2, S4 pour le Master <br />
+						</div>
+
+				</div>
+		</div>
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-4">
+				<label i18n="@@schoolYear" for="schoolYear">Année Scolaire</label>
+			</div>
+			<div class="ui-grid-col-7">
+				<p-autoComplete [(ngModel)]="closeSemestreGroup.schoolYear"
+					(onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+					[suggestions]="schoolYearDropdown.filteredSchoolYears"
+					[dropdown]="true" id="schoolYear"
+					(completeMethod)="schoolYearDropdown.filter($event)"
+					name="schoolYear" field="year" [size]="30" required
+					placeholder="{{SCHOOLYEAR}}" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+				<div [hidden]="schoolYear.valid || schoolYear.pristine"
+					class="alert alert-danger" i18n="@@schoolYearRequired">Année
+					scolaire Requise</div>
+			</div>
+			<div class="ui-grid-col-1"></div>
+		</div>
+		<br />
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-4">
+				<label i18n="@@cycle" for="cycle">Niveau : </label>
+			</div>
+			<div class="ui-grid-col-7">
+				<p-autoComplete [(ngModel)]="closeSemestreGroup.cycle"
+					(onDropdownClick)="cycleDropdown.handleDropdownClick($event)"
+					[suggestions]="cycleDropdown.filteredCycles" [dropdown]="true"
+					id="cycle" (completeMethod)="cycleDropdown.filter($event)"
+					name="cycle" field="name" [size]="30" placeholder="{{CYCLE}}"
+					[minLength]="1" #cycle="ngModel" required></p-autoComplete>
+				<div [hidden]="cycle.valid || cycle.pristine"
+					class="alert alert-danger" i18n="@@cycleRequired">Cycle
+					Requis</div>
+			</div>
+			<div class="ui-grid-col-1"></div>
+		</div>
+
+		<br />
+
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-4">
+				<label i18n="@@semestreGroup" for="semestreGroup">Groupe de semestres : </label>
+			</div>
+			<div class="ui-grid-col-7">
+				<p-autoComplete [(ngModel)]="closeSemestreGroup.semestreGroup"
+					(onDropdownClick)="semestreGroupDropdown.handleDropdownClick($event)"
+					[suggestions]="semestreGroupDropdown.filteredSemestreGroups"
+					[dropdown]="true" id="semestreGroup"
+					(completeMethod)="semestreGroupDropdown.filter($event)" name="semestreGroup"
+					field="name" [size]="30" placeholder="{{SEMESTRE_GROUP}}" [minLength]="1"
+					#semestreGroup="ngModel" required></p-autoComplete>
+				<div [hidden]="semestreGroup.valid || semestreGroup.pristine"
+					class="alert alert-danger" i18n="@@semestreGroupRequired">Groupe de semestres
+					Requis</div>
+			</div>
+			<div class="ui-grid-col-1"></div>
+		</div>
+	</div>
+
+	<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+	<div *ngIf="msg" class="alert alert-success">{{msg}}</div>
+
+	<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+			<button type="button" pButton icon="fa fa-check"
+				[disabled]="disabled" (click)="closeSemestreGroupByCycleAndSchoolyear()" [label]="submitButtonText">
+			</button>
+		</div>
+	</footer>
+</p-dialog>
+
+
+
+<p-dataTable [value]="closeSemestreGroups" selectionMode="single" [(selection)]="selectedCloseSemestreGroup" expandableRows="true"
+  (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15"
+  [responsive]="true">
+  <p-column expander="true" styleClass="col-icon" [style]="{'width':'7%'}"></p-column>
+  <p-column *ngFor="let col of cols" [style]="col.style" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [filter]="col.filter">
+	<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body"> <span class="col-date">{{data[col.field]
+		| date:'dd/MM/yyyy'}}</span> </ng-template>
+  </p-column>
+  
+  <ng-template pTemplate="paginatorLeft">
+    <button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"></button>
+  </ng-template>
+  <ng-template pTemplate="paginatorRight">
+    <button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+  </ng-template>
+</p-dataTable>

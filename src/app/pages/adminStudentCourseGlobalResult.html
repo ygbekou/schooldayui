@@ -1,0 +1,107 @@
+<form (ngSubmit)="getStudentCourseGlobalResult()">
+
+    <div class="ui-grid ui-grid-responsive ui-fluid" style="margin: 10px;">
+
+        <div class="ui-grid-row">
+
+            <div class="ui-grid-col-3">
+                <p-autoComplete [(ngModel)]="request.schoolYear"
+                    (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+                    [suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear"
+                    (completeMethod)="schoolYearDropdown.filter($event)" name="schoolYear" field="year" [size]="30"
+                    placeholder="Année" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+            </div>
+
+             <div class="ui-grid-col-1"></div>
+
+            <div class="ui-grid-col-3" style="margin: 2px;">
+                <p-autoComplete [(ngModel)]="request.classe"
+                    (onDropdownClick)="classDropdown.handleDropdownClick($event)"
+                    [suggestions]="classDropdown.filteredClasses" [dropdown]="true" id="classe"
+                    (completeMethod)="classDropdown.filter($event)" name="classe" field="name" [size]="30"
+                    placeholder="Classe" [minLength]="1" #classe="ngModel"></p-autoComplete>
+            </div>
+            <div class="ui-grid-col-1"></div>
+
+
+           
+
+            <div class="ui-grid-col-2" style="width: 200px; margin: 2px;">
+                <button type="submit" pButton icon="fa fa-search" label="Go"
+                    style="margin-top: 0px; height: 30px;"></button>
+
+            </div>
+        </div>
+
+    </div>
+
+</form>
+
+
+<p-dataTable [value]="stGlResults" selectionMode="single"
+	expandableRows="true" rowExpandMode="single" [paginator]="true"
+	[rows]="15" [(selection)]="stGlResult" [responsive]="true"
+	(onRowExpand)="getCoursesNv($event)"> <p-column
+	expander="true" styleClass="col-icon" [style]="{'width':'5%'}"></p-column>
+
+	<p-column *ngFor="let col of cols" [field]="col.field" [style]="col.style"
+	[header]="col.header" [sortable]="col.sortable" [filter]="col.filter">
+	</p-column>
+
+    <p-column field="etat" header="Etat" [style]="{'width':'8%'}" >
+			<ng-template   pTemplate type="body" let-data="rowData">
+			 
+				<div class="label-main" *ngIf="data.status">
+				  <label class="label label-success" style="padding: 5px; border-radius: 5px;">{{data.etat}}</label>
+				</div>
+				<div class="label-main" *ngIf="!data.status">
+				  <label class="label label-warning" style="padding: 5px; border-radius: 5px;">{{data.etat}}</label>
+				</div>
+			</ng-template>
+		</p-column>
+	
+	
+	<ng-template let-stGlResult pTemplate="rowexpansion"> 
+		<div class="ui-grid ui-grid-responsive ui-fluid" style="margin: 20px;">
+			
+	<p-dataTable [value]="coursesNv" [responsive]="true" [rows]="15"  [paginator]="true">
+		<p-column header="N." [style]="{'width':'2%'}">	
+			<ng-template let-i="rowIndex" pTemplate="body">
+				{{i+1}}
+			</ng-template>
+		</p-column>  
+		<p-column
+			field="code" header="Code" [style]="{'width':'7%'}">
+		</p-column>
+		<p-column
+			field="name" header="Cours" [style]="{'width':'17%'}">
+		</p-column>
+		<p-column
+			field="termName" header="Trim." [style]="{'width':'2%'}">
+		</p-column>
+		<p-column
+			field="year" header="Année" [style]="{'width':'8%'}">
+		</p-column>
+		
+        <p-column field="courseStatus" header="Status" [style]="{'width':'6%'}" >
+			<ng-template  pTemplate type="body" let-data="rowData">
+			 
+				<div class="label-main" *ngIf="data.status == 1">
+				  <label class="label label-primary" style="padding: 5px; border-radius: 5px;">{{data.courseStatus}}</label>
+				</div>
+				<div class="label-main"  *ngIf="data.status != 1">
+				  <label class="label label-danger" style="padding: 5px; border-radius: 5px;">{{data.courseStatus}}</label>
+				</div>
+			</ng-template>
+		</p-column>
+		<p-column
+			field="sessionTypeDesc" header="Derniére Session" [style]="{'width':'6%'}">
+		</p-column>
+		
+		
+	</p-dataTable>
+</div> 
+</ng-template> 
+
+
+</p-dataTable>

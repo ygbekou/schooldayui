@@ -1,0 +1,64 @@
+<form (ngSubmit)="getCountryStats()">
+    <div class="ui-grid ui-grid-responsive ui-fluid" style="margin: 10px;">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-3">
+                <p-autoComplete [(ngModel)]="schoolYear"
+                    (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+                    [suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear"
+                    (completeMethod)="schoolYearDropdown.filter($event)" name="schoolYear" field="year" [size]="30"
+                    placeholder="Année" [minLength]="1">
+                </p-autoComplete>
+            </div>
+
+            <div class="ui-grid-col-1"></div>
+
+            <div class="ui-grid-col-2" style="width: 200px; margin: 2px;">
+                <button type="submit" pButton icon="fa fa-search" label="Go" style="margin-top: 0px; height: 30px;">
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<p-dataTable [value]="countryStats.listCountryInfos" expandableRows="true" rowExpandMode="single" [paginator]="true"
+    [rows]="15" [responsive]="true" (onRowExpand)="get($event)">
+
+    <p-column expander="true" styleClass="col-icon" [style]="{ 'width': '5%' }"></p-column>
+
+    <p-column *ngFor="let col of cols" [field]="col.field" [style]="col.style" [header]="col.header"
+        [sortable]="col.sortable" [filter]="col.filter">
+
+        <ng-template let-row="rowData" pTemplate="body">
+            <span *ngIf="col.field === 'pourcentageFilles' || col.field === 'pourcentageGarcons' || col.field === 'pourcentageTotal'">
+                {{ row[col.field] | number:'1.2-2' }} %
+            </span>
+            <span *ngIf="col.field !== 'pourcentageFilles' && col.field !== 'pourcentageGarcons' && col.field !== 'pourcentageTotal'">
+                {{ row[col.field] }}
+            </span>
+        </ng-template>
+    </p-column>
+
+
+    <ng-template pTemplate="rowexpansion" let-country>
+        <div class="ui-grid ui-grid-responsive ui-fluid" style="margin: 20px;">
+            <p><strong>Détails du pays :</strong> {{ country.pays }}</p>
+        </div>
+    </ng-template>
+
+    <p-footer>
+        <table style="width:100%; font-weight:bold; background:rgb(255, 128, 0); border: 2px solid white;">
+            <tr>
+                <td style="text-align:center; width:15%;">Total </td>
+                <td style="text-align:center; width:10%;">{{ countryStats.totauxInfos?.totalEtudiants || 0 }}</td>
+                <td style="text-align:center; width:10%;">{{ countryStats.totauxInfos?.totalFilles || 0 }}</td>
+                <td style="text-align:center; width:10%;">{{ countryStats.totauxInfos?.totalGarcons || 0 }}</td>
+                <td style="text-align:center; width:10%;">{{ countryStats.totauxInfos?.totalPourcentageEtudiants|
+                    number:'1.2-2' }}%</td>
+                <td style="text-align:center; width:10%;">{{ countryStats.totauxInfos?.totalPourcentageFilles |
+                    number:'1.2-2' }}%</td>
+                <td style="text-align:center; width:10%;">{{ countryStats.totauxInfos?.totalPourcentageGarcons |
+                    number:'1.2-2' }}%</td>
+            </tr>
+        </table>
+    </p-footer>
+</p-dataTable>

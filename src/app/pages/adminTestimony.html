@@ -1,0 +1,106 @@
+
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="450">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="testimony">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@teacher" for="teacher">Professeur</label>
+		</div>
+		<div class="ui-grid-col-7">
+			<p-autoComplete [(ngModel)]="testimony.teacher"
+				(onDropdownClick)="teacherDropdown.handleDropdownClick($event)"
+				[suggestions]="teacherDropdown.filteredTeachers" [dropdown]="true"
+				id="teacher" (completeMethod)="teacherDropdown.filter($event)"
+				name="teacher" field="name" [size]="30" placeholder="{{PROF}}"
+				[minLength]="1" #teacher="ngModel"></p-autoComplete>
+			<div [hidden]="teacher.valid || teacher.pristine"
+				class="alert alert-danger" i18n="@@teacherRequired">Professeur
+				Requis</div>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+	<div *ngIf="role == 'admin'" class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@date" for="testimonyDate">Date</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="testimonyDate" [showIcon]="false"
+				[(ngModel)]="testimony.testimonyDate"></p-calendar>
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@comments" for="comments">Commentaire</label>
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-12">
+			<p-editor [(ngModel)]="testimony.comments"
+				[style]="{'height':'150px'}"></p-editor>
+		</div>
+	</div>
+	<div *ngIf="role == 'admin'" class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@active" for="status">Active</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-checkbox [(ngModel)]="testimony.status" binary="true" id="status"></p-checkbox>
+		</div>
+	</div>
+
+	<div *ngIf="role == 'admin'" class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@rank" for="rank">Rank</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="rank" [(ngModel)]="testimony.rank" /> <input
+				*ngIf="testimony.user" pInputText id="userId"
+				[(ngModel)]="testimony.user.id" type="hidden" /> <input
+				*ngIf="testimony.approvedBy" pInputText id="approvedById"
+				[(ngModel)]="testimony.approvedBy.id" type="hidden" />
+		</div>
+	</div>
+</div>
+<br />
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+
+<p-dataTable [value]="testimonies" selectionMode="single"
+	[(selection)]="selectedTestimony" expandableRows="true"
+	(onRowSelect)="onRowSelect($event)" [paginator]="true" rows="5"
+	[responsive]="true"> <p-column expander="true"
+	styleClass="col-icon" [style]="{'width':'5%'}"></p-column> <p-column
+	*ngFor="let col of cols" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [filter]="col.filter"> <ng-template
+	*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+	type="body"> <span class="col-date">{{ data[
+	col.field ] | date:'dd/MM/yy' }}</span> </ng-template> </p-column> <ng-template let-testimony
+	pTemplate="rowexpansion">
+<div class="ui-grid ui-grid-responsive ui-fluid"
+	style="font-size: 16px; padding: 20px">
+	<div class="ui-grid-row">
+		<div [innerHTML]="testimony.comments" class="ui-grid-col-12"></div>
+	</div>
+
+</div>
+</ng-template> <ng-template pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>
+<!--//page-->
+<!-- Initialize Quill editor -->
+<script>
+	var quill = new Quill('#editor', {
+		theme : 'bubble'
+	});
+</script>

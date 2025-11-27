@@ -1,0 +1,108 @@
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="700">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="courseTopic">
+	<div>
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-2">
+				<label i18n="@@subject" for="subject">Matiere</label>
+			</div>
+			<div class="ui-grid-col-9">
+				{{selectedSubjectLevel.subjectName}}</div>
+			<div class="ui-grid-col-1"></div>
+		</div>
+
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-2">
+				<label i18n="@@level" for="level">Niveau</label>
+			</div>
+			<div class="ui-grid-col-9">{{selectedSubjectLevel.levelName}}</div>
+			<div class="ui-grid-col-1"></div>
+		</div>
+
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-4">
+				<label i18n="@@topic" for="topic">Sujet</label>
+			</div>
+		</div>
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-12">
+				<p-editor [(ngModel)]="courseTopic.description"
+					[style]="{'height':'120px'}"></p-editor>
+			</div>
+		</div>
+
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-2">
+				<label i18n="@@rank" for="level">Rang</label>
+			</div>
+			<div class="ui-grid-col-9">
+				<input pInputText id="rank" [(ngModel)]="courseTopic.rank" />
+			</div>
+			<div class="ui-grid-col-1"></div>
+		</div>
+
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-4">
+				<label i18n="@@active" for="status">Active</label>
+			</div>
+			<div class="ui-grid-col-8">
+				<p-checkbox [(ngModel)]="courseTopic.status" binary="true"
+					id="status"></p-checkbox>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix" *ngIf="user.userAccess != 2">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+
+<p-dataTable [value]="subjectLevels" selectionMode="single"
+	[(selection)]="selectedSubjectLevel" expandableRows="true"
+	(onRowExpand)="getCourseTopics($event)" [paginator]="true" [rows]="15"
+	[responsive]="true">
+	<p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}">
+
+	</p-column>
+	<p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [style]="col.style" [filter]="col.filter">
+		<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+			<span class="col-date">{{ data[ col.field ] | date:'dd/MM/yy' }}</span>
+		</ng-template>
+	</p-column>
+	<ng-template let-subjectLevel pTemplate="rowexpansion">
+		<p-dataTable [value]="subjectLevel.courseTopics" [responsive]="true" [paginator]="true" [rows]="15"
+			[(selection)]="selectedCourseTopic" (onRowSelect)="onRowSelect($event)" selectionMode="single">
+			<p-column field="description" header="Sujet" [style]="{'width':'80%'}">
+				<ng-template let-col let-courseTopic="rowData" pTemplate type="body">
+					<div [innerHTML]="courseTopic[ col.field ]"></div>
+				</ng-template>
+			</p-column>
+			<p-column field="rank" header="Rang">
+
+			</p-column>
+			<p-column field="status" header="Active?">
+
+			</p-column>
+			
+			<ng-template pTemplate="paginatorLeft">
+				<button type="button" (click)="showDialogToAdd()" pButton *ngIf="user.userAccess != 2"
+					icon="fa fa-plus" label="Ajouter">
+				</button>
+			</ng-template>
+			<ng-template pTemplate="paginatorRight">
+				<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+			</ng-template>
+		</p-dataTable>
+	</ng-template>
+</p-dataTable>

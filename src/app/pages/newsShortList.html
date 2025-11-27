@@ -1,0 +1,55 @@
+
+<section class="news">
+	<h1 class="section-heading text-highlight">
+		<span i18n="@@news" class="line">Actualités</span>
+	</h1>
+	<div class="carousel-controls">
+		<a class="prev" href="#news-carousel" data-slide="prev"><i
+			class="fa fa-caret-left"></i></a> <a class="next" href="#news-carousel"
+			data-slide="next"><i class="fa fa-caret-right"></i></a>
+	</div>
+	<!--//carousel-controls-->
+	<div class="section-content clearfix">
+		<div id="news-carousel" class="news-carousel carousel slide">
+			<div class="carousel-inner">
+				<div class="item active">
+					<div class="col-md-4 news-item" *ngFor="let news of first3">
+						<h2 class="title">
+							<a [routerLink]="['/newsSingle']"
+							[queryParams]="{ id:news.id}" (click)="setCurrentNews(news)">{{news.title}}</a>
+						</h2>
+						<img class="thumb" src="assets/images/news/{{news.pic}}" alt="" />
+						<div [innerHTML]="news.shortMessage"></div>
+						<a class="read-more" [routerLink]="['/newsSingle']"
+						[queryParams]="{ id:news.id}" (click)="setCurrentNews(news)"
+							(click)="setCurrentNews(news)" i18n="@@readMore">Lire la
+							suite<i class="fa fa-chevron-right"></i>
+						</a>
+					</div>
+				</div>
+				<!--//item-->
+				<div class="item" *ngFor="let newsList of threePlus">
+					<div class="col-md-4 news-item" *ngFor="let news of newsList">
+						<h2 class="title">
+							<a [routerLink]="['/newsSingle']"
+							[queryParams]="{ id:news.id}" (click)="setCurrentNews(news)">{{news.title}}</a>
+						</h2>
+						<img class="thumb" src="assets/images/news/{{news.pic}}" alt="" />
+						<div [innerHTML]="news.shortMessage"></div>
+						<a class="read-more" [routerLink]="['/newsSingle']"
+						[queryParams]="{ id:news.id}" (click)="setCurrentNews(news)"
+							(click)="setCurrentNews(news)" i18n="@@readMore">Lire la
+							suite<i class="fa fa-chevron-right"></i>
+						</a>
+					</div>
+				</div>
+				<!--//item-->
+
+			</div>
+			<!--//carousel-inner-->
+		</div>
+		<!--//news-carousel-->
+	</div>
+	<!--//section-content-->
+</section>
+<!--//news-->

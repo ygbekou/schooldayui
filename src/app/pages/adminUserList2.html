@@ -1,0 +1,74 @@
+<form (ngSubmit)="search()" #searchForm="ngForm">
+	<div class="ui-grid ui-grid-responsive ui-fluid">
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-10">
+				<input type="text" pInputText class="form-control" id="searchT"
+					required [(ngModel)]="searchText" placeholder="{{ENTER_NAME}}"
+					name="searchT" #searchT="ngModel">
+			</div>
+			<div class="ui-grid-col-2">
+				<button type="button" pButton icon="fa fa-search" (click)="search()"
+					label="Go" style="margin-top: 0px; height: 35px;"></button>
+			</div>
+		</div>
+
+	</div>
+
+</form>
+
+<p-dataTable [value]="users" selectionMode="single"
+	[(selection)]="selectedUser" expandableRows="true"
+	(onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15"
+	[responsive]="true"> <p-column *ngFor="let col of cols"
+	[field]="col.field" [header]="col.header" [sortable]="col.sortable"
+	[filter]="col.filter"> </p-column> <footer>
+	<div class="ui-helper-clearfix" style="width: 100%"></div>
+</footer> </p-dataTable>
+
+<br />
+<br />
+
+<p-dataTable [value]="childUsers" selectionMode="single"
+	[(selection)]="selectedUser" expandableRows="true" [responsive]="true">
+<header i18n="@@listOfChildren">Liste des enfants</header> <p-column
+	*ngFor="let col of childCols" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [filter]="col.filter"> </p-column> <p-column
+	field="id" header="actions"> <ng-template let-data="rowData"
+	let-rowIndex="rowIndex" pTemplate type="body">
+<button type="button" pButton icon="fa fa-minus" style="float: left" *ngIf="currentUser.userAccess != 2"
+	(click)="cancel(data)" label="{{DELETE_LABEL}}"></button>
+</ng-template> </p-column> <footer>
+	<div class="ui-helper-clearfix" style="width: 100%"></div>
+</footer> </p-dataTable>
+
+
+<p-dialog header="{{ASSIGN_PARENTS}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="450">
+
+<div class="form-group">
+	<label i18n="@@parentType" for="status">Type de parent:</label>
+
+	<div class="ui-g-12">
+		<p-radioButton id="parent" name="parent" value="mother"
+			label="{{MOTHER}}" [(ngModel)]="parentAssignmentView.parentType"></p-radioButton>
+		<p-radioButton id="parent" name="parent" value="father"
+			label="{{FATHER}}" [(ngModel)]="parentAssignmentView.parentType"></p-radioButton>
+		<p-radioButton id="parent" name="parent" value="tutor"
+			label="{{TUTOR}}" [(ngModel)]="parentAssignmentView.parentType"></p-radioButton>
+
+		<input type="hidden" id="studentId"
+			[(ngModel)]="parentAssignmentView.studentUserId" /> <input
+			type="hidden" id="parentId"
+			[(ngModel)]="parentAssignmentView.parentUserId" />
+	</div>
+</div>
+<br />
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-check"
+			(click)="assignParent()" label="{{ASSIGN}}"></button>
+	</div>
+</footer> </p-dialog>

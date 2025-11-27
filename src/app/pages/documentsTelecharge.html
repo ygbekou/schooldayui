@@ -1,0 +1,233 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 class="heading-title pull-left">Téléchargement des brochures de nos formations  <span style="position: relative; left: 4%; top: 10px;">
+				<iframe
+						src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2FdocumentsTelecharge&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId"
+						width="450" height="35" style="border: none; overflow: hidden"
+						scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+			</span></h1>
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li class="breadcrumbs-label">Vous etes ici:</li>
+				<li><a href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+				<li class="current">Téléchargement de documents</li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<div class="row page-row">
+			<div class="faq-wrapper col-md-9 col-sm-8">
+				<div class="panel-group" id="accordion">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									class="collapsed" aria-expanded="false"
+									href="#collapse-calendrier"> Catalogue et Calendrier de nos formations </a>
+							</h4>
+						</div>
+						<!--//pane-heading-->
+						<div id="collapse-calendrier" class="panel-collapse collapse">
+							<div class="panel-body" style="padding-left: 10px;">
+
+								<a style="color: #333;"
+									href="http://www.ipnetuniversity.com/docs/calendrier.pdf">
+									<i class="fa fa-cloud-download" style="padding: 10px;"></i>Calendrier
+									des formations
+								</a>
+							</div>
+							<!--//panel-body-->
+						</div>
+						<!--//panel-colapse-->
+					</div>
+
+					<div class="panel panel-default" *ngFor="let cycle of cycles">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									class="collapsed" aria-expanded="false"
+									href="#collapse-brochureslicence{{cycle.id}}"> Brochures {{cycle.name}}
+									 </a>
+							</h4>
+						</div>
+						<!--//pane-heading-->
+						<div id="collapse-brochureslicence{{cycle.id}}"
+							class="panel-collapse collapse">
+							<div class="panel-body">
+								<a style="color: #333; display: block;"
+									href="{{'docs/flyer_'+college.id+'.pdf'}}" target="_blank"  *ngFor="let college of cycle.colleges"><i
+									class="fa fa-cloud-download" style="padding: 10px;"></i>{{college.name}}</a>
+									<br/>
+							</div>
+							<!--//panel-body-->
+						</div>
+						<!--//panel-colapse-->
+					</div>
+
+					<!--<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									class="collapsed" aria-expanded="false"
+									href="#collapse-filierepro">Brochures Certificats Professionnels </a>
+							</h4>
+						</div>
+						<div id="collapse-filierepro" class="panel-collapse collapse">
+							<div class="panel-body">
+
+								<a style="color: #333;"
+									href="docs/flyer_10.pdf" target="_blank"><i
+									class="fa fa-cloud-download" style="padding: 10px;"></i>Certificat
+									en Administration Réseaux, Systèmes & Sécurité (en 15 mois)
+								</a> <br /> <a style="color: #333;"
+									href="docs/flyer_41.pdf" target="_blank"><i
+									class="fa fa-cloud-download" style="padding: 10px;"></i>Certificat Maintenance Réseaux,
+									 Microinformatique, ToIP & Vidéosurveillance (15 mois) </a> 
+									 <br /> <a
+									style="color: #333;"
+									href="docs/flyer_55.pdf" target="_blank"><i
+									class="fa fa-cloud-download" style="padding: 10px;"></i>Certificat Spécialisé
+									 Gestion de Projet (12 mois) </a>
+									  <br /> <a style="color: #333;"
+									href="docs/flyer_54.pdf" target="_blank"><i
+									class="fa fa-cloud-download" style="padding: 10px;"></i>Certificat Spécialisé 
+									Gestion de Projet TIC (6 mois) </a>
+									 <br /> <a
+									style="color: #333;"
+									href="docs/flyer_57.pdf" target="_blank"><i
+									class="fa fa-cloud-download" style="padding: 10px;"></i>Certificat Infographie, 
+									Multimédia et Digital Marketing (12 mois) </a>
+
+									<br/>
+									<a
+									style="color: #333;"
+									href="" target="_blank"><i
+									class="fa fa-cloud-download" style="padding: 10px;"></i>
+									CyberSecurity Operator (12 mois) </a>
+
+									<br/>
+
+									<a
+									style="color: #333;"
+									href="" target="_blank"><i
+									class="fa fa-cloud-download" style="padding: 10px;"></i>
+									Technicien Logiciel – Application Mobile (18 mois)</a>
+
+
+							</div>
+						</div>
+					</div>-->
+
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									class="collapsed" aria-expanded="false"
+									href="#collapse-postergeant"> Posters géants sur les
+									formations en informatique </a>
+							</h4>
+						</div>
+						<!--//pane-heading-->
+						<div id="collapse-postergeant" class="panel-collapse collapse">
+							<div class="panel-body">
+
+								    <a
+									style="color: #333;"
+									href="docs/FILIERES_FORMATION_IPNET.png" target="_blank"><i
+									class="fa fa-cloud-download" style="padding: 10px;"></i>Poster
+									des filières de formations à IPNET INSTITUTE OF TECHNOLOGY</a> <br /> <a
+									style="color: #333;"
+									href="docs/NOS_CERTIFICATS_LICENCES_EN_COURS_DU_SOIR.png" target="_blank"><i
+									class="fa fa-cloud-download" style="padding: 10px;"></i>
+									Nos Certificats et Licences cours du soir</a> <br /> <a
+									style="color: #333;"
+									href="docs/COMPTIA_FILIERES_DE_CERTIFICATIONS.jpg" target="_blank"><i
+									class="fa fa-cloud-download" style="padding: 10px;"></i>Poster
+									des Certifications CompTIA</a> <br /> <a 
+									style="color: #333;"
+									href="docs/BRANCHES_INFORMATIQUES_IPNET_2020.jpg" target="_blank"><i
+									class="fa fa-cloud-download" style="padding: 10px;"></i>Poster
+									des branches informatiques dans les
+									universités </a>
+							</div>
+							<!--//panel-body-->
+						</div>
+						<!--//panel-colapse-->
+					</div>
+
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									class="collapsed" aria-expanded="false"
+									href="#collapse-presentationpower"> Présentations
+									Powerpoint sur les métiers porteurs en informatique </a>
+							</h4>
+						</div>
+						<!--//pane-heading-->
+						<div id="collapse-presentationpower"
+							class="panel-collapse collapse">
+							<div class="panel-body">
+
+								<a style="color: #333;"
+									href="http://www.ipnetuniversity.com/docs/IPNET_Metiers_Porteurs_Pour_Bacheliers.pdf" target="_blank"><i
+									class="fa fa-cloud-download" style="padding: 10px;"></i>Pour
+									bacheliers</a> <br> <a style="color: #333;"
+									href="http://www.ipnetuniversity.com/docs/IPNET_Metiers_Porteurs_Pour_Diplomes.pdf" target="_blank"><i
+									class="fa fa-cloud-download" style="padding: 10px;"></i>Pour
+									cadres diplômés, en informatique ou non</a> <br> <a
+									style="color: #333;"
+									href="http://www.ipnetuniversity.com/docs/informatique.pdf" target="_blank"><i
+									class="fa fa-cloud-download" style="padding: 10px;"></i>Notre
+									livre d’orientation pour ceux désirent faire carrière en
+									informatique</a> <br> <!--//<a
+									style="color: #333;"
+									href="#" target="_blank"><i
+									class="fa fa-cloud-download" style="padding: 10px;"></i>Livret
+									Informatique pour Collegiens, Lyceens et Audidactes </a> <br> <a
+									style="color: #333;"
+									href="#" target="_blank"><i
+									class="fa fa-cloud-download" style="padding: 10px;"></i>Livret
+									Informatique, Metiers Porteurs</a>-->
+
+
+							</div>
+							<!--//panel-body-->
+						</div>
+						<!--//panel-colapse-->
+					</div>
+
+
+
+				</div>
+
+				<!--//panel-group-->
+			</div>
+			<!--//faq-wrapper-->
+			<!--//news-wrapper-->
+			<aside class="page-sidebar  col-md-3  col-sm-4   col-xs-12">
+				<section class="widget has-divider">
+					<app-one-video></app-one-video>
+				</section>
+				<section class="widget has-divider">
+					<app-prospectus></app-prospectus>
+				</section>
+				<!--//widget-->
+				<section class="widget has-divider">
+					<app-contact-short></app-contact-short>
+				</section>
+			</aside>
+		</div>
+		<!--//page-row-->
+		<iframe
+				src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2FdocumentsTelecharge&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId"
+				width="450" height="35" style="border: none; overflow: hidden"
+				scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+	</div>
+	<!--//page-content-->
+
+</div>
+<!--//page-->
+

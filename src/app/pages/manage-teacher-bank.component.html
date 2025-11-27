@@ -1,0 +1,25 @@
+<form  #teacherInfoForm="ngForm">
+  <div class="form-group">
+    <label><span i18n="@@matricule">Matricule:</span>
+      {{teacher.matricule}} </label>
+  </div>
+
+  <div class="form-group">
+		<label i18n="@@numPieceIdentite" for="numPieceIdentite">N° Compte</label> <input
+			type="text" pInputText class="form-control" id="numPieceIdentite"
+			 name="numPieceIdentite">
+	</div>
+
+  <div class="form-group">
+    <div class="ui-grid-col-12">
+      <label i18n="@@bank" for="bank">Banque : </label>
+    </div>
+    <p-autoComplete [(ngModel)]="contractBank.bank" (onDropdownClick)="bankDropdown.handleDropdownClick($event)"
+      [suggestions]="bankDropdown.filteredBanks" [dropdown]="true" id="bank"
+      (completeMethod)="bankDropdown.filter($event)" name="bank" field="name"
+        placeholder="Choisissez la banque de l'employé" [minLength]="1" [size]="30" required></p-autoComplete>
+  </div>
+
+  <button pButton label="{{SAVE_LABEL}}"></button>
+  
+</form>

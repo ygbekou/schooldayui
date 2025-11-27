@@ -1,0 +1,196 @@
+<p-growl [(value)]="msgs"></p-growl>
+
+<div *ngIf="loggedInUser.userAccess != 2 ">
+
+	<div class="ui-grid-row">
+	<div class="ui-grid-col-4">
+		<button type="button" class="btn btn-primary">
+			<span class="badge badge-light">*</span>Enregistrer un nouveau cours
+		</button>
+	</div>
+	<div class="ui-grid-col-4">
+		<p-autoComplete [(ngModel)]="theSchoolYear" (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+			[suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear"
+			(completeMethod)="schoolYearDropdown.filter($event)" name="schoolYear" field="year" [size]="30"
+			placeholder="{{SCHOOLYEAR}}" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+	</div>
+
+	<div class="ui-grid-col-4">
+		<p-autoComplete [(ngModel)]="theTerm" (onDropdownClick)="termDropdown.handleDropdownClick($event)"
+			[suggestions]="termDropdown.filteredTerms" [dropdown]="true" id="term"
+			(completeMethod)="termDropdown.filter($event)" name="term" field="name" [size]="30" placeholder="{{TERM}}"
+			[minLength]="1" #term="ngModel"></p-autoComplete>
+	</div>
+</div>
+
+<form (ngSubmit)="search()" #searchForm="ngForm">
+	<div class="ui-grid ui-grid-responsive ui-fluid">
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-10">
+				<input type="text" pInputText class="form-control" id="searchTT" required [(ngModel)]="searchText"
+					placeholder="{{COURSE_SEARCH_TEXT}}" name="searchTT" #searchTT="ngModel" />
+			</div>
+			<div class="ui-grid-col-2">
+				<button type="button" pButton icon="fa fa-search" (click)="search()" label="Go"
+					style="margin-top: 0px; height: 35px"></button>
+			</div>
+		</div>
+	</div>
+</form>
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<p-dataTable [value]="courses" [paginator]="true" [rows]="15" expandableRows="true" *ngIf="courses"
+	(onRowExpand)="getCoursePreReqs($event); getTimeTables($event)" [responsive]="true">
+	<p-column expander="true" styleClass="col-icon" [style]="{'width':'3%'}"></p-column>
+	<p-column *ngFor="let col of cols" [style]="col.style" [field]="col.field" [header]="col.header"
+		[sortable]="col.sortable" [filter]="col.filter">
+		<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+			<span class="col-date">{{ data[ col.field ] | date:'dd/MM/yy' }}</span>
+		</ng-template>
+	</p-column>
+	<p-column field="id" header="actions" [style]="{'width':'10%'}">
+		<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+			<button type="button" pButton icon="fa fa-plus-circle" style="float: left" (click)="signup(data)"
+				label="Inscrire"></button>
+		</ng-template>
+	</p-column>
+	<ng-template let-cv pTemplate="rowexpansion">
+		<div class="ui-grid ui-grid-responsive ui-fluid" style="font-size: 16px; padding: 20px">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-6">
+					<strong>Enseignant:</strong> {{cv.teacher.name}}
+				</div>
+				<div class="ui-grid-col-3"><strong>Credit:</strong> {{cv.credit}}</div>
+				<div class="ui-grid-col-3">
+					<strong>Prerequis:</strong> {{cv.prereq}}
+				</div>
+			</div>
+			<br />
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-3" align="center">
+					<strong>Classe</strong> <br />
+					{{cv.classe.name}}
+				</div>
+				<div class="ui-grid-col-4" align="center">
+					<strong>Jour</strong>
+				</div>
+				<div class="ui-grid-col-5" align="center">
+					<strong>Heure</strong>
+				</div>
+			</div>
+			<div class="ui-grid-row" *ngFor="let timeTable of cv.timeTables">
+				<div class="ui-grid-col-3" align="center"></div>
+				<div class="ui-grid-col-4" align="center">
+					{{timeTable.weekdayName}}
+				</div>
+				<div class="ui-grid-col-5" align="center">
+					{{timeTable.timePeriodDescription}}
+				</div>
+			</div>
+			<div class="ui-grid-row">
+				<div [innerHTML]="cv.subject.description" class="ui-grid-col-12"></div>
+			</div>
+		</div>
+	</ng-template>
+	<p-footer></p-footer>
+</p-dataTable>
+
+</div>
+
+
+<br />
+<br />
+<button type="button" class="btn btn-primary">
+	<span class="badge badge-light">*</span>Les cours enregistres
+</button>
+<p-dataTable [value]="registeredCourses" [paginator]="true" [rows]="15" expandableRows="true" [responsive]="true"
+	*ngIf="registeredCourses" (onRowExpand)="getCourseViewPreReqs($event); getViewTimeTables($event)">
+	<p-column expander="true" styleClass="col-icon" [style]="{'width':'3%'}"></p-column>
+	<p-column *ngFor="let col of colregs" [style]="col.style" [field]="col.field" [header]="col.header"
+		[sortable]="col.sortable" [filter]="col.filter">
+		<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+			<span class="col-date">{{data[ col.field ] | date:'dd/MM/yy' }}</span>
+		</ng-template>
+	</p-column>
+
+
+	<p-column *ngIf=" loggedInUser.role==8 && loggedInUser.userAccess != 2" field="id" header="action" [style]="{'width':'12%'}">
+		<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+			<button type="button" pButton icon="fa fa-times-circle" (click)="remove(data)" label="Supprimer"></button>
+		</ng-template>
+	</p-column>
+	<p-column *ngIf=" loggedInUser.role==1||loggedInUser.role==5||loggedInUser.role==2 " field="id" header="actions"
+		[style]="{'width':'32%'}">
+		<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+			<button type="button" pButton icon="fa fa-check-circle" (click)="closeStudentCourse(data)" label="Clôturer"></button>
+			<button type="button" pButton icon="fa fa-times-circle" (click)="remove(data)" label="Supp."></button>
+			<button type="button" pButton icon="fa fa-check-circle" (click)="approve(data)" label="Approver"></button>
+			<!-- <button type="button" pButton icon="fa fa-minus-circle" (click)="abandon(data)" label="Retirer"></button> -->
+		</ng-template>
+	</p-column>
+	<!-- <p-column *ngIf=" loggedInUser.role==1||loggedInUser.role==5||loggedInUser.role==2 " field="id" header="actions"
+		[style]="{'width':'32%'}">
+		<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+			<button type="button" pButton icon="fa fa-times-circle" (click)="remove(data)" label="Supprimer"></button>
+			<button type="button" pButton icon="fa fa-check-circle" (click)="approve(data)" label="Approver"></button>
+			<button type="button" pButton icon="fa fa-minus-circle" (click)="abandon(data)" label="Retirer"></button>
+		</ng-template>
+	</p-column> -->
+	<ng-template let-cv pTemplate="rowexpansion">
+		<div class="ui-grid-row" *ngIf="loggedInUser.role==1">
+			<div class="ui-grid-col-4">
+				-
+			</div>
+			<div class="ui-grid-col-4">
+				
+				<button type="button" pButton icon="fa fa-times-circle" (click)="confirmDelete(cv)"
+					label="Suppression Forcée"></button>
+
+			</div>
+			<div class="ui-grid-col-4">
+				-
+			</div>
+		</div>
+
+		<div class="ui-grid ui-grid-responsive ui-fluid" style="font-size: 16px; padding: 20px">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-6">
+					<strong>Enseignant:</strong> {{cv.teacherName}}
+				</div>
+				<div class="ui-grid-col-3"><strong>Credit:</strong> {{cv.credit}}</div>
+				<div class="ui-grid-col-3">
+					<strong>Prerequis:</strong> {{cv.prereq}}
+				</div>
+			</div>
+			<br />
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4" align="center">
+					<strong>Classe</strong> <br />
+					{{cv.classe}}
+				</div>
+				<div class="ui-grid-col-4" align="center">
+					<strong>Jour</strong>
+				</div>
+				<div class="ui-grid-col-4" align="center">
+					<strong>Heure</strong>
+				</div>
+			</div>
+			<div class="ui-grid-row" *ngFor="let timeTable of cv.timeTables">
+				<div class="ui-grid-col-4" align="center"></div>
+				<div class="ui-grid-col-4" align="center">
+					{{timeTable.weekdayName}}
+				</div>
+				<div class="ui-grid-col-4" align="center">
+					{{timeTable.timePeriodDescription}}
+				</div>
+			</div>
+			<div class="ui-grid-row">
+				<div [innerHTML]="cv.description" class="ui-grid-col-12"></div>
+			</div>
+		</div>
+	</ng-template>
+	<p-footer></p-footer>
+</p-dataTable>
+
+<p-confirmDialog header="Confirmation" width="625"
+    [closable]="false"></p-confirmDialog>

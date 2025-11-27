@@ -1,0 +1,181 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<!--div class="row page-row">
+			<div class="col-md-8 col-sm-8"-->
+			<h1 class="heading-title pull-left">
+				Formation Programmation Python aux Lauréats Prix IPNET BAC 1 -<br /> Edition 2019
+				<span
+					style="position: relative; left: 4%; top: 10px;"> <iframe
+						src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2FlisteDesLaureatsBAC1%3Fid%3D2&width=450&layout=standard&action=like&size=large&show_faces=false&share=true&height=35&appId"
+						width="450" height="35" style="border: none; overflow: hidden"
+						scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+				</span>
+			</h1>
+				&nbsp;&nbsp;&nbsp;&nbsp;<!--a class="btn btn-theme" style="right: 4px;" target="_blank"
+										   href="assets/docs/LES_9_PILIERS_DE_NOTRE_SYSTEME_D_ENSEIGNEMENT.pdf"><i class="fa fa-download"></i>
+				Télécharger</a-->
+			<!--/div-->
+
+			<!--div class="col-md-4 col-sm-4"-->
+			<div class="breadcrumbs pull-right">
+				<ul class="breadcrumbs-list">
+
+					<li class="breadcrumbs-label">Vous etes ici:</li>
+					<li><a href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+					<li class="current">Lauréats Prix IPNET BAC 1</li>
+
+				</ul>
+			</div>
+		<!--/div>
+		</div-->
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<div class="row page-row">
+			<div class="course-wrapper col-md-8 col-sm-7">
+				<article class="course-item">
+					<p class="featured-image page-row" style="margin-bottom: 30px; !important;">
+						<img class="img-responsive"
+							src="assets/images/piliers/projets_etudiants.jpg" alt="" />
+					</p>
+					
+
+					<p>
+						Dans le but de promouvoir l’excellence dans nos Lycées & Collèges, et surtout de faire 
+						découvrir à nos jeunes élèves la programmation informatique dont on sait qu’elle stimule 
+						la créativité, IPNET a mis sur pied, depuis l’année 2013 un prix d’excellence destiné aux 
+						lauréats du BAC I des séries C et D. Les conditions d’éligibilité sont les suivantes :
+					</p>
+
+						<ul>
+							<li>
+                                Etre 1er de sa préfecture au BAC I, Séries C ou D ;
+							</li>
+							<li>
+                                Avoir obtenu une moyenne d’au moins 14/20 à l’examen du BAC I ;
+							</li>
+							<li>
+                                IPNET complète la liste en donnant des privilèges à quelques établissements.
+							</li>
+						</ul>
+
+					<p>
+						Les heureux élus suivent une formation gratuite de 5 jours en programmation.
+					</p>
+
+					<p>
+						A partir de l’édition 2020, 30% de places seront reservées aux filles et aux élèves de conditions modestes.
+					</p>
+
+					<p>
+						Pourquoi seulement les lauréats des séries C & D ?  La réponse se trouve dans cet article publié par 
+						le gouvernement Togolais (<a target="_blank" href="https://bit.ly/2Z6UpKO">https://bit.ly/2Z6UpKO</a>) : en 2017, il y avait 36.174 inscrits au BAC I 
+						dans les séries C & D au Togo, contre seulement 23. 508 en 2018 ! 
+					</p>
+
+					<p class="featured-image page-row" style="margin-bottom: 30px; !important;">
+						<!--img class="img-responsive" style="margin-top: 15px;"
+							 src="assets/images/logo_togocel_sponsor_officiel.png" alt="" /-->
+						<img class="img-responsive" style="margin-top: 15px;"
+							 src="assets/images/logo_togocel_sponsor_officiel_red.png" alt="" />
+					</p>
+
+					<h1 class="heading-title pull-left" style="margin-top: 0px; margin-bottom: 20px;">
+                        Les lauréats suivants suivront leur formation au siège de IPNET à Lomé du 26 au 30 Aout 2019
+					</h1>
+
+					<p-dataTable [value]="studentsList1" selectionMode="single"> 
+
+						<p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" 
+						 [style]="col.style">
+						<ng-template *ngIf="col.type === 'string' || col.type === undefined" 
+						let-col let-data="rowData" pTemplate type="body"> 
+						<span class="col-string">{{ data[ col.field ] }}</span> 
+						</ng-template> 
+						<ng-template *ngIf="col.type === 'text'" let-col let-data="rowData" pTemplate type="body">
+						<div [innerHTML]="data[ col.field ]"></div>
+						</ng-template> 
+						</p-column> 
+
+					 </p-dataTable>
+
+					<br />
+
+					<h1 class="heading-title pull-left" style="margin-top: 0px; margin-bottom: 20px;">
+                        Les lauréats suivants suivront leur formation au College Militaire Eyadema à Tchitchao du 26 au 30 Aout 2019 
+					</h1>
+
+					<p-dataTable [value]="studentsList" selectionMode="single"> 
+
+						<p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" 
+						 [style]="col.style">
+						<ng-template *ngIf="col.type === 'string' || col.type === undefined" 
+						let-col let-data="rowData" pTemplate type="body"> 
+						<span class="col-string">{{ data[ col.field ] }}</span> 
+						</ng-template> 
+						<ng-template *ngIf="col.type === 'text'" let-col let-data="rowData" pTemplate type="body">
+						<div [innerHTML]="data[ col.field ]"></div>
+						</ng-template> 
+						</p-column> 
+
+					 </p-dataTable>
+
+
+
+					<!--//page-row-->
+
+					<!--//page-row-->
+
+					<p class="featured-image page-row">
+						<img class="img-responsive" style="margin-top: 40px; margin-bottom: -20px; width: 100%;"
+							 src="assets/images/concours_entree_iit_2019.jpg" alt="" />
+
+					<!--
+						<img class="img-responsive" style="margin-top: 15px;"
+							 src="assets/images/competences.jpg" alt="" />
+					</p>
+					-->
+
+					<!--//tabbed-info-->
+				</article>
+				<!--//course-item-->
+			</div>
+			<!--//course-wrapper-->
+			<aside
+				class="page-sidebar  col-md-3 col-md-offset-1 col-sm-4 col-sm-offset-1">
+				<section class="widget has-divider">
+					<app-prospectus></app-prospectus>
+				</section>
+				<!--//widget-->
+				<section class="widget has-divider">
+					<app-contact-short></app-contact-short>
+				</section>
+				<!--//widget-->
+				<section class="widget has-divider">
+					<h3 class="title">Nos filières</h3>
+					<ul class="list-unstyled">
+						<li *ngFor="let aCollege of colleges"><a
+							href="#/collegeSingle" (click)="setCurrentCollege(aCollege)"><i
+								class="fa fa-book"></i> {{aCollege.name}}</a></li>
+					</ul>
+				</section>
+				<!--//widget-->
+				<section class="widget has-divider">
+					<a class="btn btn-cta" [routerLink]="['/onlineRegistration']"
+						[queryParams]="{ event:'INSCRIPTION'}"><i
+						class="fa fa-play-circle"></i>Inscription en ligne</a>
+				</section>
+				<!--//widget-->
+			</aside>
+
+		</div>
+		<!--//page-row-->
+		<iframe
+			src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2FlisteDesLaureatsBAC1%3Fid%3D56&width=450&layout=standard&action=like&size=large&show_faces=false&share=true&height=35&appId"
+			width="450" height="35" style="border: none; overflow: hidden"
+			scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+
+	</div>
+
+</div>

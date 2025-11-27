@@ -1,0 +1,167 @@
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="500">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="levelSubjectPro">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@level" for="level">Niveau</label>
+		</div>
+		<div class="ui-grid-col-9">
+			<p-autoComplete [(ngModel)]="levelSubjectPro.level"
+				(onDropdownClick)="levelDropdown.handleDropdownClick($event)"
+				[suggestions]="levelDropdown.filteredLevels" [dropdown]="true"
+				id="level" (completeMethod)="levelDropdown.filter($event)"
+				name="level" field="name" [size]="30" placeholder="{{LEVEL}}"
+				[minLength]="1" #level="ngModel"></p-autoComplete>
+			<div [hidden]="level.valid || level.pristine">Niveau Requis</div>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@subject" for="subject">Matiere</label>
+		</div>
+		<div class="ui-grid-col-9">
+			<p-autoComplete [(ngModel)]="levelSubjectPro.subject"
+				(onDropdownClick)="subjectDropdown.handleDropdownClick($event)"
+				[suggestions]="subjectDropdown.filteredSubjects" [dropdown]="true"
+				id="subject" (completeMethod)="subjectDropdown.filter($event)"
+				name="subject" field="name" [size]="30" placeholder="{{SUBJECT}}"
+				[minLength]="1" #subject="ngModel" required></p-autoComplete>
+			<div [hidden]="subject.valid || subject.pristine"
+				class="alert alert-danger" i18n="@@subjectRequired">Matiere
+				Requise</div>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<!-- <div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@monthQuater" for="term">Semestre</label>
+		</div>
+		<div class="ui-grid-col-9">
+			<p-autoComplete [(ngModel)]="levelSubject.term"
+				(onDropdownClick)="termDropdown.handleDropdownClick($event)"
+				[suggestions]="termDropdown.filteredTerms" [dropdown]="true"
+				id="term" (completeMethod)="termDropdown.filter($event)" name="term"
+				field="name" [size]="30" placeholder="{{TERM}}" [minLength]="1"
+				#term="ngModel"></p-autoComplete>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div> -->
+	<!-- <div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@credits" for="credit">Crédits</label>
+		</div>
+		<div class="ui-grid-col-9" *ngIf="levelSubject.subject">
+			{{levelSubject.subject.credit}}</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@courseNumberHours" for="courseNumberHours">Nb. heures de cours</label>
+		</div>
+		<div class="ui-grid-col-9">
+			<input pInputText type="number" id="courseNumberHours" [(ngModel)]="levelSubject.courseNumberHours"
+			 #courseNumberHours="ngModel" required />
+		</div>
+	</div> -->
+	<!-- <div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@tpNumberHours" for="tpNumberHours">
+				Nb. heures de travaux pratiques
+			</label>
+		</div>
+		<div class="ui-grid-col-9">
+			<input pInputText type="number" id="tpNumberHours" [(ngModel)]="levelSubject.tpNumberHours"
+			 #tpNumberHours="ngModel" required />
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@personnalNumberHours" for="personnalNumberHours">
+				Nb. heures de travaux personnels
+			</label>
+		</div>
+		<div class="ui-grid-col-9">
+			<input pInputText type="number" id="personnalNumberHours" [(ngModel)]="levelSubject.personnalNumberHours"
+			 #personnalNumberHours="ngModel" required />
+		</div>
+	</div> -->
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@status" for="status">Activé ?</label>
+		  </div>
+		  <div class="ui-grid-col-10">
+			<p-checkbox [(ngModel)]="levelSubjectPro.status" binary="true" id="status"></p-checkbox>
+		  </div>
+	</div>
+
+	<br /> <br /> <br /> <br />
+</div>
+
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="confirmDelete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> 
+</p-dialog>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" width="425" [closable]="false"></p-confirmDialog>
+
+<form (ngSubmit)="search()" #searchForm="ngForm">
+  
+	<div class="ui-grid ui-grid-responsive ui-fluid" [hidden]="user.role>2 && user.role!=8 && user.role!=9 && user.role!=10">
+			<div class="ui-grid-row">
+					<p-autoComplete [(ngModel)]="selectedLevelSubject1"
+					(onDropdownClick)="levelDropdown.handleDropdownClick($event)"
+					[suggestions]="levelDropdown.filteredLevels" [dropdown]="true"
+					id="level" (completeMethod)="levelDropdown.filter($event)"
+					name="level" field="name" [size]="30" placeholder="{{LEVEL}}"
+					[minLength]="1" ></p-autoComplete>
+			</div>
+	
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-10">
+					<input type="text" pInputText class="form-control" id="searchT" required [(ngModel)]="searchText"
+					placeholder="Niveau" name="searchT" #searchT="ngModel">
+				</div>
+				<div class="ui-grid-col-2">
+					<button type="button" pButton icon="fa fa-search" (click)="search()" label="Go"
+					style="margin-top: 0px; height: 35px;"></button>
+				</div>
+			</div>
+	
+		</div>
+  </form>
+
+<p-dataTable [value]="levelSubjectsPro" selectionMode="single"
+	[(selection)]="selectedLevelSubjectPro"
+	(onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15"
+	[responsive]="true"> <p-column *ngFor="let col of cols"
+	[style]="col.style" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [filter]="col.filter"> <ng-template
+	*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+	type="body"> <span class="col-date">{{data[
+	col.field ] | date:'dd/MM/yy' }}</span> </ng-template> </p-column>
+	<p-column field="status" header="Etat" [style]="{'width':'8%'}" [sortable]="true">
+		<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+		  <div class="label-main" *ngIf="data.status">
+			<label class="label label-success" style="padding: 5px; border-radius: 5px;">Activé</label>
+		  </div>
+		  <div class="label-main" *ngIf="!data.status">
+			<label class="label label-danger" style="padding: 5px; border-radius: 5px;">Désactivé</label>
+		  </div>
+		</ng-template>
+	  </p-column>
+	<ng-template
+	pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>

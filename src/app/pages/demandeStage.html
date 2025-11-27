@@ -1,0 +1,102 @@
+<meta charset="utf-8" />
+<div class="content container">
+	<div class="page-wrapper">
+		<header class="page-heading clearfix">
+			<h1 class="heading-title pull-left">Demande de stage</h1>
+			<div class="breadcrumbs pull-right">
+				<ul class="breadcrumbs-list">
+					<li class="breadcrumbs-label">Vous etes ici:</li>
+					<li><a href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+					<li class="current">Contact</li>
+				</ul>
+			</div>
+			<!--//breadcrumbs-->
+		</header>
+		<div class="page-content">
+			<div class="row">
+				<article class="contact-form col-md-8 col-sm-7  page-row">
+					<h3 class="title">Vous êtes etudiant a IPNet University et
+						vous devez faire une demande de stage?</h3>
+					<p>Remplissez le formulaire</p>
+
+					<form (ngSubmit)="sendMessage()" #profileForm="ngForm">
+
+						<div class="form-group">
+							<label for="lastName">Nom:</label> <input type="text" pInputText
+								class="form-control" id="lastName" required
+								[(ngModel)]="contact.lastName" name="lastName"
+								#lastName="ngModel">
+							<div [hidden]="lastName.valid || lastName.pristine"
+								class="alert alert-danger">Nom Requis</div>
+						</div>
+						<div class="form-group">
+							<label for="firstName">Prénoms:</label> <input type="text"
+								pInputText class="form-control" id="firstName" required
+								[(ngModel)]="contact.firstName" name="firstName"
+								#firstName="ngModel">
+							<div [hidden]="firstName.valid || firstName.pristine"
+								class="alert alert-danger">Prenom Requis</div>
+						</div>
+						<div class="form-group">
+							<label for="email">E-mail</label> <input type="email" pInputText
+								class="form-control" id="email" required
+								[(ngModel)]="contact.email" name="email" #email="ngModel">
+							<div [hidden]="email.valid || email.pristine"
+								class="alert alert-danger">Email Requis</div>
+						</div>
+
+						<div class="form-group">
+							<label for="phone">Téléphone</label> <input type="text"
+								pInputText class="form-control" id="phone"
+								[(ngModel)]="contact.phone" name="phone" #phone="ngModel">
+						</div>
+
+						<div class="form-group">
+							<label for="cv">Inserer votre CV:</label> <input type="file"
+								class="filestyle" data-icon="fa false">
+						</div>
+
+
+
+						<div class="form-group">
+							<label for="message">Message</label>
+							<p-editor [(ngModel)]="contact.message"
+								[style]="{'height':'200px'}" name="message"></p-editor>
+						</div>
+
+						<button (click)="button=2" pButton type="submit" label="Envoyer"></button>
+
+						<br>
+						<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+						<div *ngIf="success" class="alert alert-success">{{success}}</div>
+
+					</form>
+				</article>
+				<!--//contact-form-->
+				<aside
+					class="page-sidebar  col-md-3 col-md-offset-1 col-sm-4 col-sm-offset-1">
+					<section class="widget has-divider">
+						<app-prospectus></app-prospectus>
+					</section>
+					<!--//widget-->
+
+					<section class="widget has-divider">
+						<app-contact-short></app-contact-short>
+					</section>
+				</aside>
+				<!--//page-sidebar-->
+			</div>
+			<!--//page-row-->
+
+			<!--//page-row-->
+		</div>
+		<!--//page-content-->
+	</div>
+	<!--//page-wrapper-->
+</div>
+<!--//content-->
+<script>
+	var quill = new Quill('#editor', {
+		theme : 'bubble'
+	});
+</script>

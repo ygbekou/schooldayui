@@ -1,0 +1,94 @@
+<p-growl [(value)]="msgs"></p-growl>
+<p-dataTable [value]="attendances" selectionMode="single"
+	expandableRows="true" rowExpandMode="single" [paginator]="true"
+	[rows]="15" [(selection)]="attendance" [responsive]="true"
+	(onRowExpand)="getAttendanceDetailsByAttendanceId($event)"> <p-column
+	expander="true" styleClass="col-icon" [style]="{'width':'5%'}"></p-column>
+
+	<p-column
+		field="description" header="Date-Heure-Cours" [style]="{'width':'70%'}">
+	</p-column>
+	
+	<ng-template let-attendance pTemplate="rowexpansion"> 
+		<div class="ui-grid ui-grid-responsive ui-fluid">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-12">
+
+					<div class="card flex justify-content-center">
+						<p-toast></p-toast>
+						
+
+						<div class="ui-grid-row">
+							<div class="ui-grid-col-6">
+								<div class="label-main" *ngIf="attendance.attendanceDone == 1">
+									<label class="label label-success" style="padding: 5px; border-radius: 5px;">Appel fait</label>
+								  </div>
+								  <div class="card">
+									<div class="card flex justify-content-center">
+										<button pButton *ngIf="attendance.attendanceDone == 0 || attendance.attendanceDone == null" 
+										[disabled]="!(compareDateOnly(convertUnixToDate(attendance.createDate), currentDate))" label="Appel fait" style="padding: 5px;margin: 10px; width: 100px;" severity="success" (click)="confirm()"></button>
+									</div>
+								</div>
+								<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" width="425" [closable]="false"></p-confirmDialog>
+								<!-- <button *ngIf="attendance.attendanceDone == 0 || attendance.attendanceDone == null" 
+								[disabled]="!(compareDateOnly(convertUnixToDate(attendance.createDate), currentDate))"
+								 (click)="confirm()" type="button" class="btn btn-primary">
+							<span class="badge badge-light">*</span>
+								Appel fait
+						  </button> -->
+							</div>
+							<div class="ui-grid-col-6">
+								<div *ngIf="!(compareDateOnly(convertUnixToDate(attendance.createDate), currentDate))">
+									<div class="label-main" *ngIf="attendance.attendanceDone == 0  || attendance.attendanceDone == null">
+										<label class="label label-danger" style="padding: 5px; border-radius: 5px;">Appel non fait</label>
+									  </div>
+								</div>
+							</div>
+						</div>
+
+						</div>
+				</div>
+				<div class="ui-grid-col-12">
+				  
+				</div>
+			  </div>
+	<p-dataTable [value]="attendanceDetails" [responsive]="true" [rows]="15"  [paginator]="true">
+		<p-column header="Ordre" [style]="{'width':'5%'}">	
+			<ng-template let-i="rowIndex" pTemplate="body">
+				{{i+1}}
+			</ng-template>
+		</p-column>  
+		<p-column
+			field="lastName" header="Nom" [style]="{'width':'20%'}">
+		</p-column>
+		<p-column
+			field="firstName" header="Prénom" [style]="{'width':'20%'}">
+		</p-column>
+		<p-column
+			field="sclass" header="Filière" [style]="{'width':'20%'}">
+		</p-column>
+		<p-column
+			field="sex" header="Sexe" [style]="{'width':'10%'}">
+		</p-column>
+
+
+	<p-column field="isPresent" header="Présence">
+		<ng-template let-col let-attendanceDetail="rowData" pTemplate="body">
+		  <p-toggleButton [(ngModel)]="attendanceDetail.isPresent"
+						  onLabel="Présent" offLabel="Absent"
+						  onIcon="fa fa-check-square" offIcon="fa fa-square"
+						  [disabled]="attendance.attendanceDone == 1 || !(compareDateOnly(convertUnixToDate(attendance.createDate), currentDate))" 
+						  (click)="saveAttendanceDetail(attendanceDetail)">
+		  </p-toggleButton>
+		</ng-template>
+	  </p-column>
+
+		
+		
+		
+	</p-dataTable>
+</div> 
+</ng-template> 
+
+
+</p-dataTable>

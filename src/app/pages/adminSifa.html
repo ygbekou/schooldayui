@@ -1,0 +1,202 @@
+
+<p-dataTable [value]="users"
+	[(selection)]="selectedUser" expandableRows="true"
+	(onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15"
+	[responsive]="true"> <p-column expander="true"
+	styleClass="col-icon" [style]="{'width':'5%'}"></p-column> <p-column
+	*ngFor="let col of cols" [field]="col.field" [header]="col.header"
+	[style]="col.style" [sortable]="col.sortable" [filter]="col.filter">
+<ng-template *ngIf="col.type === 'string' || col.type === undefined"
+	let-col let-data="rowData" pTemplate type="body"> <span
+	class="col-string">{{ data[ col.field ] }}</span> </ng-template> <ng-template
+	*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+	type="body"> <span class="col-date">{{ data[
+	col.field ] | date:'dd/MM/yy' }}</span> </ng-template> </p-column> 
+	
+	<p-column field="id"
+	header="actions" [style]="{'width':'7%'}"> <ng-template
+	let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+		<!-- <button type="button" pButton icon="fa fa-delete" style="float: left"
+	(click)="delete()"></button> -->
+
+	<p-button icon="pi pi-times" (click)="delete(data)" severity="danger" style="color: red;"></p-button>
+
+		</ng-template> 
+
+</p-column> 
+
+<ng-template let-user pTemplate="rowexpansion">
+<div class="ui-grid ui-grid-responsive ui-fluid"
+>
+
+
+
+<div class="user-details" >
+
+	<div class="ui-g-12">
+
+		<div class="ui-g-4">
+			<div  style="font-weight: bold;">Prénom:</div>
+			<p>{{user.firstName}}</p>
+		</div>
+
+		<div class="ui-g-4">
+			<div  style="font-weight: bold;">Nom:</div>
+			<p>{{user.lastName}}</p>
+		</div>
+
+		<div class="ui-g-4">
+			<div  style="font-weight: bold;">Telephone:</div>
+			<p>{{user.phone}}</p>
+		</div>
+
+	</div>
+
+	<div class="ui-g-12">
+		<div class="ui-g-4">
+			<div  style="font-weight: bold;">Adresse:</div>
+        <p>{{user.address}}</p>
+		</div>
+
+		<div class="ui-g-4">
+			<div style="font-weight: bold;">Date de Naissance:</div>
+			<p>{{ user.birthDate | date:'dd/MM/yyyy' }}</p>
+		</div>
+
+		<div class="ui-g-4">
+			<div  style="font-weight: bold;">Lieu de naissance:</div>
+			<p>{{user.cityOfBirth}}</p>
+		</div>
+
+	</div>
+
+	<div class="ui-g-12">
+		<div class="ui-g-4">
+			<div  style="font-weight: bold;">Ville de Residence:</div>
+			<p>{{user.cityResidence}}</p>
+		</div>
+
+		<div class="ui-g-4">
+			<div  style="font-weight: bold;">Email:</div>
+			<p>{{user.email}}</p>
+		</div>
+
+		<div class="ui-g-4">
+			<div  style="font-weight: bold;">Sexe:</div>
+			<p>{{user.sex}}</p>
+		</div>
+
+		
+
+	</div>
+
+
+
+	<div class="ui-g-12">
+		<div class="ui-g-4">
+			<div  style="font-weight: bold;">Dernier diplôme:</div>
+			<p>{{user.lastDegree}}</p>
+		</div>
+
+		<div class="ui-g-4">
+			<div  style="font-weight: bold;">Nature de l'handicap:</div>
+			<p>{{user.natureOfHandicap}}</p>
+	
+		</div>
+
+		<div class="ui-g-4">
+			<div  style="font-weight: bold;">Besoins spécifique:</div>
+			<p>{{user.specificNeeds}}</p>
+		</div>
+
+	</div>
+
+	<div class="ui-g-12">
+
+		<div class="ui-g-4">
+			<div style="font-weight: bold;">est Orphelin de père:</div>
+			<p>{{ user.isOrphanedFromFather ? 'oui' : 'non' }}</p>
+		</div>
+
+		<div class="ui-g-4">
+			<div  style="font-weight: bold;">est Orphelin de mére:</div>
+			<p>{{user.isOrphanedFromMother  ? 'oui' : 'non'}}</p>
+	
+		</div>
+
+		<div class="ui-g-4">
+			<div  style="font-weight: bold;">est handicapé:</div>
+			<p>{{user.isDisabled  ? 'oui' : 'non'}}</p>
+		</div>
+		
+
+	</div>
+
+	
+	<div class="ui-g-12">
+		<div class="ui-g-4">
+			<div  style="font-weight: bold;">a une famille démunie:</div>
+			<p>{{user.hasNeedyFamily  ? 'oui' : 'non'}}</p>
+		</div>
+		<div class="ui-g-4">
+		    <div  style="font-weight: bold;">Boîte postal:</div>
+        <p>{{user.zipCode}}</p>
+		</div>
+
+		<div class="ui-g-4">
+			<div  style="font-weight: bold;">document justificatif joint :</div>
+			<p>{{user.hasMedicalCertification  ? 'oui' : 'non'}}</p>
+		</div>
+
+
+	</div>
+
+
+	<div class="ui-g-12">
+
+		<div class="ui-g-4">
+		    <div  style="font-weight: bold;"> Filiére choisie :</div>
+        <p>{{user.level.name}}</p>
+		</div>
+	
+		<div class="ui-g-4">
+			<div  style="font-weight: bold;">Projets professionels:</div>
+			<p>{{user.professionalProject}}</p>
+	
+		</div>
+
+		<div class="ui-g-4">
+			<div  style="font-weight: bold;">Motivations:</div>
+			<p>{{user.motivation}}</p>
+		</div>
+
+	</div>
+
+</div>
+	
+	<!-- <div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<img class="thumb" src="assets/images/user/{{user.pic}}" alt="" />
+		</div>
+		<div [innerHTML]="user.message" class="ui-grid-col-10">
+
+			<a class="read-more" href="#/userSingle"
+				(click)="setCurrentUser(user)" i18n="@@readMore">Lire la suite<i
+				class="fa fa-chevron-right"></i></a>
+		</div>
+	</div> -->
+
+</div>
+</ng-template> <ng-template pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>
+<!--//page-->
+<!-- Initialize Quill editor -->
+<script>
+	var quill = new Quill('#editor', {
+		theme : 'bubble'
+	});
+</script>

@@ -1,0 +1,130 @@
+<div class="ui-grid ui-grid-responsive ui-fluid">
+    <div>
+
+        <div class="ui-grid-row form-group">
+            <div class="ui-grid-col-5">
+                <div class="alert alert-success">
+                    Paie d'une période + Génération des différents états
+                </div>
+
+            </div>
+        </div>
+
+        <div class="ui-grid-row form-group">
+            <div class="ui-grid-col-2">
+                <label i18n="@@startDate" for="startDate">Date de début : </label>
+            </div>
+            <div class="ui-grid-col-3">
+                <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="startDate"
+                    name="startDate" [showIcon]="true" [(ngModel)]="paySlip.periode.startDate" #startDate="ngModel"
+                    required></p-calendar>
+            </div>
+            <div class="ui-grid-col-1"></div>
+        </div>
+
+        <br />
+
+        <div class="ui-grid-row form-group">
+            <div class="ui-grid-col-2">
+                <label i18n="@@endDate" for="endDate">Date de fin : </label>
+            </div>
+            <div class="ui-grid-col-3">
+                <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="endDate" name="endDate"
+                    [showIcon]="true" [(ngModel)]="paySlip.periode.endDate" #endDate="ngModel" required></p-calendar>
+            </div>
+            <div class="ui-grid-col-1"></div>
+        </div>
+
+        <br />
+
+        <div class="ui-grid-row form-group">
+            <div class="ui-grid-col-2">
+                <label i18n="@@paiementMode" for="paiementMode">Mode de paiement : </label>
+            </div>
+            <div class="ui-grid-col-3">
+                <p-autoComplete [(ngModel)]="paySlip.paiementMode"
+                    (onDropdownClick)="paiementModeDropdown.handleDropdownClick($event)"
+                    [suggestions]="paiementModeDropdown.filteredPaiementModes" [dropdown]="true" id="paiementMode"
+                    (completeMethod)="paiementModeDropdown.filter($event)" name="paiementMode" field="wording"
+                    placeholder="Choisissez le mode de paiement" [minLength]="1" [size]="30"></p-autoComplete>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+<br />
+
+<div class="ui-grid-row form-group">
+    <div class="ui-grid-col-12">
+        <button type="button" pButton icon="fa fa-check" (click)="calculateActiveEmpPeriodPaySlipAndReturnTheirReport()"
+            label="{{printLabel}}"></button>
+    </div>
+</div>
+
+<div class="ui-grid-row form-group" *ngIf="codeAndReportsName">
+    <div class="ui-grid-row form-group" *ngIf="codeAndReportsName['RGB']">
+
+        <br />
+
+        <div class="ui-grid-col-5">
+            <a target="_blank" href="assets/reports/{{codeAndReportsName['RGB']}}" i18n="@@downloadReport"
+                class="btn btn-theme">
+                <i class="fa fa-download"></i>
+                Télécharger le récapitulatif Global par banque
+            </a>
+        </div>
+    </div>
+    <div class="ui-grid-row form-group" *ngIf="codeAndReportsName['RB']">
+
+        <br />
+
+        <div class="ui-grid-col-5">
+            <a target="_blank" href="assets/reports/{{codeAndReportsName['RB']}}" i18n="@@downloadReport"
+                class="btn btn-theme">
+                <i class="fa fa-download"></i>
+                Télécharger le récapitulatif de virement de salaire par banque
+            </a>
+        </div>
+    </div>
+    <div class="ui-grid-row form-group" *ngIf="codeAndReportsName['RE']">
+
+        <br />
+
+        <div class="ui-grid-col-5">
+            <a target="_blank" href="assets/reports/{{codeAndReportsName['RE']}}" i18n="@@downloadReport"
+                class="btn btn-theme">
+                <i class="fa fa-download"></i>
+                Télécharger le récapitulatif de virement de salaire par personnel
+            </a>
+        </div>
+    </div>
+    <div class="ui-grid-row form-group" *ngIf="codeAndReportsName['RPS']">
+
+        <br />
+
+        <div class="ui-grid-col-5">
+            <a target="_blank" href="assets/reports/{{codeAndReportsName['RPS']}}" i18n="@@downloadReport"
+                class="btn btn-theme">
+                <i class="fa fa-download"></i>
+                Télécharger les bulletins de paie des personnels
+            </a>
+        </div>
+    </div>
+
+    <div class="ui-grid-row form-group" *ngIf="codeAndReportsName['SPPS']">
+
+        <br />
+
+        <div class="ui-grid-col-5">
+            <a target="_blank" href="assets/reports/{{codeAndReportsName['SPPS']}}" i18n="@@downloadReport"
+                class="btn btn-theme">
+                <i class="fa fa-download"></i>
+                Télécharger le document de paie des stagiaires et consultants
+            </a>
+        </div>
+    </div>
+</div>

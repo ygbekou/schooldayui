@@ -1,0 +1,603 @@
+<div class="wrapper">
+	<!-- ******HEADER****** -->
+	<header class="header">
+		<style>
+			.contact-bordered li {
+				list-style-type: square !important;
+				margin-left: 30px;
+			}
+		</style>
+		<div class="top-bar">
+			<div class="container">
+				<ul class="social-icons col-md-6 col-sm-6 col-xs-12 hidden-xs">
+					<!-- <li><a href="https://twitter.com/ipnetexperts"><i
+							class="fa fa-twitter"></i></a></li>  -->
+					<li><a class="facebook" href="https://www.facebook.com/ipnet.togo/"><i
+								class="fab fa-facebook"></i></a></li>
+
+					<li><a href="https://www.youtube.com/@ipnetinstitute"><i class="fab fa-youtube"></i></a></li>
+					<li><a href="https://www.linkedin.com/company/ipnetinstitute"><i class="fab fa-linkedin"></i></a>
+					</li>
+					<li><a href="https://www.tiktok.com/@ipnet.togo"><i class="fa-brands fa-tiktok"></i></a></li>
+					<!-- <li><a
+						href="https://www.linkedin.com/company/ipnet-experts-sa"><i
+							class="fa fa-linkedin"></i></a></li>
+					<li><a href="https://plus.google.com/107686367149918586578"><i
+							class="fa fa-google-plus"></i></a></li> -->
+				</ul>
+				<!--//social-icons-->
+				<form class="pull-right search-form" role="search">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Rechercher sur le site...">
+					</div>
+					<button type="submit" class="btn btn-theme">Go</button>
+				</form>
+			</div>
+		</div>
+		<!--//to-bar-->
+		<div class="header-main container">
+			<h1 class="logo col-md-2 col-sm-2">
+				<a href=""><img id="logo" src="assets/images/logo.png" alt="Logo"></a>
+			</h1>
+			<h1 class="logo col-md-7 col-sm-7">
+
+				<!-- <a href="#/onlineRegistration?event=INSCRIPTION"><img style="width:100%; padding-top: 10px; padding-left: 50px;" id="logo" src="assets/images/concoursbanner.png"
+					alt="Cours � distance"></a> -->
+				<!-- <a href="#/onlineRegistration?event=CONCOURS"><img style="width:100%; padding-top: 10px; padding-left: 50px;" id="logo" src="assets/images/headerbanner.jpg"
+					alt="Concours d'entree IIT"></a> -->
+				<a href="#/innovant" target="_blank"><img
+						style="width: 100%; padding-top: 10px; padding-left: 50px;" id="logo"
+						src="assets/images/ixp_banner.png" alt="iPNet iXP, un système d’enseignement innovant"></a>
+
+			</h1>
+			<!--//logo-->
+			<div class="info col-md-3 col-sm-3">
+				<ul class="menu-top navbar-right hidden-xs">
+					<li class="divider"><a href="index.html">Accueil</a></li>
+					<!--<li class="divider"><a href="#/team">Notre Equipe</a></li>-->
+					<li class="divider"><a href="#/contact">Contact</a></li>
+					<li class="divider"><a href="#/albumPhotosJpope">Album Photos JPOPE</a></li>
+					<li class="divider"><a href="#/faqs">FAQ</a></li>
+					<!--<li class="divider"><a href="#/conditionStage">Demande de
+							stage</a></li>-->
+					<li [hidden]="user.id"><a href="#/login/">Connexion</a></li>
+					<li [hidden]="!user.id"><a href="#" (click)="logout()">Déconnecter
+							{{user.firstName +' '+user.lastName}}</a></li>
+					<li [hidden]="!user.id"><a href="#/addSchool/">Ajout établissement</a></li>
+
+				</ul>
+				<!--//menu-top-->
+				<br />
+				<div class="contact ">
+					<p style="padding-top: 10px; margin:0;" class="phone">
+						<span><i class="fa fa-phone"></i>+228 99 31 07 21 </span>
+						<!--<i
+							class="fa fa-envelope"></i><a
+							href="mailto:contact@ipnetinstitue.com">ipnet@ipnetinstitue.com</a>-->
+						<a style="display: inline-block;width: 150px;padding-left: 10px;"
+							href="https://api.whatsapp.com/send?phone=22891181489" target="_blank">
+							<img style="width: 100%; " src="assets/images/whatsapp.jpeg" alt="">
+						</a>
+					</p>
+				</div>
+				<!--//contact-->
+			</div>
+			<!--//info-->
+		</div>
+		<!--//header-main-->
+	</header>
+	<!--//header-->
+
+	<!-- ******NAV****** -->
+	<nav class="main-nav" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-collapse">
+					<span class="sr-only">Basculer navigation</span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<!--//nav-toggle-->
+			</div>
+			<!--//navbar-header-->
+			<div class="navbar-collapse collapse" id="navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active nav-item"><a href="index.html">Accueil</a></li>
+					<li class="nav-item dropdown"><a class="dropdown-toggle" data-toggle="dropdown"
+							data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Admissions <i
+								class="fa fa-angle-down"></i></a>
+						<ul class="dropdown-menu">
+							<!-- <li><a href="#/nosFilieresDeFormation">Nos filières de formation </a></li> -->
+							<!-- <li><a href="#/nosFilieresIngenieriesDeLogiciels">Nos filières d’ingénierie de Logiciels </a></li> -->
+							<li><a href="#/howToRegister">Procédure d'inscription </a></li>
+							<li><a href="#/rdvOrientation">Demande de rendez-vous d'orientation</a></li>
+							<li><a href="#/decoupageAnneeAcademique">Découpage année académique</a></li>
+							<!--<li><a href="#/Bourses">Bourses, Aides, & Prêts</a></li>  -->
+							<li><a href="#/Bourses">Financer ses études : Bourses, Aides, & Prêts</a></li>
+							<!-- <li><a href="#/onlineRegistration?event=BOURSE">Demande de Bourse </a></li> -->
+
+
+							<!--	<li><a [routerLink]="['/onlineRegistration']"
+									[queryParams]="{ event:'INSCRIPTION'}">Incription en ligne</a></li>
+							<li><a href="#/onlineRegistration?event=CONCOURS">Inscription
+									au concours </a></li>-->
+
+							<li><a href="#/conditionConcours">Inscription
+									au concours </a></li>
+							<!--<li><a href="#/AI">
+								Inscription au séminaire sur l'Intelligence Artificielle</a>
+							</li>-->
+							<!--  	<li><a href="#/ficheRenseignement">Fiche de Renseignement</a></li> -->
+
+						</ul>
+					</li>
+
+					<li class="nav-item dropdown"><a class="dropdown-toggle" data-toggle="dropdown"
+							data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Licences & Masters<i
+								class="fa fa-angle-down"></i></a>
+						<ul class="dropdown-menu  multi-column columns-3">
+
+							<div class="row">
+								<div class="col-md-4 col-sm-12" *ngFor="let cycle of cyclesLm">
+									<ul class="multi-column-dropdown">
+										<li>
+											<font style="color: #00ff00; weight: bold;">{{cycle.name}}</font>
+										</li>
+										<li class="divider"></li>
+										<li *ngFor="let college of cycle.colleges">
+											<a *ngIf="college.description !== null" [routerLink]="['/collegeSingle']"
+												[queryParams]="{ id: college.id }">
+												{{ college.name }}
+											</a>
+											<a *ngIf="college.description === null" [routerLink]="['/']">
+												{{ college.name }}
+											</a>
+										</li>
+
+									</ul>
+								</div>
+
+							</div>
+
+						</ul>
+					</li>
+
+					<li class="nav-item dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0"
+							data-close-others="false" href="#">Formations Modulaires<i class="fa fa-angle-down"></i></a>
+						<ul class="dropdown-menu multi-column columns-4">
+							<div class="row">
+								<div class="col-md-4 col-sm-12" *ngFor="let cycle of cyclesFm">
+									<ul class="multi-column-dropdown">
+										<li>
+											<font style="color: #00ff00; weight: bold;">{{cycle.name}}</font>
+										</li>
+										<li class="divider"></li>
+
+										<li *ngFor="let college of cycle.colleges">
+											<a *ngIf="college.description !== null" [routerLink]="['/collegeSingle']"
+												[queryParams]="{ id: college.id }">
+												{{ college.name }}
+											</a>
+											<a *ngIf="college.description === null" [routerLink]="['/']">
+												{{ college.name }}
+											</a>
+										</li>
+
+
+									</ul>
+								</div>
+							</div>
+						</ul>
+					</li>
+
+					<li class="nav-item dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0"
+							data-close-others="false" href="#">Formations Entreprise<i class="fa fa-angle-down"></i></a>
+
+						<ul class="dropdown-menu multi-column columns-2" style="margin-right: 400px;">
+							<div class="row">
+								<div class="col-md-3 col-sm-12" *ngFor="let college of colleges">
+									<ul class="multi-column-dropdown">
+										<li>
+											<font style="color: #00ff00; weight: bold;">{{college.name}}</font>
+										</li>
+										<li class="divider"></li>
+										<li *ngFor="let level of college.levels">
+											<a [routerLink]="['/collegeSinglePro']"
+												[queryParams]="{ id:level.id}">{{level.name}}</a>
+										</li>
+
+									</ul>
+								</div>
+							</div>
+						</ul>
+					</li>
+					<!-- <li class="nav-item"><a href="#/courses/">Cours</a></li> -->
+
+					<!-- <li class="nav-item"><a href="#/news/">Actualités</a></li> -->
+					<li class="nav-item dropdown"><a class="dropdown-toggle" data-toggle="dropdown"
+							data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Projets <i
+								class="fa fa-angle-down"></i></a>
+						<ul class="dropdown-menu">
+							<li><a href="#/projets">Projets en cours ou déjà réalisés </a></li>
+							<li><a style="cursor: pointer;" (click)="showLoginForm2()">Nouveaux projets professionnels
+									(année 2025)</a></li>
+							<li><a style="cursor: pointer;" (click)="showLoginForm()">Projets professionnels
+									inter-filières (année 2025)</a></li>
+							<li><a style="cursor: pointer;" (click)="showLoginForm3()">Projets professionnels, Marketing
+									Digital</a></li>
+							<li><a style="cursor: pointer;" (click)="showLoginForm4()">Projets professionnels, Support
+									IT & Digitalisation</a></li>
+							<!-- <li><a href="#/jpopeProjects">Projets JPOPE 2025</a></li> -->
+						</ul>
+					</li>
+
+					<!-- <li class="nav-item"><a href="#/events/">Calendrier</a></li> -->
+
+					<li class="nav-item dropdown"><a class="dropdown-toggle" data-toggle="dropdown"
+							data-hover="dropdown" data-delay="0" data-close-others="false" href="#">L’Université <i
+								class="fa fa-angle-down"></i></a>
+						<ul class="dropdown-menu">
+							<li><a href="#/team">Équipe dirigeante</a></li>
+							<!-- <li><a href="#/privacy">Groupe iPNet</a></li> -->
+							<!-- <li><a href="#/jpope">Incription Journée Porte Ouverte</a></li> -->
+							<li><a href="#/faq">Mot du Directeur Général</a></li>
+
+							<!-- <li><a href="#/documentsTelecharge">Télécharger -->
+							<!-- documents utiles</a></li> -->
+							<!-- <li><a href="#/projets">Projets Etudiants</a></li> -->
+							<li><a href="#/innovant">iPNet iXP, un système d’enseignement innovant</a></li>
+							<li><a href="#/installationsDePointe">Des installations de pointe pour une formation
+									pratique</a></li>
+							<li><a href="#/coursMGT411">Savoir-Etre, Leadership & Etat d ’Esprit</a></li>
+							<!--
+							<li><a href="#/listeDesLaureatsPrixIpnetBAC1">Liste des lauréats Prix IPNET BAC 1 2019</a></li>
+							-->
+							<!-- <li><a href="#/resultatConcour">Résultats du concours</a></li> -->
+							<!-- <li><a href="#/visiteGuide">Visite guidée du campus</a></li> -->
+							<li><a href="#/albumPhotosJpope">Album Photos JPOPE (Journée Portes Ouvertes Projets
+									Etudiants)</a></li>
+							<li><a href="#/CertifiedStudents">Etudiants, mais déjà certifiés</a></li>
+							<li><a href="#/diplomaAuthenticity">Authenticité d'un diplôme</a></li>
+
+						</ul>
+					</li>
+					<!--//dropdown-->
+
+					<li class="nav-item"><a href="#/contact/">Contact</a></li>
+
+				
+
+
+					<!-- <li class="nav-item" *ngIf="user.role===1"><a href="#/admin/adminMain?adminMain=active">Espace
+							Admin</a></li>
+					
+					<li class="nav-item" *ngIf="user.role===2"><a href="#/teacher/teacherMain?teacherMain=active">Espace
+							Enseignant</a></li>
+					<li class="nav-item" *ngIf="user.role===3"><a href="#/student/studentMain?studentMain=active">Espace
+							Etudiant</a></li>
+					<li class="nav-item" *ngIf="user.role===4"><a href="#/parent/parentMain?parentMain=active">Espace
+							Parent</a></li>
+					<li class="nav-item" *ngIf="user.role===6"><a href="#/kiosk/kioskMain?kioskMain=active">Espace
+							KIOSK</a></li>
+					<li class="nav-item" *ngIf="user.role===8"><a href="#/dep/depMain?depMain=active">Espace DEP</a>
+					</li>
+					<li class="nav-item" *ngIf="user.role===9"><a href="#/dcmc/dcmcMain?dcmcMain=active">Espace DCMC</a>
+					</li>
+					<li class="nav-item" *ngIf="user.role===10"><a href="#/grh/grhMain?grhMain=active">Espace GRH</a>
+					</li>
+					<li class="nav-item" *ngIf="user.role===11"><a
+							href="#/secretaire/information?information=active">Espace SECRET.</a></li>
+					<li class="nav-item" *ngIf="user.role===13"><a
+							href="#/stagiaire/stagiaireDemand?stagiaireDemand=active">Espace Stagiaire</a></li>
+
+					<li class="nav-item" *ngIf="user.role===14"><a href="#/cpe/cpeDashboard?cpeDashboard=active">Espace
+							CPE</a></li>
+					<li class="nav-item" *ngIf="user.role===15"><a href="#/">Espace
+							Personnel</a></li> -->
+
+
+
+
+					<li class="nav-item" *ngIf="user.role===1"><a>Espace
+							Admin</a></li>
+					<li class="nav-item" *ngIf="user.role===2"><a>Espace
+							Enseignant</a></li>
+					<li class="nav-item" *ngIf="user.role===3"><a href="#/student/studentMain?studentMain=active">Espace
+							Etudiant</a></li>
+					<li class="nav-item" *ngIf="user.role===4"><a>Espace
+							Parent</a></li>
+					<li class="nav-item" *ngIf="user.role===6"><a>Espace
+							KIOSK</a></li>
+					<li class="nav-item" *ngIf="user.role===8"><a>Espace DEP</a>
+					</li>
+					<li class="nav-item" *ngIf="user.role===9"><a>Espace DCMC</a>
+					</li>
+					<li class="nav-item" *ngIf="user.role===10"><a>Espace GRH</a>
+					</li>
+					<li class="nav-item" *ngIf="user.role===11"><a>Espace SECRET.</a></li>
+					<li class="nav-item" *ngIf="user.role===13"><a>Espace Stagiaire</a></li>
+
+					<li class="nav-item" *ngIf="user.role===14"><a>Espace
+							CPE</a></li>
+					<li class="nav-item" *ngIf="user.role===15"><a>Espace
+							Personnel</a></li>
+
+				</ul>
+				<!--//nav-->
+			</div>
+			<!--//navabr-collapse-->
+		</div>
+		<!--//container-->
+
+	</nav>
+	<!--//main-nav-->
+	<!-- ******CONTENT****** -->
+	<div class="content container">
+		<router-outlet (activate)="onActivate($event)"></router-outlet>
+	</div>
+	<!--//content-->
+
+</div>
+<!--//wrapper-->
+
+<!-- ******FOOTER****** 
+<footer class="footer">
+	<div class="footer-content">
+		<div class="container">
+			<div class="row">
+				<div class="footer-col col-md-3 col-sm-4 about">
+					<div class="footer-col-inner">
+						<h3>iPNet Institute of Technology</h3>
+						<ul>
+							<li><a href="#/contact"
+								onclick="$('html, body').animate({scrollTop:0}, 'slow');"><i
+									class="fa fa-caret-right"></i>Contactez-nous</a></li>
+							<li><a href="#/privacy"
+								onclick="$('html, body').animate({scrollTop:0}, 'slow');"><i
+									class="fa fa-caret-right"></i>Le Groupe iPNet</a></li>
+							<li><a href="#/conditionStage"
+								onclick="$('html, body').animate({scrollTop:0}, 'slow');"><i
+									class="fa fa-caret-right"></i>Demandeur de stage</a></li>
+
+						</ul>
+					</div>
+					
+				</div>
+				
+				<div class="footer-col col-md-6 col-sm-8 newsletter">
+					<div class="footer-col-inner">
+						<app-suscribe></app-suscribe>
+					</div>
+					
+				</div>
+				
+				<div class="footer-col col-md-3 col-sm-12 contact">
+					<div class="footer-col-inner">
+						<h3>Contactez-nous</h3>
+						<div class="row">
+							<p class="adr clearfix col-md-12 col-sm-4">
+								<i class="fa fa-map-marker pull-left"></i> <span
+									class="adr-group pull-left"> <span
+									class="street-address">iPNet Institute of Technology</span><br>
+									<span class="region">TOUR IPNET, Agbalepedo, Lossossime</span><br>
+									<span class="postal-code">05 BP 507</span><br> <span
+									class="country-name">Lomé - Togo</span>
+								</span>
+							</p>
+							<p class="tel col-md-12 col-sm-4">
+								<i class="fa fa-phone"></i>+228 22 51 77 77 / 22 51 81 81<br /> <span
+									style="margin-left: 21px;">+228 99 31 07 14 / 98 33 75 74</span> <br />
+							</p>
+							<p class="email col-md-12 col-sm-4">
+								<i class="fa fa-envelope"></i><a href="mailto:contact@ipnetinstitue.com">contact@ipnetinstitue.com</a>
+							</p>
+						</div>
+					</div>
+					
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
+	<div class="bottom-bar">
+		<div class="container">
+			<div class="row">
+				<small class="copyright col-md-6 col-sm-12 col-xs-12">Copyright
+					@ 2016 iPNet Institute of Technology</small>
+				<ul class="social pull-right col-md-6 col-sm-12 col-xs-12">
+
+					<li><a href="https://www.facebook.com/ipnet.togo/"><i
+							class="fa fa-facebook"></i></a></li>
+					<li><a
+						href="https://www.youtube.com/channel/UCuyemOwYM6UUlWbl8p8mgQQ"><i
+							class="fa fa-youtube"></i></a></li>
+					
+				</ul>
+				
+			</div>
+			
+		</div>
+		
+	</div>
+
+</footer>
+//footer-->
+
+
+<!-- ******FOOTER****** -->
+
+<p-dialog header="Authentification" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+	width="900" [contentStyle]="{ 'max-height': '80vh', 'overflow': 'auto' }" [positionTop]="100">
+
+	<h3 style="text-align: center;margin-bottom: 20px; font-weight: bolder;">Veuillez vous connecter à votre compte</h3>
+
+	<form (ngSubmit)="login()" #loginForm="ngForm">
+		<div class="form-group">
+			<label i18n="@@userNameOrEmail" for="email">Nom
+				d'utilisateur ou E-mail</label> <input type="text" pInputText class="form-control" id="email" required
+				[(ngModel)]="user.email" name="email" #email="ngModel">
+			<div [hidden]="email.valid || email.pristine" class="alert alert-danger" i18n="@@userNameOrEmailRequired">
+				Nom
+				d'utilisateur ou E-mail Requis</div>
+		</div>
+
+		<div class="form-group">
+			<label i18n="@@password" for="password2">Mot de passe</label> <input type="password" pInputText
+				class="form-control" id="password2" required [(ngModel)]="user.password" name="password2"
+				#password2="ngModel">
+		</div>
+
+		<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+		<button [disabled]="!loginForm.form.valid" pButton type="submit" label="Connection"></button>
+
+	</form>
+
+	<footer>
+		<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+			<button pButton label="Fermer" icon="pi pi-times" (click)="closeDialog()" class="p-button-text"></button>
+		</div>
+	</footer>
+</p-dialog>
+
+
+<footer class="footer">
+	<div class="footer-content">
+		<div class="container footer-container">
+
+			<div
+				style="display: flex; justify-content: center; align-items: center; height: 150px; margin-bottom: 70px;">
+				<a href="#"> <img src="assets/images/logo1.png" alt="Image logo"></a>
+			</div>
+
+			<div class="row" style="display: flex">
+				<div class="footer-col col-md-4 col-sm-4 about right-border">
+					<div class="footer-col-inner">
+						<div class="contact-us">
+							<div class="row">
+
+								<form (ngSubmit)="saveEmail()">
+									<div class="row" style="margin: 0;">
+										<div class="col-md-10" style="padding: 0;">
+											<div class="form-group" style="margin: 0;">
+												<input type="email" [(ngModel)]="newsLetter.email" class="form-control"
+													name="email" id="email" placeholder="Entrez votre email ..."
+													style="width: 100%; border-radius: 0; height: 40px;">
+											</div>
+										</div>
+										<div class="col-md-2" style="padding: 0;">
+											<button type="submit" class="btn btn-theme"
+												style="width: 100%; border-radius: 2; height: 40px;"><i
+													class='fas fa-envelope'></i></button>
+										</div>
+									</div>
+								</form>
+								<small *ngIf="message" style="color: black;">{{message}}</small>
+							</div>
+
+							<div class="row social">
+								<a class="facebook" href="https://www.facebook.com/ipnet.togo" target="_blank">
+									<i class="fab fa-facebook-f"></i>
+								</a>
+								<a class="youtube" href="https://www.youtube.com/@ipnetinstitute" target="_blank">
+									<i class="fab fa-youtube"></i>
+								</a>
+								<a class="linkedin" href="https://www.linkedin.com/company/ipnetinstitute"
+									target="_blank">
+									<i class="fab fa-linkedin-in"></i>
+								</a>
+								<a class="tiktok" href="https://www.tiktok.com/@ipnet.togo" target="_blank">
+									<i class="fab fa-tiktok"></i>
+								</a>
+							</div>
+
+
+						</div>
+					</div>
+					<!--<hr>-->
+					<!--//footer-col-inner-->
+				</div>
+				<!--//foooter-col-->
+				<div class="footer-col col-md-4 col-sm-4 newsletter liens-utiles">
+					<div class="footer-col-inner">
+
+
+						<div class="contact-us">
+							<!--<p class="footer-title grey-text">
+								Contactez-nous à
+							</p>-->
+							<div>IPNET INSTITUTE OF TECHNOLOGY</div>
+							<div>Tour IPNET, Agbalépédo, Lossossimè</div>
+							<div>05 BP 507, Lomé - Togo</div>
+							<br>
+							<div style="font-size: 15px;">
+								<div>Mobile : +228 99 31 07 14 / 99 31 07 21/ 99 31 07 20</div>
+								<div>Email : <a href="mailto:ipnet@ipnetinstitute.com">ipnet&#64;ipnetinstitute.com</a>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+
+				</div>
+				<!--//foooter-col-->
+				<div class="footer-col col-md-4 col-sm-4 contact left-border">
+					<div class="footer-col-inner">
+						<div class="contact-us">
+
+							<ul class="bordered-li">
+								<li>
+									<a href="#/onlineRegistration?event=INSCRIPTION">
+										<i class="fa fa-long-arrow-right"></i>
+										S’inscrire
+									</a>
+								</li>
+								<li>
+									<a href="#/onlineRegistration?event=INSCRIPTION_ENSEIGNANT">
+										<i class="fa fa-long-arrow-right"></i>
+										Donner les cours à IPNet Institute of Technology
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-long-arrow-right"></i>
+										Recruter nos étudiants
+									</a>
+								</li>
+
+							</ul>
+
+						</div>
+
+					</div>
+					<!--//footer-col-inner-->
+				</div>
+				<!--//foooter-col-->
+			</div>
+		</div>
+
+
+		<div class="bottom-bar footer-container" style="margin-top: 90px;">
+			<div class="container">
+				<div
+					style="display: flex; justify-content: center; align-items: center; height: 40px; text-align: center;">
+					<p style="margin: 0; color: white;">Copyright &#64; 2016 IPNET INSTITUTE OF TECHNOLOGY.</p>
+				</div>
+
+				<!--//row-->
+			</div>
+			<!--//container-->
+		</div>
+
+
+	</div>
+	<!--//footer-content-->
+
+	<!--//bottom-bar-->
+
+</footer>
+
+<!--//footer-->

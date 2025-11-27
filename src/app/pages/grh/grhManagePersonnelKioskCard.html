@@ -1,0 +1,73 @@
+
+<form (ngSubmit)="desactivateAndGenerateNewEmployeeKioskCardNumber()"
+#employeeInfoForm="ngForm">
+
+	<div class="form-group">
+		<div class="ui-g-2">
+			<label><span i18n="@@kioskCardNumber">Numéro de la carte :</span></label>
+		</div>
+		<div class="ui-g-10">
+			<label *ngIf="employeeKiosk.kioskCardNumber != null"> {{employeeKiosk.kioskCardNumber}} </label>
+			<label *ngIf="employeeKiosk.kioskCardNumber == null"> - </label>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="ui-g-2">
+			<label i18n="@@status" for="status">Etat :</label>
+		</div>
+		<div class="ui-g-10">
+			<label *ngIf="employeeKiosk.status == 1"> {{ ACTIF }} </label>
+			<label *ngIf="employeeKiosk.status == 0"> {{ INACTIF }} </label>
+			<label *ngIf="employeeKiosk.status == null"> - </label>
+		</div>
+	</div>
+
+	<br />
+
+			<input type="hidden" pInputText class="form-control" id="userId"
+				required [(ngModel)]="employee.user.id" name="userId" #userId="ngModel">
+
+			<button [disabled]="!employeeInfoForm.form.valid" pButton type="submit"
+				 icon="fa fa-save" label="{{ generateLabel }}" *ngIf="employeeKiosk.id > 0"></button>&nbsp;&nbsp;
+
+			<!--
+			<button [disabled]="employee.id <= 0" pButton type="button"
+				(click)="delete()" label="{{DELETE_LABEL}}"></button>
+				&nbsp;&nbsp;
+			-->
+
+		  <button *ngIf="employeeKiosk.id > 0" pButton type="button" icon="fa fa-print"
+				(click)="printCard()" label="{{PRINT_CARD}}"></button>
+				&nbsp;&nbsp;
+
+			<!--
+		  <a *ngIf="reportName" target="_blank" href="assets/reports/{{reportName}}" i18n="@@downloadReport">Telecharger la
+		    carte</a>
+			-->
+
+			<a *ngIf="reportName" target="_blank" href="assets/reports/{{reportName}}"
+				i18n="@@downloadReport" class="btn btn-theme">
+						<i class="fa fa-download"></i>
+						Télécharger la carte
+			</a>
+
+	<br />
+
+	<div *ngIf="error" class="alert alert-danger"
+		style="margin-top: 20px;">
+		{{error}}
+	</div>
+	<div *ngIf="success" class="alert alert-success"
+		style="margin-top: 20px;">
+		{{success}}
+	</div>
+
+</form>
+
+<!-- Initialize Quill editor -->
+<script>
+	var quill = new Quill('#editor', {
+		theme : 'bubble'
+	});
+</script>

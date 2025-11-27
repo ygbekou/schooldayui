@@ -1,0 +1,152 @@
+<file-uploader></file-uploader>
+<p-dialog header="Details" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="780">
+<div class="ui-grid ui-grid-responsive ui-fluid"
+	*ngIf="onlineRegistration">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@departmentClass" for="beginDate">Filiere/classe</label>
+		</div>
+		<div class="ui-grid-col-8">{{onlineRegistration.level.name}}</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@currentLevel" for="beginDate">Niveau actuel</label>
+		</div>
+		<div class="ui-grid-col-8">{{onlineRegistration.currentDiploma}}</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@date" for="beginDate">Date, Ville</label>
+		</div>
+		<div class="ui-grid-col-4">{{onlineRegistration.createDate|date:'dd/MM/yy'}}</div>
+		<div class="ui-grid-col-4">{{onlineRegistration.user.cityResidence}}
+			{{onlineRegistration.user.countryResidence?'/'+onlineRegistration.user.countryResidence.name:''}}</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@student" for="endDate">Etudiant</label>
+		</div>
+		<div class="ui-grid-col-5">{{onlineRegistration.user.firstName
+			+' '+ onlineRegistration.user.lastName}}</div>
+		<div class="ui-grid-col-3">{{onlineRegistration.user.phone}}</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@email" for="beginDate">Email</label>
+		</div>
+		<div class="ui-grid-col-8">{{onlineRegistration.user.email}}</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@comments" for="message">Commentaire</label>
+		</div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-12">
+			<p-editor [(ngModel)]="onlineRegistration.tempComments"
+				[style]="{'height':'150px'}"></p-editor>
+		</div>
+	</div>
+
+
+</div>
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix"
+		*ngIf="user.role===1||user.role===5||user.role===8||user.role===9||user.role===13">
+		<button type="button" pButton icon="fa fa-check"
+			(click)="addComment()" label="{{ADD_COMMENT_INTERNAL}}"></button>
+		<button type="button" pButton icon="fa fa-check"
+			(click)="sendToStudent()" label="{{ADD_SEND_TO_STUDENT}}"></button>
+			<button type="Pre-Inscrit" pButton icon="fa fa-check" (click)="approve()"
+			label="{{APPROVE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="preInscription()"
+			label="Dem. Pre-Ins"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="reject()"
+			label="{{REJECT_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="archive()"
+			label="{{ARCHIVE}}"></button>
+		<button type="button" pButton icon="fa fa-check"
+			(click)="deleteRegistration()" label="{{DELETE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+<p-selectButton [options]="cycles" [(ngModel)]="cycle"
+	(click)="getInscriptionChart()" *ngIf="user.role===1||user.role===5||user.role===8||user.role===9||user.role===13"></p-selectButton>
+
+<div class="ui-grid-row" *ngIf="user.role===1||user.role===5||user.role===8||user.role===9||user.role===13">
+	<div class="ui-grid-col-4">
+		<p-chart type="pie" [data]="data"
+			(onDataSelect)="selectDataByStatus($event)"></p-chart>
+	</div>
+	<div class="ui-grid-col-4">
+		<p-chart type="pie" [data]="data1"
+			(onDataSelect)="selectDataByCountry($event)"></p-chart>
+	</div>
+	<div class="ui-grid-col-4">
+		<p-chart type="pie" [data]="data2"
+			(onDataSelect)="selectDataByCollege($event)"></p-chart>
+	</div>
+</div>
+
+<font color="red"> <B> <span>{{searchCriteria}} </span></B>
+</font>
+
+<p-dataTable [value]="onlineRegistrations" selectionMode="single"
+	[(selection)]="onlineRegistration" (onRowSelect)="onRowSelect($event)"
+	[paginator]="true" [rows]="15" [responsive]="true" expandableRows="true"
+	(onRowExpand)="getDocuments($event)"> <p-column
+	expander="true" styleClass="col-icon" [style]="{'width':'5%'}"></p-column>
+<p-column *ngFor="let col of cols" [field]="col.field"
+	[header]="col.header" [style]="col.style" [sortable]="col.sortable"
+	[filter]="col.filter"> <ng-template
+	*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+	type="body"> <span class="col-date">{{ data[
+	col.field ] | date:'dd/MM/yy' }}</span> </ng-template> <ng-template
+	*ngIf="col.type === 'money'" let-col let-data="rowData" pTemplate
+	type="body"> <span class="col-currency">{{ data[
+	col.field ] |currency:'CFA':true:'.0-0' }}</span> </ng-template>
+ </p-column> <ng-template
+	let-onlineRegistration pTemplate="rowexpansion">
+<div class="ui-grid ui-grid-responsive ui-fluid">
+	<div class="ui-grid-row">
+		<div [innerHTML]="onlineRegistration.comments" class="ui-grid-col-6"></div>
+		<div [innerHTML]="onlineRegistration.notes" class="ui-grid-col-6"></div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-1"></div>
+		<div class="ui-grid-col-11">
+			<span i18n="@@theDocuments">Les documents:</span>
+			<p-dataTable [value]="documents" sortField="documentType.name">
+
+			<p-column header="Nom du document" field="documentType.name">
+			</p-column> <p-column header="Action" field="fileName"> <ng-template
+				let-col let-doc="rowData" pTemplate="body"> <a
+				*ngIf="doc.fileName" class="btn btn-theme"
+				href="assets/docs/student_docs/{{doc[col.field]}}"> <i
+				class="fa fa-download"></i>{{DOWNLOAD}}
+			</a> <a *ngIf="!doc.fileName" (click)="showDialogToUploadImage(doc)"
+				class="btn btn-theme"> <i class="fa fa-upload"></i>{{UPLOAD}}
+			</a> <a *ngIf="doc.fileName" (click)="deleteDoc(doc)"
+				class="btn btn-theme"> <i class="fa fa-delete"></i>{{DELETE}}
+			</a> </ng-template> </p-column> </p-dataTable>
+		</div>
+	</div>
+</div>
+</ng-template> </p-dataTable>
+<script>
+	var quill = new Quill('#editor', {
+		theme : 'bubble'
+	});
+</script>

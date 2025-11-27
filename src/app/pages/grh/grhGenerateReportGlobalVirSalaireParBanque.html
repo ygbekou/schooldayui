@@ -1,0 +1,71 @@
+<form (ngSubmit)="printRecapitulatifGlobalVirementSalaireParBanque()" #AllEmployeesPaySlipsInfoForm="ngForm">
+
+	<div class="ui-grid ui-grid-responsive ui-fluid">
+		<div>
+
+			<div class="ui-grid-row form-group">
+					<div class="ui-grid-col-8">
+							<div class="alert alert-success">
+									Génération de l'état global de virement de salaires par banque pour une période
+							</div>
+
+					</div>
+			</div>
+
+			<div class="ui-grid-row form-group">
+				<div class="ui-grid-col-2">
+					<label i18n="@@startDate" for="startDate">Date de début : </label>
+				</div>
+				<div class="ui-grid-col-3">
+			        <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="startDate" name="startDate"
+			          [showIcon]="true" [(ngModel)]="paySlip.periode.startDate" #startDate="ngModel" required></p-calendar>
+				</div>
+				<div class="ui-grid-col-1"></div>
+			</div>
+
+			<br />
+
+			<div class="ui-grid-row form-group">
+				<div class="ui-grid-col-2">
+					<label i18n="@@endDate" for="endDate">Date de fin : </label>
+				</div>
+				<div class="ui-grid-col-3">
+					<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="endDate" name="endDate"
+						[showIcon]="true" [(ngModel)]="paySlip.periode.endDate" #endDate="ngModel" required></p-calendar>
+				</div>
+				<div class="ui-grid-col-1"></div>
+			</div>
+
+		</div>
+	</div>
+
+
+	<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+	<br />
+
+	<div class="ui-grid-row form-group">
+		<div class="ui-grid-col-4">
+					<button [disabled]="!AllEmployeesPaySlipsInfoForm.form.valid"
+					pButton type="button" icon="fa fa-print" (click)="printRecapitulatifGlobalVirementSalaireParBanque()"
+					label="{{printLabel}}">
+					</button>
+				&nbsp;&nbsp;
+		</div>
+		<div class="ui-grid-col-6">
+					<a *ngIf="reportName" target="_blank" href="assets/reports/{{reportName}}"
+					i18n="@@downloadReport" class="btn btn-theme">
+							<i class="fa fa-download"></i>
+							Télécharger l'état global de Vir. de salaires par banque
+					</a>
+		</div>
+	</div>
+
+</form>
+<!-- Initialize Quill editor -->
+<script>
+  var quill = new Quill('#editor', {
+    theme: 'bubble'
+  });
+
+</script>

@@ -1,0 +1,113 @@
+<file-uploader></file-uploader>
+
+<div class="ui-grid-row">
+	<div class="ui-grid-col-2">
+		<img class="thumb" src="assets/images/user/{{aUser.pic}}" alt="" />
+	</div>
+	<div class="ui-grid-col-10">
+		<button type="button" pButton icon="fa fa-plus" style="float: left"
+			(click)="showDialogToUploadImage(aUser)" *ngIf="loggedInUser.role !==3 && loggedInUser.userAccess !== 2"
+			label="{{CHANGE_PROFIL_IMAGE}}"></button>
+	</div>
+</div>
+
+<form (ngSubmit)="saveUser()" #personalInfoForm="ngForm">
+	<div class="form-group">
+		<label i18n="@@lastName" for="lastName">Nom:</label> <input
+			type="text" pInputText class="form-control" id="lastName" required
+			[(ngModel)]="aUser.lastName" name="lastName" #lastName="ngModel">
+		<div [hidden]="lastName.valid || lastName.pristine"
+			class="alert alert-danger">Nom Requis</div>
+	</div>
+	<div class="form-group">
+		<label i18n="@@firstName" for="firstName">Prenom:</label> <input
+			type="text" pInputText class="form-control" id="firstName" required
+			[(ngModel)]="aUser.firstName" name="firstName" #firstName="ngModel">
+		<div [hidden]="firstName.valid || firstName.pristine"
+			class="alert alert-danger">Prenom Requis</div>
+	</div>
+	<div class="form-group">
+		<label i18n="@@email" for="email">E-mail</label> <input type="email"
+			pInputText class="form-control" id="email" [(ngModel)]="aUser.email"
+			name="email" #email="ngModel">
+	</div>
+	<div class="form-group">
+		<label i18n="@@email" for="emailPersonnel">E-mail personnel</label> <input type="email"
+			pInputText class="form-control" id="emailPersonnel" [(ngModel)]="aUser.emailPersonnel"
+			name="emailPersonnel" #emailPersonnel="ngModel">
+	</div>
+
+	<div class="form-group">
+		<label i18n="@@userName" for="userName">Nom d'utilisateur</label> <input
+			type="userName" pInputText class="form-control" id="userName"
+			[(ngModel)]="aUser.userName" name="userName" #userName="ngModel">
+	</div>
+
+	<div class="form-group">
+		<label i18n="@@password" for="password">Mot de Passe</label> <input
+			type="password" pPassword class="form-control" id="password" required
+			[(ngModel)]="aUser.password" name="password" #password="ngModel">
+		<div [hidden]="password.valid || password.pristine"
+			class="alert alert-danger" i18n="@@passwordRequired">Le mot de
+			passe est requis</div>
+	</div>
+
+	<div class="form-group">
+		<label i18n="@@birthDate" for="birthDate">Date de Naissance</label>
+		<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="birthDate" [(ngModel)]="aUser.birthDate"
+			[showIcon]="true" name="birthDate" #birthDate="ngModel"></p-calendar>
+
+		<div [hidden]="birthDate.valid || birthDate.pristine"
+			class="alert alert-danger" i18n="@@birthDateRequired">Date de
+			naissance est requise</div>
+	</div>
+	<div class="form-group">
+		<label i18n="@@cityOfBirth" for="cityOfBirth">Lieu de
+			Naissance</label> <input type="text" pInputText class="form-control"
+			id="cityOfBirth" [(ngModel)]="aUser.cityOfBirth" name="cityOfBirth"
+			#birthPlace="ngModel">
+	</div>
+
+	<div class="form-group">
+		<label i18n="@@sex" for="sex">Sex:</label>
+
+		<div class="ui-g-12">
+			<p-radioButton id="sex" name="sex" value="M" label="{{MALE}}"
+				[(ngModel)]="aUser.sex"></p-radioButton>
+			<p-radioButton id="sex" name="sex" value="F" label="{{FEMALE}}"
+				[(ngModel)]="aUser.sex"></p-radioButton>
+		</div>
+
+	</div>
+
+	<p-selectButton [options]="roles" [(ngModel)]="aUser.role"
+		*ngIf="loggedInUser.role==1" name="role" #role="ngModel"></p-selectButton>
+  
+	<p-selectButton [options]="rolesGrh" [(ngModel)]="aUser.role"
+		*ngIf="loggedInUser.role==10" name="role" #role="ngModel"></p-selectButton>
+
+		<div class="form-group" style="margin-top: 20px;" *ngIf="loggedInUser.role==1">
+			<label i18n="@@access" for="access">Quelle accès voulez-vous donner à cet utilisateur ?</label>
+	
+			<div class="ui-g-12">
+				<p-radioButton id="access" name="access" value="0" label="Accès en lecture et écriture"
+						  [(ngModel)]="aUser.userAccess"></p-radioButton>&nbsp;&nbsp;&nbsp;&nbsp;
+					  <p-radioButton id="access" name="access" value="1" label="Accès en lecture"
+						  [(ngModel)]="aUser.userAccess"></p-radioButton>&nbsp;&nbsp;&nbsp;&nbsp;
+					 <p-radioButton id="access" name="access" value="2" label="Accès pour consulter "
+						  [(ngModel)]="aUser.userAccess"></p-radioButton>
+			</div>
+	
+		</div>
+
+	<br /><br />
+	<button [disabled]="!personalInfoForm.form.valid" pButton type="submit" *ngIf="loggedInUser.userAccess != 2"
+		label="{{SAVE_LABEL}}"></button>
+
+	<br> <br>
+	<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+	<div *ngIf="success" class="alert alert-success">{{success}}</div>
+
+
+</form>
+

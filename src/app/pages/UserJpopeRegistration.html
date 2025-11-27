@@ -1,0 +1,124 @@
+<p-growl [(value)]="msgs"></p-growl>
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 class="heading-title pull-left">Inscription</h1>
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+					ici:</li>
+				<li><a i18n="@@homeLink" href="index.html">Home</a><i
+					class="fa fa-angle-right"></i></li>
+				<li class="current"><a href="#">JPOPE</a><i
+					class="fa fa-angle-right"></i></li>
+			</ul>
+		</div>
+		
+	</header>
+	<div class="page-content">
+
+		<p-tabView>
+			
+		<p-tabPanel id="jpope" header="Inscritpion Journée Porte Ouverte"
+			leftIcon="fa fa-pencil-square-o">
+
+		<form (ngSubmit)="saveUserJpope()" #profileForm="ngForm">
+			<br />
+
+			<div class="form-group">
+				<label i18n="@@lastName" for="lastName">Nom:</label> <input
+					type="text" pInputText class="form-control" id="lastName" required
+					 [(ngModel)]="userJpope.lastName"
+					name="lastName" #lastName="ngModel">
+				<div [hidden]="lastName.valid || lastName.pristine"
+					class="alert alert-danger" i18n="@@lastNameRequired">Nom
+					Requis</div>
+			</div>
+			<div class="form-group" >
+				<label i18n="@@firstName" for="firstName">Prenom:</label> <input
+					type="text" pInputText class="form-control" id="firstName" required
+					[(ngModel)]="userJpope.firstName"
+					name="firstName" #firstName="ngModel">
+				<div [hidden]="firstName.valid || firstName.pristine"
+					class="alert alert-danger" i18n="@@firstNameRequired">Prenom
+					Requis</div>
+			</div>
+			<div class="form-group" >
+				<label i18n="@@email" for="email1">E-mail</label> <input
+					type="email" pInputText class="form-control" id="email1" required
+					[(ngModel)]="userJpope.email"  name="email1"
+					#email1="ngModel">
+				<div [hidden]="email1.valid || email1.pristine"
+					class="alert alert-danger" i18n="@@email1Required">Email
+					Requis</div>
+			</div>
+
+				<div class="form-group">
+				<label i18n="@@phone" for="phone">Telephone</label> <input
+					type="text" pInputText
+					class="form-control" id="phone" required [(ngModel)]="userJpope.phone"
+					name="phone" #phone="ngModel">
+				<div [hidden]="phone.valid || phone.pristine"
+					class="alert alert-danger" i18n="@@phoneRequired">Téléphone
+					Requis</div>
+			</div>
+			<div class="form-group">
+				<label i18n="@@adresse" for="adresse">Adresse</label> <input
+					type="text" pInputText
+					class="form-control" id="adresse" required [(ngModel)]="userJpope.address"
+					name="adresse" #adresse="ngModel">
+					<div [hidden]="adresse.valid || adresse.pristine"
+					class="alert alert-danger" i18n="@@adresseRequired">adresse
+					Requis</div>
+			</div>
+			<div class="form-group">
+				<label i18n="@@company" for="company">Société</label> <input
+					type="text" pInputText
+					class="form-control" id="sciete" required [(ngModel)]="userJpope.company"
+					name="sciete" #sciete="ngModel">
+					<div [hidden]="sciete.valid || sciete.pristine"
+					class="alert alert-danger" i18n="@@scieteRequired">sciété
+					Requis</div>
+			</div>
+			<div class="form-group">
+				<label i18n="@@companyContact" for="companyContact">Contact Société</label> <input
+					type="text" pInputText
+					class="form-control" id="companyContact" [(ngModel)]="userJpope.companyContact"
+					name="companyContact" #companyContact="ngModel">
+			</div>
+
+			<div class="form-group">
+				<label i18n="@@post" for="post">Votre Poste</label> <input
+					type="text" pInputText
+					class="form-control" id="post" [(ngModel)]="userJpope.post"
+					name="post" #post="ngModel">
+			</div>
+
+			
+
+			<div class="form-group">
+				<label i18n="@@Iam" for="sex">Je suis:</label>
+
+				<div class="ui-g-12">
+					<p-radioButton name="sex" value="F" label="{{FEMALE}}"
+						 [(ngModel)]="userJpope.sex"></p-radioButton>
+					<p-radioButton name="sex" value="M" label="{{MALE}}"
+						 [(ngModel)]="userJpope.sex"></p-radioButton>
+				</div>
+			</div>
+			<button pButton (click)="cancel()"
+				label="Annuler"></button>
+            <button pButton
+				label="Enregistrer"></button>
+
+			<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+		</form>
+		</p-tabPanel>
+		</p-tabView>
+
+		<br />
+
+		
+	</div>
+	
+</div>

@@ -1,0 +1,166 @@
+<file-uploader></file-uploader>
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="800"
+	>
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="assignment">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@name" for="name">Nom</label>
+		</div>
+		<div class="ui-grid-col-9">
+			<input pInputText id="name" [(ngModel)]="assignment.name" required />
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@date" for="startDate">Date</label>
+		</div>
+		<div class="ui-grid-col-9">
+			<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="startDate" [(ngModel)]="assignment.startDate"></p-calendar>
+		</div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@duedate" for="dueDate">Date Echeance</label>
+		</div>
+		<div class="ui-grid-col-9">
+			<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="dueDate" [(ngModel)]="assignment.dueDate"></p-calendar>
+		</div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@description" for="description">Description</label>
+		</div>
+		<div class="ui-grid-col-9">
+			<p-editor [(ngModel)]="assignment.description"
+				[style]="{'height':'320px'}"></p-editor>
+		</div>
+	</div>
+
+	<br>
+</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+
+		<p-checkbox *ngIf="assignment" [(ngModel)]="assignment.sendEmail"
+			binary="true" id="sendEmail" label="{{SEND_EMAIL}}"></p-checkbox>
+		<br />
+		<p-checkbox *ngIf="assignment" [(ngModel)]="assignment.sendSMS"
+			binary="true" id="sendSMS" label="{{SEND_SMS}}"></p-checkbox>
+	</div>
+</footer> </p-dialog>
+
+
+<p-dataTable [value]="assignments" selectionMode="single"
+	[(selection)]="assignment" expandableRows="true"
+	(onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15"
+	[responsive]="true"
+	(onRowExpand)="getAssignmentFiles($event); getAssignmentResponses($event)">
+<p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}"></p-column>
+<p-column *ngFor="let col of cols" [field]="col.field"
+	[header]="col.header" [sortable]="col.sortable" [filter]="col.filter">
+<ng-template *ngIf="col.type === 'string' || col.type === undefined"
+	let-col let-data="rowData" pTemplate type="body"> <span
+	class="col-string">{{ data[ col.field ] }}</span> </ng-template> <ng-template
+	*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+	type="body"> <span class="col-date">{{
+	data[col.field ] | date:'dd/MM/yyyy' }}</span> </ng-template> </p-column> <p-column field="id"
+	header="actions" [style]="{'width':'7%'}"> <ng-template
+	let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+<button type="button" pButton icon="fa fa-picture-o" style="float: left"
+	(click)="showDialogToUploadImage(data)"></button>
+</ng-template> </p-column> <ng-template let-exam pTemplate="rowexpansion">
+<div class="ui-grid ui-grid-responsive ui-fluid">
+	<p-accordion> <p-accordionTab
+		header="Les Fichiers du devoir">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2"></div>
+		<div class="ui-grid-col-8">
+			<p-dataTable [value]="assignment.files"> <p-column
+				header="Fichier" field="fileName" [style]="{'width':'60%'}"></p-column>
+			<p-column header="Action" field="fileName" [style]="{'width':'40%'}">
+			<ng-template let-col let-doc="rowData" pTemplate="body">
+			<a *ngIf="doc.fileName" class="btn btn-theme"
+				href="assets/docs/student_docs/{{doc.fileName}}"> <i
+				class="fa fa-download"></i>{{DOWNLOAD}}
+			</a> <a *ngIf="doc.fileName" (click)="deleteDoc(doc)"
+				class="btn btn-theme"> <i class="fa fa-delete"></i>{{DELETE_LABEL}}
+			</a> </ng-template> </p-column> </p-dataTable>
+		</div>
+		<div class="ui-grid-col-2"></div>
+	</div>
+	</p-accordionTab> <p-accordionTab header="Les reponses des etudiants">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-12">
+			<p-dataTable [value]="assignment.assignmentResponses"
+				selectionMode="single" [(selection)]="assignmentResponse"
+				(onRowSelect)="onResponseRowSelect($event)" [paginator]="true"
+				[rows]="15" [responsive]="true"> <p-column header="Nom"
+				field="lastName" [style]="{'width':'20%'}"></p-column> <p-column
+				header="Prenom" field="firstName" [style]="{'width':'20%'}"></p-column>
+			<p-column header="StudentID" field="studentId"
+				[style]="{'width':'20%'}"></p-column> </p-dataTable>
+		</div>
+	</div>
+	</p-accordionTab> </p-accordion>
+</div>
+</ng-template> <ng-template pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"
+	*ngIf="currentUser.role === 1 || currentUser.role === 2 || currentUser.role === 8 || currentUser.role === 11"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>
+
+
+
+
+<p-dialog header="{{DETAIL}}" [(visible)]="displayResponseDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="800"
+	height="700"> <p-accordion> <p-accordionTab
+	header="Les Fichiers du devoir de l'etudiant"> <p-dataTable
+	[value]="assignmentResponse.files"> <p-column
+	header="Fichier" field="fileName" [style]="{'width':'60%'}"></p-column>
+<p-column header="Action" field="fileName" [style]="{'width':'40%'}">
+<ng-template let-col let-doc="rowData" pTemplate="body"> <a
+	*ngIf="doc.fileName" class="btn btn-theme"
+	href="assets/docs/student_docs/{{doc.fileName}}"> <i
+	class="fa fa-download"></i>{{DOWNLOAD}}
+</a> <a *ngIf="doc.fileName" (click)="deleteDoc(doc)" class="btn btn-theme">
+	<i class="fa fa-delete"></i>{{DELETE_LABEL}}
+</a> </ng-template> </p-column> <p-footer>
+<div class="ui-helper-clearfix" style="width: 100%"
+	*ngIf="currentUser.role === 1 || currentUser.role === 2 || currentUser.role === 8 || currentUser.role === 11">
+	<button type="button" pButton icon="fa fa-plus" style="float: left"
+		(click)="showResponseDialogToUploadImage(assignmentResponse)"></button>
+</div>
+</p-footer> </p-dataTable> </p-accordionTab> </p-accordion>
+
+<div class="ui-grid ui-grid-responsive ui-fluid"
+	*ngIf="assignmentResponse">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@description" for="description">Description</label>
+		</div>
+		<div class="ui-grid-col-9">
+			<p-editor [(ngModel)]="assignmentResponse.description"
+				[style]="{'height':'320px'}"></p-editor>
+		</div>
+	</div>
+
+	<br>
+</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close"
+			(click)="deleteAssignmentResponse()" label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check"
+			(click)="saveAssignmentResponse()" label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>

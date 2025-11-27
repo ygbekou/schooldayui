@@ -1,0 +1,3 @@
+<h3 i18n="@@videoOfDay" class="title">Vidéos du jour</h3>
+<iframe [hidden]="!activeVideo.link" class="video-iframe"
+	[src]="sanitize(activeVideo.link)" frameborder="0" allowfullscreen></iframe>

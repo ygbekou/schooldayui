@@ -1,0 +1,228 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+    <h1 i18n="@@adminSpace" class="heading-title pull-left">
+      <img class="thumb" src="assets/images/scoolday.png" alt="" />
+    </h1>
+    <div class="breadcrumbs pull-right">
+      <ul class="breadcrumbs-list">
+        <li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+          ici:</li>
+        <li><a i18n="@@homeLink" href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+        <li><a i18n="@@admin" href="#">GRH</a><i class="fa fa-angle-right"></i></li>
+        <li i18n="@@statistics" class="current">Ajout personnel</li>
+      </ul>
+    </div>
+    <!--//breadcrumbs-->
+  </header>
+
+	<div class="page-content">
+	    <div [hidden]="currentUser.role===10" class="alert alert-danger"
+	      i18n="@@youNeedToBeConnectedAsAdmin">Vous
+	      devez etre connecte en tant que GRH</div>
+
+			    <div class="row page-row" [hidden]="currentUser.role!==10">
+			      <app-grh-menu></app-grh-menu>
+
+						<!--//page-sidebar-->
+			      <div class="content-wrapper col-md-10 col-sm-8">
+
+							<form (ngSubmit)="saveUser()" #profileForm="ngForm">
+								<br />
+								<p-steps [model]="items" [(activeIndex)]="activeIndex"
+									styleClass="steps-custom"></p-steps>
+								<br />
+								<!-- STEP 1 -->
+								<div class="form-group" *ngIf="activeIndex===0||activeIndex===3">
+									<label i18n="@@lastName" for="lastName">Nom:</label> <input
+										type="text" pInputText class="form-control" id="lastName" required
+										[disabled]="activeIndex===3" [(ngModel)]="user.lastName"
+										name="lastName" #lastName="ngModel">
+									<div [hidden]="lastName.valid || lastName.pristine"
+										class="alert alert-danger" i18n="@@lastNameRequired">Nom
+										Requis</div>
+								</div>
+								<div class="form-group" *ngIf="activeIndex===0||activeIndex===3">
+									<label i18n="@@firstName" for="firstName">Prenom:</label> <input
+										type="text" pInputText class="form-control" id="firstName" required
+										[disabled]="activeIndex===3" [(ngModel)]="user.firstName"
+										name="firstName" #firstName="ngModel">
+									<div [hidden]="firstName.valid || firstName.pristine"
+										class="alert alert-danger" i18n="@@firstNameRequired">Prenom
+										Requis</div>
+								</div>
+								<div class="form-group" *ngIf="activeIndex===0||activeIndex===3">
+									<label i18n="@@email" for="email1">E-mail</label> <input
+										type="email" pInputText class="form-control" id="email1" required
+										[(ngModel)]="user.email" [disabled]="activeIndex===3" name="email1"
+										#email1="ngModel">
+									<div [hidden]="email1.valid || email1.pristine"
+										class="alert alert-danger" i18n="@@emailRequired">Email
+										Requis</div>
+								</div>
+								<div class="form-group" *ngIf="activeIndex===0||activeIndex===3">
+									<label i18n="@@email" for="email1">E-mail personnel</label> <input
+										type="email" pInputText class="form-control" id="email2"
+										[(ngModel)]="user.emailPersonnel" [disabled]="activeIndex===3" name="email2"
+										#email2="ngModel">
+								</div>
+
+								<div class="form-group" *ngIf="activeIndex===0||activeIndex===3">
+									<label i18n="@@password" for="password">Mot de Passe</label> <input
+										type="password" pPassword class="form-control" id="password"
+										required [disabled]="activeIndex===3" [(ngModel)]="user.password"
+										name="password" #password="ngModel">
+									<div [hidden]="password.valid || password.pristine"
+										class="alert alert-danger" i18n="@@passwordRequired">Le mot
+										de passe est requis</div>
+								</div>
+
+								<div class="form-group" *ngIf="activeIndex===0||activeIndex===3">
+									<label i18n="@@birthDate" for="birthDate">Date de Naissance </label>
+									<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="birthDate" [(ngModel)]="user.birthDate"
+										[disabled]="activeIndex===3" [showIcon]="true" name="birthDate"
+										#birthDate="ngModel"></p-calendar>
+
+									<div [hidden]="birthDate.valid || birthDate.pristine"
+										class="alert alert-danger" i18n="@@birthDateRequired">Date de
+										naissance est requise</div>
+								</div>
+
+
+								<div class="form-group" *ngIf="activeIndex===0||activeIndex===3">
+					        <label i18n="@@cityOfBirth" for="cityOfBirth">Lieu de
+					          Naissance</label> <input type="text" pInputText class="form-control"
+					          id="cityOfBirth" [(ngModel)]="user.cityOfBirth" name="cityOfBirth"
+					          #birthPlace="ngModel" [disabled]="activeIndex===3">
+					      </div>
+
+
+								<div class="form-group" *ngIf="activeIndex===0||activeIndex===3">
+									<label i18n="@@originCountry" for="countryOrigin">Pays
+										d'origine </label>
+									<p-autoComplete [(ngModel)]="user.countryOrigin"
+										(onDropdownClick)="handleDropdownClick($event)"
+										[suggestions]="filteredCountries" [dropdown]="true"
+										id="countryOrigin" [disabled]="activeIndex===3"
+										(completeMethod)="filterCountry($event)" name="countryOrigin"
+										field="name" [size]="30" placeholder="{{COUNTRY_ORIGIN}}"
+										[minLength]="1"></p-autoComplete>
+								</div>
+
+								<div class="form-group" *ngIf="activeIndex===0||activeIndex===3">
+									<label i18n="@@Iam" for="sex">Sexe : </label>
+
+									<div class="ui-g-12">
+										<p-radioButton name="sex" value="F" label="{{FEMALE}}"
+											[disabled]="activeIndex===3" [(ngModel)]="user.sex"></p-radioButton>
+										<p-radioButton name="sex" value="M" label="{{MALE}}"
+											[disabled]="activeIndex===3" [(ngModel)]="user.sex"></p-radioButton>
+									</div>
+
+								</div>
+
+								<div class="form-group" *ngIf="activeIndex===0||activeIndex===3">
+									<label for="sex" i18n="@@Iam">Role :<font color="red">*</font></label>
+									<div class="ui-g-12">
+										<!-- Adébayor 27/07/2022
+										<p-radioButton name="role" value="5" label="Employé"
+											[disabled]="activeIndex===3 " [(ngModel)]="user.role"></p-radioButton>
+
+										<p-radioButton name="role" value="2" label="Enseignant"
+											[disabled]="activeIndex===3 " [(ngModel)]="user.role"></p-radioButton>
+
+										<p-radioButton name="role" value="12" label="Surveillant"
+											[disabled]="activeIndex===3 " [(ngModel)]="user.role"></p-radioButton>
+										-->
+
+										<!-- Adébayor 27/07/2022 -->
+										<p-selectButton [options]="roles" [(ngModel)]="user.role"
+											*ngIf="currentUser.role==10" name="role" #role="ngModel"></p-selectButton>
+									</div>
+								</div>
+
+							
+
+
+
+								<!-- STEP 2 -->
+
+
+
+								<div class="form-group" *ngIf="activeIndex===1||activeIndex===3">
+									<label i18n="@@address" for="address">Adresse</label> <input
+										type="text" pInputText class="form-control" id="address" required
+										[disabled]="activeIndex===3" [(ngModel)]="user.address"
+										name="address" #address="ngModel">
+									<div [hidden]="address.valid || address.pristine||activeIndex===3"
+										class="alert alert-danger" i18n="@@addressRequired">Address
+										Requis</div>
+								</div>
+								<div class="form-group" *ngIf="activeIndex===1||activeIndex===3">
+									<label i18n="@@zipCode" for="zipCode">Code Postal</label> <input
+										type="text" pInputText class="form-control" id="zipCode"
+										[disabled]="activeIndex===3" [(ngModel)]="user.zipCode"
+										name="zipCode" #zipCode="ngModel">
+								</div>
+								<div class="form-group" *ngIf="activeIndex===1||activeIndex===3">
+									<label i18n="@@cityResidence" for="cityResidence">Ville de
+										residence</label> <input type="text" pInputText class="form-control"
+										id="cityResidence" [disabled]="activeIndex===3" required
+										[(ngModel)]="user.cityResidence" name="cityResidence"
+										#cityResidence="ngModel">
+									<div
+										[hidden]="cityResidence.valid || cityResidence.pristine||activeIndex===3"
+										class="alert alert-danger" i18n="@@cityResidenceRequired">Ville
+										de residence Requise</div>
+								</div>
+
+								<div class="form-group" *ngIf="activeIndex===1||activeIndex===3">
+									<label i18n="@@countryResidence" for="countryResidence">Pays
+										de residence</label>
+									<p-autoComplete [(ngModel)]="user.countryResidence"
+										(onDropdownClick)="handleDropdownClick($event)"
+										[suggestions]="filteredCountries" [dropdown]="true"
+										id="countryResidence" [disabled]="activeIndex===3" required
+										(completeMethod)="filterCountry($event)" name="countryResidence"
+										field="name" [size]="30" placeholder="{{COUNTRY_RESIDENCE}}"
+										[minLength]="1"></p-autoComplete>
+								</div>
+
+								<div class="form-group" *ngIf="activeIndex===1||activeIndex===3">
+									<label i18n="@@phone" for="phone">Telephone</label> <input
+										type="text" pInputText [disabled]="activeIndex===3"
+										class="form-control" id="phone" required [(ngModel)]="user.phone"
+										name="phone" #phone="ngModel">
+									<div [hidden]="phone.valid || phone.pristine||activeIndex===3"
+										class="alert alert-danger" i18n="@@phoneRequired">Telephone
+										Requis</div>
+								</div>
+
+								<!-- STEP 3 -->
+
+
+								<button style="margin-top: 0px; width: 40%; height: 50px;" pButton
+									type="text" (click)="buttonNbr=1" icon="fa fa fa-play-circle"
+									label="{{navigationLabel}}"></button>
+
+								<button (click)="buttonNbr=2" pButton type="submit"
+									icon="fa fa fa-play-circle"
+									style="margin-top: 0px; width: 40%; height: 50px;"
+									*ngIf="activeIndex===3" label="{{SAVE_LABEL}}"></button>
+
+								<br>
+								<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+								<div *ngIf="msg" class="alert alert-success">{{msg}}</div>
+
+							</form>
+
+						</div>
+						<!--//content-wrapper-->
+
+				<!--//content-wrapper-->
+				</div>
+				<!--//page-row-->
+		</div>
+		<!--//page-content-->
+	</div>
+	<!--//page-->

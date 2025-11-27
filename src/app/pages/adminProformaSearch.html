@@ -1,0 +1,83 @@
+
+<file-uploader></file-uploader>
+
+<!--div class="ui-grid-row">
+	<div class="ui-grid-col-4">
+
+        <button type="button" pButton icon="fa fa-plus-circle" (click)="addNewProforma()"
+                label="Proforma" style="margin-top: 0px; height: 35px; font-weight: bold;"></button>
+	</div>
+	<div class="ui-grid-col-1">
+	</div>
+</div-->
+
+<div style="margin-top: 20px;">
+
+	<form (ngSubmit)="search()" #searchForm="ngForm">
+		<div class="ui-grid ui-grid-responsive ui-fluid"
+			[hidden]="currentUser.role>2 && currentUser.role!=5 && currentUser.role!=9">
+
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-2">
+					<label i18n="@@beginDate" for="beginDate">Date de début</label>
+				</div>
+				<div class="ui-grid-col-3">
+					<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="beginDate" name="beginDate"
+						[(ngModel)]="searchTextObject.beginDate" #beginDate="ngModel"
+						placeholder="dd/mm/yyyy"></p-calendar>
+				</div>
+				<div class="ui-grid-col-1"></div>
+				<div class="ui-grid-col-2">
+					<label i18n="@@endDate" for="endDate">Date de fin</label>
+				</div>
+				<div class="ui-grid-col-3">
+					<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="endDate" name="endDate"
+						[(ngModel)]="searchTextObject.endDate" #endDate="ngModel"
+						placeholder="dd/mm/yyyy"></p-calendar>
+				</div>
+				<div class="ui-grid-col-1"></div>
+			</div>
+
+			<br />
+
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-10"></div>
+				<div class="ui-grid-col-2"></div>
+			</div>
+
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-10">
+					<input type="text" pInputText class="form-control" id="searchT"
+						required [(ngModel)]="searchTextObject.searchText"
+						placeholder="{{INVOICE_SEARCH_PARTS}}" name="searchT"
+						#searchT="ngModel">
+				</div>
+				<div class="ui-grid-col-2">
+					<button type="button" pButton icon="fa fa-search"
+						(click)="search()" label="Go"
+						style="margin-top: 0px; height: 35px;"></button>
+				</div>
+			</div>
+
+		</div>
+
+	</form>
+
+	<p-dataTable [value]="invoicesView" selectionMode="single"
+		[(selection)]="invoiceView" expandableRows="true"
+		(onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15"
+		[responsive]="true"> <p-column *ngFor="let col of cols"
+		[style]="col.style" [field]="col.field" [header]="col.header"
+		[sortable]="col.sortable" [filter]="col.filter"> <ng-template
+		*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+		type="body"> <span class="col-date">{{ data[
+		col.field ] | date:'dd/MM/yyyy' }}</span> </ng-template> </p-column> <ng-template
+		pTemplate="paginatorLeft">
+	<button type="button" (click)="addNewProforma()" pButton
+		icon="fa fa-plus-circle"></button>
+	</ng-template> <ng-template pTemplate="paginatorRight">
+	<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+	</ng-template> </p-dataTable>
+
+</div>
+

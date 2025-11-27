@@ -1,0 +1,77 @@
+
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="450"
+	height="370">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="video">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@date" for="videoDate">Date</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="videoDate" [(ngModel)]="video.videoDate"></p-calendar>
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@link" for="link">Lien</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="link" [(ngModel)]="video.link" required />
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@description" for="description">Description</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<textarea pInputTextarea id="description"
+				[(ngModel)]="video.description" rows="5" pInputTextarea
+				autoResize="autoResize" required></textarea>
+		</div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@active" for="status">Active</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-checkbox [(ngModel)]="video.status" binary="true" id="status"></p-checkbox>
+		</div>
+
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@rank" for="rank">Rank</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="rank" [(ngModel)]="video.rank" />
+		</div>
+	</div>
+</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+
+<p-dataTable [value]="videos" selectionMode="single"
+	[(selection)]="selectedVideo" (onRowSelect)="onRowSelect($event)"
+	[paginator]="true" [rows]="15" [responsive]="true"> <p-column
+	*ngFor="let col of cols" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [filter]="col.filter"> <ng-template
+	*ngIf="col.type === 'string' || col.type === undefined" let-col
+	let-data="rowData" pTemplate type="body"> <span
+	class="col-string">{{ data[ col.field ] }}</span> </ng-template> <ng-template
+	*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+	type="body"> <span class="col-date">{{ data[
+	col.field ] | date:'dd/MM/yy' }}</span> </ng-template> </p-column> <ng-template
+	pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>

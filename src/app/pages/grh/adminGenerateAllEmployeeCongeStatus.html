@@ -1,0 +1,47 @@
+<form (ngSubmit)="printAllEmployeeCongeStatus()" #etatHonoraireTeacherInfoForm="ngForm">
+
+	<div class="ui-grid ui-grid-responsive ui-fluid">
+		<div>
+
+			<div class="ui-grid-row form-group">
+					<div class="ui-grid-col-8">
+							<div class="alert alert-success">
+									Génération de l'état de congé du personnel
+							</div>
+
+					</div>
+			</div>
+			
+		</div>
+	</div>
+
+
+	<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+	<br />
+
+	<div class="ui-grid-row form-group">
+			<div class="ui-grid-col-4">
+						<button [disabled]="!etatHonoraireTeacherInfoForm.form.valid"
+						pButton type="button" icon="fa fa-print" (click)="printAllEmployeeCongeStatus()" 
+						label="{{printLabel}}">
+						</button>
+					&nbsp;&nbsp;
+			</div>
+			<div class="ui-grid-col-6">
+						<a *ngIf="reportName" target="_blank" href="assets/reports/{{reportName}}"
+						i18n="@@downloadReport" class="btn btn-theme">
+								<i class="fa fa-download"></i>
+								Télécharger l'état de congé du personnel
+						</a>
+			</div>
+	</div>
+
+</form>
+<!-- Initialize Quill editor -->
+<script>
+  var quill = new Quill('#editor', {
+    theme: 'bubble'
+  });
+
+</script>

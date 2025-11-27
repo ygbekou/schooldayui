@@ -1,0 +1,73 @@
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 i18n="@@ourVideos" class="heading-title pull-left">Nos
+			Vidéos</h1>
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+					ici:</li>
+				<li><a i18n="@@homeLink" href="index.html">Home</a><i
+					class="fa fa-angle-right"></i></li>
+				<li i18n="@@ourVideos" class="current">Nos Vidéos</li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<div class="row page-row">
+			<div class="news-wrapper col-md-8 col-sm-7">
+
+
+
+				<p-dataList [value]="videoPairs" styleClass="blankDataList">
+				<ng-template let-videoPair pTemplate="item">
+				<div class="ui-grid ui-grid-responsive ui-fluid"
+					style="font-size: 16px; padding: 0px;">
+
+					<article class="news-item page-row has-divider clearfix row">
+						<div class="details col-md-6 col-sm-6 col-xs-6">
+							<iframe class="video-iframe"
+								[src]="sanitize(videoPair.video1.link)" frameborder="0"
+								allowfullscreen></iframe>
+							<br /> <strong>{{videoPair.video1.videoDate|date:'medium'}}
+							</strong>: {{videoPair.video1.description}}
+						</div>
+						<div class="details col-md-6 col-sm-6 col-xs-6"
+							[hidden]="videoPair.video2.id<1">
+							<iframe *ngIf="videoPair.video2.id>0" class="video-iframe"
+								[src]="sanitize(videoPair.video2.link)" frameborder="0"
+								allowfullscreen></iframe>
+							<br /> <strong>{{videoPair.video2.videoDate|date:'medium'}}
+							</strong>: {{videoPair.video2.description}}
+						</div>
+					</article>
+				</div>
+				</ng-template> </p-dataList>
+
+
+			</div>
+			<!--//news-wrapper-->
+			<aside
+				class="page-sidebar  col-md-3 col-md-offset-1 col-sm-4 col-sm-offset-1">
+				<section class="widget has-divider">
+					<app-contact-short></app-contact-short>
+				</section>
+				<!--//widget-->
+				<section class="widget has-divider">
+					<app-event-short-vert></app-event-short-vert>
+				</section>
+
+			</aside>
+		</div>
+
+		<!--//page-row-->
+	</div>
+
+	<!--//page-content-->
+</div>
+<iframe
+	src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fipnet.togo%2F&width=122&layout=button&action=like&size=small&show_faces=true&share=true&height=65&appId"
+	width="122" height="65" style="border: none; overflow: hidden"
+	scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+<!--//page-->
+

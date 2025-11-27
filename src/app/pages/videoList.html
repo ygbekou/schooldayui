@@ -1,0 +1,40 @@
+
+<section class="video">
+	<h1 class="section-heading text-highlight">
+		<span i18n="@@videoOfDay" class="line">Vidéo du jour</span>
+	</h1>
+	<div class="carousel-controls">
+		<a i18n="@@allVideos" class="btn btn-theme read-more" href="#/videos">Toutes
+			les vidéos<i class="fa fa-chevron-right"
+			style="background: transparent"></i>
+		</a>
+		<!--  
+		<a class="prev" href="#videos-carousel"  (click)="getActiveVideos()" data-slide="prev"><i
+			class="fa fa-caret-left"></i></a> <a class="next" href="#videos-carousel" (click)="getActiveVideos()"
+			data-slide="next"><i class="fa fa-caret-right"></i></a>
+			-->
+	</div>
+	<!--//carousel-controls-->
+	<div class="section-content">
+		<div id="videos-carousel" class="videos-carousel carousel slide">
+			<div class="carousel-inner">
+				<div class="item active">
+					<div class="youtube-player" data-id="{{activeVideo.link}}"></div>
+
+					<strong>{{activeVideo.videoDate|date:'medium'}} </strong>:{{activeVideo.description}}
+
+				</div>
+			</div>
+			<!--//carousel-inner-->
+
+		</div>
+	</div>
+	<!--//section-content-->
+
+</section>
+<iframe
+	src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2F&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId"
+	width="450" height="80" style="border: none; overflow: hidden"
+	scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+<!--//video-->
+

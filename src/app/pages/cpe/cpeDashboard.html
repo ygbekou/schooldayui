@@ -1,0 +1,110 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 i18n="@@adminSpace" class="heading-title pull-left">
+			<img class="thumb" src="assets/images/scoolday.png" alt="" />
+		</h1>
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+					ici:</li>
+				<li><a i18n="@@homeLink" href="index.html">Home</a><i
+					class="fa fa-angle-right"></i></li>
+				<li><a i18n="@@admin" href="#">Cpe</a><i
+					class="fa fa-angle-right"></i></li>
+				<li i18n="@@applications" class="current">Dashboard
+					</li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<div [hidden]="currentUser.role===1||currentUser.role===14"
+			class="alert alert-danger" i18n="@@youNeedToBeConnectedAsAdmin">Vous
+			devez etre connecte en tant que CPE pour voir ce contenu</div>
+		<div class="row page-row"
+			[hidden]="!(currentUser.role===1||currentUser.role===14)">
+			<app-cpe-menu></app-cpe-menu>
+			<!--//page-sidebar-->
+			<div class="content-wrapper col-md-10 col-sm-8">
+				<button *ngIf="user.id>0 && st.lastName != undefined" type="button" class="btn btn-primary">
+					<span> </span>{{st.lastName +' '+ st.firstName + ' | ' +st.email + ' | ' + st.phone}}
+				  </button>
+
+				  <button *ngIf="user.id>0 && st.lastName == undefined" type="button" class="btn btn-primary">
+					<span> </span>{{st.string1 +' '+ st.string2 + ' | ' +st.string3 + ' | ' + st.string5}}
+				  </button>
+
+				<p-tabView id="tabList" (onChange)="onTabChange($event)" >
+					<!--
+					<p-tabPanel
+						header="Liste des étudiants" leftIcon="fa fa-male" [selected]="activeTab === 0">
+						<app-suivi-inscrit-par-classe (onUserSelected)="onUserSelected($event)"></app-suivi-inscrit-par-classe> 
+					</p-tabPanel> 
+					-->
+					<p-tabPanel
+						header="Etudiant-Présence/Absence" leftIcon="fa fa-male" [selected]="activeTab === 0">
+						<app-presence-etudiant (onUserSelected)="onUserSelected($event)"></app-presence-etudiant> 
+					</p-tabPanel> 
+					<p-tabPanel header="Etudiants" leftIcon="fa fa-search" [selected]="activeTab === 1">
+						<app-admin-user-list (onUserSelected)="onUserSelected($event)" [role]="3"></app-admin-user-list>
+					</p-tabPanel>
+
+					<p-tabPanel header="Profile" leftIcon="fa fa-male" [selected]="activeTab === 2"  *ngIf="user.id > 0">
+						
+							
+						<p-tabView (onChange)="onProfileTabChange($event)">
+
+							<p-tabPanel  header="Absences">
+								<app-admin-schooling [user]="user"></app-admin-schooling>
+							</p-tabPanel>
+							<p-tabPanel header="{{PARENT}}" leftIcon="fa fa-male">
+								<app-manage-student-parent [user]="user"></app-manage-student-parent>
+							 </p-tabPanel>
+							 <p-tabPanel header="Cours" leftIcon="fa fa-male">
+								<app-cpe-cours-etudiant  [user]="user"></app-cpe-cours-etudiant>
+							 </p-tabPanel>
+							 <p-tabPanel header="Reléve de notes" leftIcon="fa fa-bar-print">
+								<app-cpe-bulletin-etudiant  [user]="user"></app-cpe-bulletin-etudiant>
+							 </p-tabPanel>
+						</p-tabView>
+						 
+					</p-tabPanel>
+
+					<p-tabPanel header="Présence Eleve" leftIcon="fa fa-bar-chart">
+
+						<p-tabView id="tabList" (onChange)="onSubTabChange($event)">
+										<p-tabPanel header="Présence" leftIcon="fa fa-bar-chart">
+							<app-admin-attendance></app-admin-attendance>
+										</p-tabPanel>
+										<p-tabPanel header="Recherche" leftIcon="fa fa-search">
+											<app-search-admin-attendance></app-search-admin-attendance>
+										</p-tabPanel>
+									
+						</p-tabView>
+			
+					</p-tabPanel>
+					 <!--<p-tabPanel
+						header="Absences" leftIcon="fa fa-male" *ngIf="user.id > 0">
+						<app-admin-schooling></app-admin-schooling>
+					</p-tabPanel> 
+                   p-tabPanel
+					    header="{{ADD_USER}}" leftIcon="fa fa-male"> <admin-studentRegistration></admin-studentRegistration>
+                    </p-tabPanel--> 
+                    <!--p-tabPanel
+					    header="{{SUBJECTS_INFORMATION}}" leftIcon="fa fa-male"> <admin-ficheRenseignement></admin-ficheRenseignement>
+                    </p-tabPanel-->
+                    <!-- <p-tabPanel
+					    header="Statistiques - Fiche renseignement" leftIcon="fa fa-male"> <app-fiche-renseignement-statistiques></app-fiche-renseignement-statistiques>
+                    </p-tabPanel>  -->
+                   
+
+           		 </p-tabView>
+			</div>
+			<!--//content-wrapper-->
+		</div>
+		<!--//page-row-->
+	</div>
+	<!--//page-content-->
+</div>
+<!--//page-->

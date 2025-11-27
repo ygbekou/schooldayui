@@ -1,0 +1,100 @@
+<file-uploader></file-uploader>
+<div class="page-wrapper">
+  <header class="page-heading clearfix">
+    <h1 i18n="@@espaceStudentLink" class="heading-title pull-left">
+      <img class="thumb" src="assets/images/scoolday.png" alt="" />
+    </h1>
+    <div class="breadcrumbs pull-right">
+      <ul class="breadcrumbs-list">
+        <li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+          ici:</li>
+        <li><a i18n="@@homeLink" href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+        <li><a i18n="@@student" href="#">Etudiant</a><i class="fa fa-angle-right"></i></li>
+        <li i18n="@@academicRecord" class="current">Dossier Scolaire</li>
+      </ul>
+    </div>
+    <!--//breadcrumbs-->
+  </header>
+  <div class="page-content">
+    <div [hidden]="user.role===3" class="alert alert-danger" i18n="@@youNeedToBeConnectedAsStudent">Vous devez etre
+      connecte
+      en tant qu'etudiant pour voir ce contenu</div>
+    <div class="row page-row" [hidden]="!(user.role===3)">
+      <app-student-menu></app-student-menu>
+      <!--//page-sidebar-->
+      <div class="content-wrapper col-md-10 col-sm-8">
+        <p-tabView (onChange)="onTabChange($event)" *ngIf="student.id>0">
+
+          <p-tabPanel header="{{PROGRESSION}}" leftIcon="fa fa-bar-chart" *ngIf="user.id > 0">
+            <app-student-chart></app-student-chart>
+          </p-tabPanel>
+          <p-tabPanel header="{{INSCRIPTION_PAYMENT}}" leftIcon="fa fa-money" *ngIf="user.id > 0">
+            <app-admin-registration></app-admin-registration>
+          </p-tabPanel>
+          <p-tabPanel header="{{SCHOOL_RESULTS}}" leftIcon="fa fa-briefcase" *ngIf="user.id > 0">
+            <app-student-results></app-student-results>
+          </p-tabPanel>
+          <p-tabPanel header="{{ABSENCES}}" leftIcon="fa fa-bolt" *ngIf="user.id > 0">
+            <app-admin-schooling></app-admin-schooling>
+          </p-tabPanel>
+          <p-tabPanel header="{{SYLLABUS}}" leftIcon="fa fa-newspaper-o" *ngIf="user.id > 0">
+            <app-admin-syllabus></app-admin-syllabus>
+		  </p-tabPanel>
+		  <p-tabPanel header="{{PRESENCE}}" leftIcon="fa fa-bolt" *ngIf="user.id > 0">
+            <app-admin-presence [user]="user"></app-admin-presence> 
+          </p-tabPanel>
+
+          <p-tabPanel header="Présence aux cours" leftIcon="fa fa-bar-chart">
+
+            <p-tabView id="tabList" (onChange)="onTabChange($event)">
+							<p-tabPanel header="Présence" leftIcon="fa fa-bar-chart">
+                <app-student-attendance></app-student-attendance>
+							</p-tabPanel>
+							<p-tabPanel header="Recherche" leftIcon="fa fa-search">
+								<app-search-student-attendance></app-search-student-attendance>
+							</p-tabPanel>
+						
+						</p-tabView>
+            
+          
+          </p-tabPanel>
+        </p-tabView>
+
+
+
+        <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="student.id<=0">
+
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-1"></div>
+            <div class="ui-grid-col-11">
+
+              <font color="red"> <B> <span i18n="@@uploadDocs">Veuillez
+                    scanner et télécharger les documents suivants dans votre
+                    dossier :</span></B>
+              </font>
+              <p-dataTable [value]="documents" sortField="documentType.name">
+
+                <p-column field="documentType.name"> </p-column>
+                <p-column field="fileName">
+                  <ng-template let-col let-doc="rowData" pTemplate="body"> <a *ngIf="doc.fileName" class="btn btn-theme"
+                      href="assets/docs/{{doc[col.field]}}"> <i class="fa fa-download"></i>{{DOWNLOAD}}
+                    </a> <a *ngIf="!doc.fileName" (click)="showDialogToUploadImage(doc)" class="btn btn-theme"> <i
+                        class="fa fa-upload"></i>{{UPLOAD}}
+                    </a> <a *ngIf="doc.fileName" (click)="deleteDoc(doc)" class="btn btn-theme"> <i
+                        class="fa fa-delete"></i>{{DELETE}}
+                    </a> </ng-template>
+                </p-column>
+              </p-dataTable>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <!--//content-wrapper-->
+    </div>
+    <!--//page-row-->
+  </div>
+  <!--//page-content-->
+</div>
+<!--//page-->

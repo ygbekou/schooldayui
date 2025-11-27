@@ -1,0 +1,203 @@
+<p-growl [(value)]="msgs"></p-growl>
+<div class="ui-grid-row">
+	<div class="ui-grid-col-4">
+		<button type="button" class="btn btn-primary">
+			<span class="badge badge-light">*</span>Affectation des cours aux étudiants d'une classe
+		</button>
+	</div>
+</div>
+<br />
+<div class="ui-grid-row">
+	<div class="ui-grid-col-3">
+	  <label i18n="@@schoolYear" for="schoolYear">Année universitaire :</label>
+	</div>
+	<div class="ui-grid-col-4">
+		<p-autoComplete [(ngModel)]="theSchoolYear"
+			(onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+			[suggestions]="schoolYearDropdown.filteredSchoolYears"
+			[dropdown]="true" id="schoolYear"
+			(completeMethod)="schoolYearDropdown.filter($event)"
+			name="schoolYear" field="year" [size]="30"
+			placeholder="{{SCHOOLYEAR}}" [minLength]="1" #schoolYear="ngModel" required></p-autoComplete>
+	</div>
+</div>
+
+<br />
+
+<div class="ui-grid-row">
+	<div class="ui-grid-col-3">
+	  <label i18n="@@class" for="classe">Classe :</label>
+	</div>
+	<div class="ui-grid-col-8">
+        <p-autoComplete [(ngModel)]="theClass"
+          (onDropdownClick)="classDropdown.handleDropdownClick($event)" [suggestions]="classDropdown.filteredClasses"
+          [dropdown]="true" id="classe" (completeMethod)="classDropdown.filter($event)" name="classe" field="name"
+          [size]="30" placeholder="{{CLASS}}" [minLength]="1" #classe="ngModel" required></p-autoComplete>
+        <div [hidden]="classe.valid || classe.pristine" class="alert alert-danger" i18n="@@classRequired">Classe
+          Requise</div>
+      </div>
+
+</div>
+
+<br />
+
+<div class="ui-grid-row">
+	<div class="ui-grid-col-3">
+	  <label i18n="@@term" for="term">Trimestre :</label>
+	</div>
+	<div class="ui-grid-col-4">
+		<p-autoComplete [(ngModel)]="theTerm"
+			(onDropdownClick)="termDropdown.handleDropdownClick($event)"
+			[suggestions]="termDropdown.filteredTerms" [dropdown]="true"
+			id="term" (completeMethod)="termDropdown.filter($event)" name="term"
+			field="name" [size]="30" placeholder="{{TERM}}" [minLength]="1"
+			#term="ngModel" required></p-autoComplete>
+	</div>
+</div>
+
+<br />
+
+<div class="ui-grid-row" *ngIf="lmd===1">
+	<div class="ui-grid-col-3">
+	  	<label i18n="@@pro" for="pro">Type de session :</label>
+	</div>
+	<div class="ui-grid-col-4">
+	  	<p-selectButton [options]="sessionTypes" [(ngModel)]="theSessionType"></p-selectButton>
+	</div>
+</div>
+
+<br />
+
+<form (ngSubmit)="signupCourseClassStudent()" #searchForm="ngForm">
+	<div class="ui-grid ui-grid-responsive ui-fluid">
+		<div class="ui-grid-row">
+			<!--div class="ui-grid-col-10">
+				<input type="text" pInputText class="form-control" id="searchTT"
+					required [(ngModel)]="searchText"
+					placeholder="{{COURSE_SEARCH_TEXT}}" name="searchTT"
+					#searchTT="ngModel">
+			</div-->
+			<div class="ui-grid-col-3">
+				<button type="button" pButton icon="fa fa-check" (click)="signupCourseClassStudent()"
+					[label]="labelSignupButton" style="margin-top: 0px; height: 35px;" 
+					[disabled]="isDisabledSignupButton">
+				</button>
+			</div>
+		</div>
+
+	</div>
+</form>
+
+<br />
+
+<div *ngIf="isSignup">
+	<button type="button" class="btn btn-primary">
+		<span class="badge badge-light">*</span> Etat de l'affectation des cours aux étudiants
+	</button>
+	<div class="alert alert-info">
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-3">
+				  <label i18n="@@pro" for="pro">Nombre total de cours :</label>
+			</div>
+			<div class="ui-grid-col-4" >
+				<span *ngIf="courseClassStudentViewList.length > 0">{{ courseClassStudentViewList[0].numberCoursesClass }}</span>
+				<span *ngIf="courseClassStudentViewList.length == 0">0</span>
+			</div>
+		</div>
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-3">
+				  <label i18n="@@pro" for="pro">Nombre d'étudiants :</label>
+			</div>
+			<div class="ui-grid-col-4">
+				  {{ courseClassStudentViewList.length }}
+			</div>
+		</div>
+	</div>
+	
+	<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+	<p-dataTable [value]="courseClassStudentViewList" [paginator]="true" [rows]="15"
+		expandableRows="true" *ngIf="courseClassStudentViewList.length > 0"
+		(onRowExpand)="getCoursePreReqs($event);"
+		[responsive]="true"> 
+		<p-column expander="true" styleClass="col-icon" [style]="{'width':'3%'}"></p-column> 
+		<p-column *ngFor="let col of cols" [style]="col.style" [field]="col.field"
+		[header]="col.header" [sortable]="col.sortable" [filter]="col.filter">
+			<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData"
+				pTemplate type="body"> 
+				<span class="col-date">{{ data[ col.field ] | date:'dd/MM/yy' }}</span> 
+			</ng-template> 
+		</p-column> 
+		<!--p-column field="id" header="actions" [style]="{'width':'10%'}"> 
+			<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+			<button type="button" pButton icon="fa fa-plus-circle"
+				style="float: left" (click)="signup(data)" label="Inscrire"></button>
+			</ng-template> 
+		</p-column--> 
+		<ng-template let-courseClassStudentView pTemplate="rowexpansion">
+			<div class="ui-grid ui-grid-responsive ui-fluid"
+				style="font-size: 16px; padding: 20px">
+
+				<p-dataTable [value]="courseClassStudentView.coursesView" [paginator]="true" [rows]="15"
+					expandableRows="true" [responsive]="true"
+					>
+				<p-column expander="true" styleClass="col-icon" [style]="{'width':'3%'}"></p-column>
+				<p-column *ngFor="let col of colregs" [style]="col.style"
+					[field]="col.field" [header]="col.header" [sortable]="col.sortable"
+					[filter]="col.filter"> <ng-template
+					*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+					type="body"> <span class="col-date">{{data[
+					col.field ] | date:'dd/MM/yy' }}</span> </ng-template> </p-column> <p-column
+					*ngIf=" loggedInUser.role==1||loggedInUser.role==5||loggedInUser.role==2 "
+					field="studentCourseId" header="actions" [style]="{'width':'17%'}"> <ng-template
+					let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+				<button type="button" pButton icon="fa fa-times-circle"
+					(click)="remove(data)" label="Supprimer"></button>
+				<!-- <button type="button" pButton icon="fa fa-check-circle"
+					(click)="approve(data)" label="Approver"></button>
+				<button type="button" pButton icon="fa fa-minus-circle"
+					(click)="abandon(data)" label="Retirer"></button> -->
+				</ng-template> </p-column> <ng-template let-cv pTemplate="rowexpansion">
+				<div class="ui-grid ui-grid-responsive ui-fluid"
+					style="font-size: 16px; padding: 20px">
+
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-6">
+							<strong>Enseignant:</strong> {{cv.teacherName}}
+						</div>
+						<div class="ui-grid-col-3">
+							<strong>Credit:</strong> {{cv.credit}}
+						</div>
+						<div class="ui-grid-col-3">
+							<strong>Prerequis:</strong> {{cv.prereq}}
+						</div>
+					</div>
+					<br />
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-4" align="center">
+							<strong>Classe</strong> <br /> {{cv.classe}}
+						</div>
+						<div class="ui-grid-col-4" align="center">
+							<strong>Jour</strong>
+						</div>
+						<div class="ui-grid-col-4" align="center">
+							<strong>Heure</strong>
+						</div>
+					</div>
+					<div class="ui-grid-row" *ngFor="let timeTable of cv.timeTables">
+						<div class="ui-grid-col-4" align="center"></div>
+						<div class="ui-grid-col-4" align="center">{{timeTable.weekdayName}}</div>
+						<div class="ui-grid-col-4" align="center">{{timeTable.timePeriodDescription}}</div>
+					</div>
+					<div class="ui-grid-row">
+						<div [innerHTML]="cv.description" class="ui-grid-col-12"></div>
+					</div>
+
+				</div>
+				</ng-template> <p-footer></p-footer> </p-dataTable>
+			
+			</div>
+		</ng-template> 
+		<p-footer></p-footer> 
+	</p-dataTable>
+</div>
+

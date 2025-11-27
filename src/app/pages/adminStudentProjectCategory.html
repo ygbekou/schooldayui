@@ -1,0 +1,146 @@
+<file-uploader></file-uploader>
+
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="850">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="studentProjectCategory">
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@name" for="name">Nom</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<input pInputText id="name" [(ngModel)]="studentProjectCategory.name" />
+		</div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@college" for="college">Filiére de base</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<p-autoComplete [(ngModel)]="studentProjectCategory.college"
+							(onDropdownClick)="collegeDropdown.handleDropdownClick($event)"
+							[suggestions]="collegeDropdown.filteredColleges" [dropdown]="true"
+							id="college" (completeMethod)="collegeDropdown.filter($event)"
+							name="college" field="name" [size]="30" placeholder="filiére"
+							[minLength]="1" #college="ngModel"></p-autoComplete>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@categoryOrder" for="categoryOrder">Ordre d'affichage</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<input pInputText id="categoryOrder" [(ngModel)]="studentProjectCategory.categoryOrder" type="number" min="1" max="500" />
+		</div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@description" for="description">Description</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<p-editor [(ngModel)]="studentProjectCategory.description" [style]="{'height':'150px'}"
+				id="description"></p-editor>
+		</div>
+	</div>
+</div>
+
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+
+<form (ngSubmit)="searchProjectCategory()" #searchStudentProjectForm="ngForm">
+	<!--div class=""-->
+	  <div class="ui-grid ui-grid-responsive ui-fluid">
+		<div class="ui-grid-row">
+	
+		  <div class="ui-grid-col-8">
+					<p-autoComplete [(ngModel)]="theCollege"
+									(onDropdownClick)="collegeDropdown.handleDropdownClick($event)"
+									[suggestions]="collegeDropdown.filteredColleges" [dropdown]="true"
+									id="college" (completeMethod)="collegeDropdown.filter($event)"
+									name="college" field="name" [size]="30" placeholder="{{FILIERE}}"
+									[minLength]="1" #college="ngModel"></p-autoComplete>
+		  </div>
+		  <div class="ui-grid-col-1"></div>
+		  <div class="ui-grid-col-2">
+			<button type="button" pButton icon="fa fa-search" (click)="searchProjectCategory()" label="Go"
+			  style="margin-top: 0px; height: 35px;"></button>
+		  </div>
+		</div>
+	
+	  </div>
+	<!--/div-->
+	</form>
+
+<p-dataTable [value]="studentsProjectsCategories" selectionMode="single"
+	[(selection)]="selectedStudentProjectCategory" expandableRows="true"
+	(onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15"
+	[responsive]="true"> <p-column expander="true"
+	styleClass="col-icon" [style]="{'width':'5%'}"></p-column> <p-column
+	*ngFor="let col of cols" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [filter]="col.filter" [style]="col.style">
+
+<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData"
+	pTemplate type="body"> <span class="col-date">{{
+	data[col.field ] | date:'dd/MM/yy' }} </span> </ng-template> <ng-template
+	*ngIf="col.type === 'text'" let-col let-data="rowData" pTemplate
+	type="body">
+<div [innerHTML]="data[ col.field ]"></div>
+</ng-template> </p-column> <!--p-column field="id" header="actions" [style]="{'width':'7%'}">
+<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate
+	type="body">
+<button type="button" pButton icon="fa fa-picture-o" style="float: left"
+	(click)="showDialogToUploadImage(data)"></button>
+</ng-template> </p-column-->
+
+<ng-template let-studentProjectPhase pTemplate="rowexpansion">
+<div class="ui-grid ui-grid-responsive ui-fluid"
+	style="font-size: 16px; padding: 20px">
+	<div class="ui-grid-row">
+
+		<div class="page-row">
+			<div [innerHTML]="studentProjectPhase.description"></div>
+		</div>
+
+		<div class="ui-grid-col-2">
+			<!--//page-row-->
+			<!--//page-row-->
+
+			<!--img *ngIf="level" class="thumb"
+				src="assets/images/level/{{level.pic}}" alt="" /-->
+		</div>
+	</div>
+</div>
+</ng-template>
+
+<ng-template pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>
+
+<!-- Initialize Quill editor -->
+<script>
+	var quill = new Quill('#editor', {
+		theme : 'bubble'
+	});
+</script>

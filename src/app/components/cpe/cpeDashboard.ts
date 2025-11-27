@@ -1,0 +1,121 @@
+import { Component, OnInit,LOCALE_ID, OnDestroy,ChangeDetectorRef,ViewChild } from '@angular/core';
+import { Constants } from '../../app.constants';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { User } from '../../models/User';
+import { CourseService } from '../../services/course.service';
+import { BaseService } from '../../services/base.service';
+import { StudentService } from '../../services/student.service';
+import { AdminSchooling } from '../adminSchooling';
+import { Student } from '../../models/student';
+import {SuiviInscritParClasse} from '../suiviInscritParClasse';
+import { ManageStudentParent } from '../manageStudentParent';
+import { CpeCoursEtudiant } from './cpeCoursEtudiant';
+import { AnyView } from 'app/models/anyView';
+import { AdminAttendance } from '../adminAttendance';
+import { SearchAdminAttendance } from '../searchAdminAttendance';
+import { CpeBulletinEtudiant } from './cpeBulletinEtudiant';
+
+@Component({
+  selector: 'app-cpe-dashboard',
+  templateUrl: '../../pages/cpe/cpeDashboard.html',
+  providers: [CourseService, BaseService]
+})
+export class CpeDashboard implements OnInit, OnDestroy {
+  currentUser: User;
+  public user: User;
+  public student: Student;
+  roles: any[] = [];
+  REGISTRATION_REQUEST: string = Constants.REGISTRATION_REQUEST;
+  ADD_USER: string = Constants.ADD_USER;
+  SUBJECTS_INFORMATION: string = Constants.SUBJECTS_INFORMATION;
+  @ViewChild(SuiviInscritParClasse) suiviInscritParClasse: SuiviInscritParClasse;
+  @ViewChild(AdminSchooling) adminSchooling: AdminSchooling;
+  @ViewChild(ManageStudentParent) manageStudentParent: ManageStudentParent;
+  @ViewChild(CpeCoursEtudiant) cpeCoursEtudiant: CpeCoursEtudiant;
+  @ViewChild(AdminAttendance) adminAttendance: AdminAttendance;
+  @ViewChild(SearchAdminAttendance) searchAdminAttendance: SearchAdminAttendance;
+  @ViewChild(CpeBulletinEtudiant) cpeBulletinEtudiant : CpeBulletinEtudiant;
+  public activeTab = 0;
+  SEARCH: string = Constants.SEARCH;
+  PARENT: string = Constants.PARENT;
+  anyView: AnyView = new AnyView();
+  st : any = new Object();
+  constructor
+    (private studentService: StudentService,private changeDetectorRef: ChangeDetectorRef
+    ) {
+      this.user = new User();
+      this.student = new Student();
+  }
+
+  ngOnDestroy() {
+  }
+  ngOnInit() {
+    this.currentUser = JSON.parse(atob(Cookie.get('user')));
+
+    if (this.currentUser == null) {
+      this.currentUser = new User();
+    }
+
+  }
+  onUserSelected(user: User) {
+    console.log("user on dashboard")
+   
+    this.user = user;
+    this.st = user;
+    console.log(this.st);
+    this.user.birthDate = new Date(this.user.birthDate);
+    this.anyView.id1 = this.user.id;
+   
+    if(this.user.someDate==null){
+      this.anyView.date1  = new Date();
+    }else{
+      this.anyView.date1 = this.user.someDate;
+    }
+    this.changeDetectorRef.detectChanges();
+    this.activeTab = 2;
+    this.studentService.selectedStudentUserId = this.user.id;
+    console.log(this.user)
+    this.changeDetectorRef.detectChanges();
+    this.adminSchooling.getSchoolingByStudent();
+    this.manageStudentParent.setStudent(this.user);
+    this.cpeBulletinEtudiant.setStudent(this.user);
+    this.cpeCoursEtudiant.getStudentADateCourse(this.anyView);
+  }
+  onTabChange(evt) {
+    console.log("index :"+evt.index);
+    this.activeTab = evt.index;
+    if (evt.index === 0) {
+    }  else if (evt.index === 1) {
+      
+    }else if (evt.index === 2) {
+     // this.adminSchooling.getSchoolingByStudent();
+     this.adminAttendance.getAllAttendances();
+    }
+  }
+
+  onSubTabChange(evt){
+    if(evt.index === 0){
+
+    }else if(evt.index === 1){
+      
+    }else if(evt.index === 2){
+      
+    }else if(evt.index === 3){
+      
+    }
+  }
+
+  onProfileTabChange(evt){
+    console.log("sous index :"+evt.index);
+   
+    if (evt.index === 0) {
+      this.adminSchooling.getSchoolingByStudent();
+    }  else if (evt.index === 1) {
+      this.manageStudentParent.setStudent(this.user);
+      this.cpeBulletinEtudiant.setStudent(this.user);
+    }else if (evt.index === 2) {
+      this.cpeCoursEtudiant.getStudentADateCourse(this.anyView);
+    }
+  }
+  
+}

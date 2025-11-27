@@ -1,0 +1,77 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 i18n="@@adminSpace" class="heading-title pull-left">
+			<img class="thumb" src="assets/images/scoolday.png" alt="" />
+		</h1>
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+					ici:</li>
+				<li><a i18n="@@homeLink" href="index.html">Home</a><i
+					class="fa fa-angle-right"></i></li>
+				<li><a i18n="@@admin" href="#">Admin</a><i
+					class="fa fa-angle-right"></i></li>
+				<li i18n="@@yearInformation" class="current">Year Information</li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<div [hidden]="currentUser.role===1" class="alert alert-danger"
+			i18n="@@youNeedToBeConnectedAsAdmin">Vous devez etre connecte
+			en tant qu'administrateur pour voir ce contenu</div>
+		<div class="row page-row" [hidden]="!(currentUser.role===1)">
+			<app-admin-menu></app-admin-menu>
+			<!--//page-sidebar-->
+			<div class="content-wrapper col-md-10 col-sm-8">
+				<p-tabView (onChange)="onTabChange($event)"> <p-tabPanel
+					header="{{SCHOOL_YEAR}}" leftIcon="fa fa-clock-o"> <app-admin-schoolyear></app-admin-schoolyear>
+				</p-tabPanel> <p-tabPanel header="{{PAYMENT_TRANCHES}}" leftIcon="fa fa-money">
+				<app-admin-tuition></app-admin-tuition> </p-tabPanel> <p-tabPanel
+					header="{{QUATER}}" leftIcon="fa fa-clock-o"> <app-admin-term></app-admin-term>
+				</p-tabPanel> <p-tabPanel header="{{REFERENCE_TABLES}}" leftIcon="fa fa-table">
+				<app-admin-lookUpTable></app-admin-lookUpTable> </p-tabPanel> <p-tabPanel
+					header="{{RELATION_TABLES}}" leftIcon="fa fa-table"> <app-admin-relationTable></app-admin-relationTable>
+				</p-tabPanel> 
+				
+				<p-tabPanel header="{{ADDITIONAL_CONFIG}}" leftIcon="fa fa-table">
+				<p-tabView (onChange)="onSubTabChange($event)">
+					<p-tabPanel header="Etablissement" leftIcon="fa fa-table">
+							<app-admin-school></app-admin-school> 
+					</p-tabPanel>
+
+					<p-tabPanel header="Communication" leftIcon="fa fa-table">
+							<app-admin-configuration></app-admin-configuration>
+					</p-tabPanel>
+
+					<p-tabPanel header="Position" leftIcon="fa fa-table">
+							<app-admin-position></app-admin-position>
+					</p-tabPanel>
+
+				</p-tabView>
+					
+			
+			
+			     </p-tabPanel> 
+				
+				
+				<p-tabPanel
+					header="{{AUTHOR}}" leftIcon="fa fa-table"> <app-admin-author></app-admin-author>
+				</p-tabPanel> 
+
+				<p-tabPanel
+					header="Examens" leftIcon="fa fa-table"> <app-admin-exam-config></app-admin-exam-config>
+				</p-tabPanel> 
+			
+			</p-tabView>
+
+
+			</div>
+			<!--//content-wrapper-->
+		</div>
+		<!--//page-row-->
+	</div>
+	<!--//page-content-->
+</div>
+<!--//page-->

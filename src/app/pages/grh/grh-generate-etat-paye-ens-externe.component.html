@@ -1,0 +1,130 @@
+<form (ngSubmit)="printEtatHonoraieMensuelTeacher()" #etatHonoraireTeacherInfoForm="ngForm">
+
+	<div class="ui-grid ui-grid-responsive ui-fluid">
+		<div>
+
+			<div class="ui-grid-row form-group">
+					<div class="ui-grid-col-8">
+							<div class="alert alert-success">
+									Génération des états de virement des Enseignants Externes/Internes
+							</div>
+
+					</div>
+			</div>
+
+			<br />
+
+      <div class="ui-grid-row form-group">
+				<div class="ui-grid-col-2">
+					<label i18n="@@selectedType" for="selectedType">Type Enseignant : </label>
+				</div>
+				<div class="ui-grid-col-3">
+					<select name="selectedType" class="form-control"
+						[(ngModel)]="selectedType">
+						<option value="1">Externe</option>
+						<option value="2">Interne</option>
+						<option value="0" *ngIf="reportSourceName=='etatGlobalPaie'">Tous</option>
+					</select>
+				</div>
+				<div class="ui-grid-col-1"></div>
+			</div>
+
+			<div class="ui-grid-row form-group">
+				<div class="ui-grid-col-2">
+					<label i18n="@@startDate" for="startDate">Date de début : </label>
+				</div>
+				<div class="ui-grid-col-3">
+			        <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="startDate" name="startDate"
+			          [showIcon]="true" [(ngModel)]="paySlip.periode.startDate" #startDate="ngModel" required></p-calendar>
+				</div>
+				<div class="ui-grid-col-1"></div>
+			</div>
+
+			<br />
+
+			<div class="ui-grid-row form-group">
+				<div class="ui-grid-col-2">
+					<label i18n="@@endDate" for="endDate">Date de fin : </label>
+				</div>
+				<div class="ui-grid-col-3">
+					<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="endDate" name="endDate"
+						[showIcon]="true" [(ngModel)]="paySlip.periode.endDate" #endDate="ngModel" required></p-calendar>
+				</div>
+				<div class="ui-grid-col-1"></div>
+			</div>
+
+
+      <!-- <div class="ui-grid-row form-group">
+				<div class="ui-grid-col-2">
+					<label i18n="@@endDate" for="endDate">Mois : </label>
+				</div>
+				<div class="ui-grid-col-3">
+					<select name="selectedMonth" class="form-control"
+						[(ngModel)]="selectedMonth">
+						<option *ngFor="let val of months" value="{{val.code}}">{{val.value}}</option>
+					</select>
+				</div>
+				<div class="ui-grid-col-1"></div>
+			</div>
+
+      <div class="ui-grid-row form-group">
+				<div class="ui-grid-col-2">
+					<label i18n="@@endDate" for="endDate">Année : </label>
+				</div>
+        <div class="ui-grid-col-3">
+          <p-autoComplete [(ngModel)]="schoolYear"
+              (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+              [suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear"
+              (completeMethod)="schoolYearDropdown.filter($event)" name="schoolYear" field="year" [size]="30"
+              placeholder="ANNEE" [minLength]="1" #schoolYearModel="ngModel"></p-autoComplete>
+        </div>
+      </div> -->
+
+      
+
+			<br />
+		</div>
+	</div>
+
+	<div class="ui-grid-row form-group" *ngIf="reportSourceName=='etatIndividuelPaieHonoraireEnseignant'">
+		<div class="ui-grid-col-2">
+			<label i18n="@@selectedType" for="selectedType">Matricule : </label>
+		</div>
+		<div class="ui-grid-col-3">
+			<input type="text" pInputText id="matricule" name="matricule" class="form-control"
+		        [(ngModel)]="matricule" #amount="ngModel" required/>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+
+	<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+	<br />
+
+	<div class="ui-grid-row form-group">
+			<div class="ui-grid-col-4">
+						<!--<button [disabled]="!etatHonoraireTeacherInfoForm.form.valid"-->
+            <button
+						pButton type="button" icon="fa fa-print" (click)="printEtatHonoraieMensuelTeacher()" 
+						label="{{printLabel}}">
+						</button>
+					&nbsp;&nbsp;
+			</div>
+			<div class="ui-grid-col-6">
+						<a *ngIf="isLoading" target="_blank" href="assets/reports/{{reportName}}"
+						i18n="@@downloadReport" class="btn btn-theme">
+								<i class="fa fa-download"></i>
+								Télécharger l'état honoraire de l'enseignant
+						</a>
+			</div>
+	</div>
+
+</form>
+<!-- Initialize Quill editor -->
+<script>
+  var quill = new Quill('#editor', {
+    theme: 'bubble'
+  });
+
+</script>

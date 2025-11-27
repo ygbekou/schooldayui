@@ -1,0 +1,9 @@
+<p-dataTable [value]="parentview" selectionMode="single"
+	expandableRows="true" [responsive]="true">
+
+	<p-column
+		*ngFor="let col of parentCols" [field]="col.field" [header]="col.header"
+		[sortable]="col.sortable" [filter]="col.filter"> 
+	</p-column>  
+
+</p-dataTable>

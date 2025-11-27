@@ -1,0 +1,47 @@
+<file-uploader></file-uploader>
+
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="450">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="position">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@name" for="name">Nom</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<input pInputText id="name" [(ngModel)]="position.name" />
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@rank" for="rank">Rank</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="rank" [(ngModel)]="position.rank" />
+		</div>
+	</div>
+</div>
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+
+<p-dataTable [value]="positions" selectionMode="single"
+	[(selection)]="selectedPosition" expandableRows="true"
+	(onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15"
+	[responsive]="true"> <p-column *ngFor="let col of cols"
+	[field]="col.field" [header]="col.header" [sortable]="col.sortable"
+	[filter]="col.filter"> </p-column> <ng-template
+	pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>

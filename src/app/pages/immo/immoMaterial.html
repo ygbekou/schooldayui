@@ -1,0 +1,149 @@
+<p-dialog header="Ajout - Materiel" [(visible)]="displayDialog" [responsive]="true" showEffect="fade"
+    [modal]="true" width="700">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="material">
+        <div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@code" for="code">Code du Matériel : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="code" class="form-control" [(ngModel)]="material.code" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@name" for="name">Libellé : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="name" class="form-control" [(ngModel)]="material.name" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@lifetime" for="lifetime">Durée de vie : </label>
+                </div>
+                <div class="ui-grid-col-4">
+                    <input pInputText id="lifetime" class="form-control" [(ngModel)]="material.lifetime" 
+                    (input)="calculTaux($event.target.value)" /><span>Mois</span>
+                </div>
+                <div class="ui-grid-col-1">
+                   
+                </div>
+                <div class="ui-grid-col-4">
+                    <input pInputText class="form-control" disabled=true [value]="anneeStr" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@rate" for="rate">Taux d'Amort. : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="rate" class="form-control" [(ngModel)]="material.rate" disabled=true />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@nature" for="nature">Nature : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-autoComplete [(ngModel)]="material.nature"
+                        (onDropdownClick)="natureDropdown.handleDropdownClick($event)"
+                        [suggestions]="natureDropdown.filteredNatures" [dropdown]="true" id="nature"
+                        (completeMethod)="natureDropdown.filter($event)" name="nature" field="name"
+                        placeholder="Nature du bie" [minLength]="1"></p-autoComplete>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@accountingAccount" for="accountingAccount">Compte comptable : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-autoComplete [(ngModel)]="material.accountingAccount"
+                        (onDropdownClick)="accountDropdown.handleDropdownClick($event)"
+                        [suggestions]="accountDropdown.filteredAccounts" [dropdown]="true" id="accountingAccount"
+                        (completeMethod)="accountDropdown.filter($event)" name="accountingAccount" field="name"
+                        placeholder="Compte comptable" [minLength]="1"></p-autoComplete>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@categoryMaterial" for="categoryMaterial">Catégorie : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-autoComplete [(ngModel)]="material.categoryMaterial"
+                        (onDropdownClick)="categoryMaterialDropdown.handleDropdownClick($event)"
+                        [suggestions]="categoryMaterialDropdown.filteredCategoryMaterials" [dropdown]="true" id="categoryMaterial"
+                        (completeMethod)="categoryMaterialDropdown.filter($event)" name="categoryMaterial" field="name"
+                        placeholder="Catégorie" [minLength]="1"></p-autoComplete>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@description" for="description">Description : </label>
+                </div>
+
+                <div class="ui-grid-col-9">
+                    <p-editor [(ngModel)]="material.description" [style]="{'height':'120px'}"></p-editor>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+           
+
+        </div>
+    </div>
+
+
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-close" (click)="delete()" label="{{DELETE_LABEL}}"></button>
+            <button type="button" pButton icon="fa fa-check" (click)="save()" label="{{SAVE_LABEL}}"></button>
+        </div>
+    </footer>
+</p-dialog>
+
+
+<p-dataTable [value]="materials" selectionMode="single" [(selection)]="selectedMaterial" expandableRows="true"
+    [paginator]="true" [rows]="5" (onRowSelect)="onRowSelect($event)" [responsive]="true">
+
+    <p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}">
+
+    </p-column>
+
+
+    <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+        [style]="col.style" [filter]="col.filter">
+        <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+            <span class="col-date">{{ data[ col.field ] | date:'dd/MM/yy' }}</span>
+        </ng-template>
+        <ng-template *ngIf="col.type === 'Raw'" let-col let-data="rowData" pTemplate type="body">
+            <span class="col-text" innerHTML="{{ data[ col.field ]}}"></span>
+        </ng-template>
+    </p-column>
+
+    <ng-template pTemplate="paginatorLeft">
+        <button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"></button>
+    </ng-template>
+    
+    <ng-template pTemplate="paginatorRight">
+        <button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+    </ng-template>
+
+
+</p-dataTable>

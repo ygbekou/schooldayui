@@ -1,0 +1,26 @@
+
+
+
+<p-dataTable  [value]="congeHistories"  selectionMode="single"
+	[(selection)]="selectedConge" expandableRows="true"
+	[paginator]="true" [rows]="5"
+	[responsive]="true">
+	<p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}">
+
+	</p-column>
+	<p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [style]="col.style" [filter]="col.filter">
+		<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+			<span class="col-date">{{ data[ col.field ] | date:'dd/MM/yy' }}</span>
+		</ng-template>
+	</p-column>
+
+  <!-- <ng-template pTemplate="paginatorLeft">
+    <button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"></button>
+  </ng-template> -->
+  <ng-template pTemplate="paginatorRight">
+    <button type="button" (click)="getEmployeeCongeHistory()" pButton icon="fa fa-refresh"></button>
+	</ng-template>
+	
+	
+</p-dataTable>

@@ -1,0 +1,62 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 i18n="@@adminSpace" class="heading-title pull-left">
+			<img class="thumb" src="assets/images/scoolday.png" alt="" />
+		</h1>
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+					ici:</li>
+				<li><a i18n="@@homeLink" href="index.html">Home</a><i
+					class="fa fa-angle-right"></i></li>
+				<li><a i18n="@@admin" href="#">Stagiaire</a><i
+					class="fa fa-angle-right"></i></li>
+				<li i18n="@@applications" class="current">Demandes
+					d'inscription</li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<div [hidden]="currentUser.role===1||currentUser.role===13"
+			class="alert alert-danger" i18n="@@youNeedToBeConnectedAsAdmin">Vous
+			devez etre connecte en tant que Stagiaire pour voir ce contenu</div>
+		<div class="row page-row"
+			[hidden]="!(currentUser.role===1||currentUser.role===13)">
+			<app-stagiaire-menu></app-stagiaire-menu>
+			<!--//page-sidebar-->
+			<div class="content-wrapper col-md-10 col-sm-8">
+				<p-tabView>
+
+					<p-tabPanel
+						header="{{REGISTRATION_REQUEST}}" leftIcon="fa fa-male">
+						<app-demand-registration></app-demand-registration> 
+					</p-tabPanel> 
+                    <!--p-tabPanel
+					    header="{{ADD_USER}}" leftIcon="fa fa-male"> <admin-studentRegistration></admin-studentRegistration>
+                    </p-tabPanel--> 
+                    <!--p-tabPanel
+					    header="{{SUBJECTS_INFORMATION}}" leftIcon="fa fa-male"> <admin-ficheRenseignement></admin-ficheRenseignement>
+                    </p-tabPanel-->
+                    <!-- <p-tabPanel
+					    header="Statistiques - Fiche renseignement" leftIcon="fa fa-male"> <app-fiche-renseignement-statistiques></app-fiche-renseignement-statistiques>
+                    </p-tabPanel>  -->
+                    <p-tabPanel
+						header="Suivi des inscrits" leftIcon="fa fa-male"> 
+						<app-admin-suivi-inscrit></app-admin-suivi-inscrit>
+					</p-tabPanel>
+					<p-tabPanel
+					   header="RDV d'orientation" leftIcon="fa fa-male"> 
+					   <app-admin-ai-register-list></app-admin-ai-register-list>
+					</p-tabPanel>
+
+            </p-tabView>
+			</div>
+			<!--//content-wrapper-->
+		</div>
+		<!--//page-row-->
+	</div>
+	<!--//page-content-->
+</div>
+<!--//page-->

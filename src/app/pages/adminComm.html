@@ -1,0 +1,63 @@
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<div class="ui-grid-row">
+
+	<div class="ui-grid-col-5">
+		<p-checkbox [(ngModel)]="sms" binary="true" id="sendSMS"
+			label="Envoyer un SMS (160 caracteres max )"></p-checkbox>
+	</div>
+	<div class="ui-grid-col-1">
+		<label *ngIf="!sms" i18n="@@subject" for="subject">Sujet</label>
+	</div>
+	<div class="ui-grid-col-6">
+		<input pInputText id="subject" name="subject" *ngIf="!sms"
+			[(ngModel)]="mail.subject" #subject="ngModel" />
+	</div>
+
+</div>
+<br>
+<p-editor *ngIf="!sms" [(ngModel)]="mail.body"
+	[style]="{'height':'300px'}"></p-editor>
+
+<textarea *ngIf="sms" pInputTextarea id="description"
+	[(ngModel)]="mail.body" rows="4" cols="40" pInputTextarea
+	maxlength="160"></textarea>
+<br>
+
+<div class="ui-grid-row">
+	<div class="ui-grid-col-2">
+		<button type="button" pButton icon="fa fa-envelope-o"
+			(click)="sendMail()" label="{{SEND}}" [disabled]="disabled"></button>
+
+	</div>
+	<div class="ui-grid-col-6">
+
+		<p-selectButton [options]="types" [(ngModel)]="selectedTypes"
+			multiple="true" (click)="validate()"></p-selectButton>
+
+	</div>
+	<div class="ui-grid-col-4"></div>
+</div>
+<br>
+<div class="ui-grid-row">
+	<div class="ui-grid-col-2"></div>
+
+	<div class="ui-grid-col-4" *ngIf="classSelected">
+		<p-autoComplete [(ngModel)]="mail.classe"
+			(onDropdownClick)="classDropdown.handleDropdownClick($event)"
+			[suggestions]="classDropdown.filteredClasses" [dropdown]="true"
+			id="aclasse" (completeMethod)="classDropdown.filter($event)"
+			name="aclasse" field="name" [size]="30" placeholder="{{CLASS}}"
+			[minLength]="1" #aclasse="ngModel"></p-autoComplete>
+	</div>
+	<div class="ui-grid-col-4">
+		<p-autoComplete [(ngModel)]="mail.schoolYear" *ngIf="classSelected"
+			(onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+			[suggestions]="schoolYearDropdown.filteredSchoolYears"
+			[dropdown]="true" id="schoolYear"
+			(completeMethod)="schoolYearDropdown.filter($event)"
+			name="schoolYear" field="year" [size]="30"
+			placeholder="{{SCHOOLYEAR}}" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+	</div>
+</div>

@@ -1,0 +1,130 @@
+<p-growl [(value)]="msgs"></p-growl>
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 i18n="@@onlineRegistrationLink" class="heading-title pull-left"
+			*ngIf="event=='INSCRIPTION'">Inscription en ligne</h1>
+		<h1 i18n="@@onlineRegistrationLink" class="heading-title pull-left"
+			*ngIf="event=='CONCOURS'">
+
+			<!-- <a [routerLink]="['/newsSingle']" [queryParams]="{ newsId:32}">Inscription
+				au concours. Cliquez ici pour voir le communiqué du concours</a> 
+
+				<a href="https://www.ipnetuniversity.com/index.html#/newsSingle?id=32">Inscription
+					au concours. Cliquez ici pour voir le communiqué du concours</a>-->
+		</h1>
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+					ici:</li>
+				<li><a i18n="@@homeLink" href="index.html">Home</a><i
+					class="fa fa-angle-right"></i></li>
+				<li class="current"><a i18n="@@onlineRegistrationLink" href="#">Ajouter un établissement</a><i class="fa fa-angle-right"></i></li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<form (ngSubmit)="saveUser()" #profileForm="ngForm">
+			<p-steps [model]="items" [(activeIndex)]="activeIndex"
+				styleClass="steps-custom"></p-steps>
+
+			<!-- STEP 1 -->
+			<div class="form-group" *ngIf="activeIndex===0||activeIndex===2">
+				<label i18n="@@name" for="name">Nom de l'établissement:</label> <input
+					type="text" pInputText class="form-control" id="name" required
+					[disabled]="activeIndex===2" [(ngModel)]="school.name"
+					name="name" #name="ngModel">
+				<div [hidden]="name.valid || name.pristine"
+					class="alert alert-danger" i18n="@@nameRequired">Nom
+					Requis</div>
+			</div>
+			<div class="form-group" *ngIf="activeIndex===0||activeIndex===2">
+				<label i18n="@@shortName" for="shortName">Nom Abbrevié:</label> <input
+					type="text" pInputText class="form-control" id="shortName" required
+					[disabled]="activeIndex===2" [(ngModel)]="school.shortName"
+					name="shortName" #shortName="ngModel">
+				<div [hidden]="shortName.valid || shortName.pristine"
+					class="alert alert-danger" i18n="@@shortNameRequired">Nom Abbrevié
+					Requis</div>
+			</div>
+			<div class="form-group" *ngIf="activeIndex===0||activeIndex===2">
+				<label i18n="@@address" for="address">Adresse:</label> <input
+					type="text" pInputText class="form-control" id="address" required
+					[disabled]="activeIndex===2" [(ngModel)]="school.address"
+					name="address" #address="ngModel">
+				<div [hidden]="address.valid || address.pristine"
+					class="alert alert-danger" i18n="@@addressRequired">Adresse
+					Requise</div>
+			</div>
+			<div class="form-group" *ngIf="activeIndex===0||activeIndex===2">
+				<label i18n="@@city" for="city">Ville:</label> <input
+					type="text" pInputText class="form-control" id="city" required
+					[disabled]="activeIndex===2" [(ngModel)]="school.city"
+					name="city" #city="ngModel">
+				<div [hidden]="city.valid || city.pristine"
+					class="alert alert-danger" i18n="@@cityRequired">Ville
+					Requise</div>
+			</div>
+			<div class="form-group" *ngIf="activeIndex===0||activeIndex===2">
+				<label i18n="@@phone" for="phone">Phone:</label> <input
+					type="text" pInputText class="form-control" id="phone" required
+					[disabled]="activeIndex===2" [(ngModel)]="school.phone"
+					name="phone" #phone="ngModel">
+				<div [hidden]="phone.valid || phone.pristine"
+					class="alert alert-danger" i18n="@@phoneRequired">Phone
+					Requise</div>
+			</div>
+			<div class="form-group" *ngIf="activeIndex===0||activeIndex===2">
+				<label i18n="@@email" for="email">E-mail</label> <input type="email"
+					pInputText class="form-control" id="email" required
+					[(ngModel)]="school.email" [disabled]="activeIndex===2" name="email"
+					#email="ngModel">
+				<div [hidden]="email.valid || email.pristine"
+					class="alert alert-danger" i18n="@@emailRequired">Email
+					Requis</div>
+			</div>
+
+			<div class="form-group" *ngIf="activeIndex===0||activeIndex===2">
+				<label i18n="@@country" for="country">Pays</label>
+				<p-autoComplete [(ngModel)]="school.country"
+					(onDropdownClick)="handleDropdownClick($event)"
+					[suggestions]="filteredCountries" [dropdown]="true"
+					id="country" [disabled]="activeIndex===2"
+					(completeMethod)="filterCountry($event)" name="country"
+					field="name" [size]="30" placeholder="{{COUNTRY}}"
+					[minLength]="1"></p-autoComplete>
+			</div>
+
+			<br />
+
+			<!-- STEP 2 -->
+
+			<div class="form-group" *ngIf="activeIndex===1||activeIndex===2">
+				<label i18n="@@reportHeader" for="reportHeader">Report Header</label> <input
+					type="text" pInputText class="form-control" id="reportHeader"
+					[disabled]="activeIndex===2" [(ngModel)]="school.reportHeader"
+					name="reportHeader" #reportHeader="ngModel">
+			</div>
+
+			<!-- STEP 3 -->
+
+			<button pButton type="text" (click)="button=1"
+				icon="fa fa fa-play-circle"
+				style="margin-top: 0px; width: 40%; height: 50px;"
+				label="{{navigationLabel}}"></button>
+			<button (click)="button=2" pButton type="submit"
+				icon="fa fa fa-play-circle"
+				style="margin-top: 0px; width: 40%; height: 50px;"
+				*ngIf="activeIndex===2" label="Sauvegarder"></button>
+
+			<br>
+			<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+		</form>
+
+		<br>
+
+	</div>
+	<!--//page-content-->
+</div>

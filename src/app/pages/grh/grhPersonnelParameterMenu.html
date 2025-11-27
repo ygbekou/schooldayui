@@ -1,0 +1,58 @@
+<div class="page-wrapper">
+  <header class="page-heading clearfix">
+    <h1 i18n="@@adminSpace" class="heading-title pull-left">
+      <img class="thumb" src="assets/images/scoolday.png" alt="" />
+    </h1>
+    <div class="breadcrumbs pull-right">
+      <ul class="breadcrumbs-list">
+        <li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+          ici:</li>
+        <li><a i18n="@@homeLink" href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+        <li><a i18n="@@admin" href="#">GRH</a><i class="fa fa-angle-right"></i></li>
+        <li i18n="@@statistics" class="current">Paramètres</li>
+      </ul>
+    </div>
+    <!--//breadcrumbs-->
+  </header>
+  <div class="page-content">
+    <div [hidden]="currentUser.role===10" class="alert alert-danger"
+      i18n="@@youNeedToBeConnectedAsAdmin">Vous
+      devez etre connecte en tant que GRH</div>
+
+    <div class="row page-row" [hidden]="currentUser.role!==10">
+      <app-grh-menu></app-grh-menu>
+
+			<!--//page-sidebar-->
+      <div class="content-wrapper col-md-10 col-sm-8">
+
+				<p-tabView (onChange)="onTabChange($event)">
+
+					<p-tabPanel header="{{ SALARY_TYPE }}" leftIcon="fa fa-newspaper-o">
+						<app-grh-salary-type></app-grh-salary-type>
+					</p-tabPanel>
+
+					<p-tabPanel header="{{ PERSONNEL_TYPE }}" leftIcon="fa fa-newspaper-o">
+						<app-grh-personnel-type></app-grh-personnel-type>
+					</p-tabPanel>
+
+					<p-tabPanel header="{{ TEACHER_TYPE }}" leftIcon="fa fa-newspaper-o">
+						<app-grh-teacher-type></app-grh-teacher-type>
+					</p-tabPanel>
+
+					<p-tabPanel header="{{ TEACHER_LEVEL }}" leftIcon="fa fa-newspaper-o">
+						<app-grh-teacher-level></app-grh-teacher-level>
+					</p-tabPanel>
+
+				</p-tabView>
+			</div>
+			<!--//content-wrapper-->
+
+
+
+      <!--//content-wrapper-->
+    </div>
+    <!--//page-row-->
+  </div>
+  <!--//page-content-->
+</div>
+<!--//page-->

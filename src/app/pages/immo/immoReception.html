@@ -1,0 +1,580 @@
+<!-- File upload -->
+<file-uploader></file-uploader>
+<!-- EndFile upload -->
+
+<!-- Receptioin -->
+<p-dialog header="Ajout - Reception" [(visible)]="displayDialog" [responsive]="true" showEffect="fade"
+    [modal]="true" width="700" height="1000">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="reception">
+        <div>
+
+            
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@bon" for="on">N° bon de Commande : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="bon" class="form-control" [(ngModel)]="reception.purchaseOrderNumber" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@orderDate" for="orderDate">Date de commande :</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="orderDate" [showIcon]="false"
+                        [(ngModel)]="reception.orderDate" #orderDate="ngModel"></p-calendar>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@slipNumber" for="slipNumber">N° Bordereau : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="slipNumber" class="form-control" [(ngModel)]="reception.slipNumber" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@supplierInvoiceNumber" for="supplierInvoiceNumber">N° Facture Founisseur : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="supplierInvoiceNumber" class="form-control" [(ngModel)]="reception.supplierInvoiceNumber" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div> 
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@receptionDate" for="receptionDate">Date Reception :</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="receptionDate" [showIcon]="false"
+                        [(ngModel)]="reception.receptionDate" #receptionDate="ngModel"></p-calendar>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@key" for="key">N° Proces Verbale : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="key" class="form-control" [(ngModel)]="reception.procesVerbaleNumber" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@amountPurchase" for="amountPurchase">Montant Achat : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="amountPurchase" class="form-control" [(ngModel)]="reception.amountPurchase" 
+                        (input)="changePriceInout($event.target.value)" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@amountCustoms" for="amountCustoms">Montant de la Douane : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="amountCustoms" class="form-control" [(ngModel)]="reception.amountCustoms" 
+                        (input)="changePriceInout($event.target.value)"/>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@amountTotal" for="amountTotal">Montant total : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="amountTotal" class="form-control" [(ngModel)]="reception.amountTotal" 
+                        disabled=true />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            
+            
+
+           
+
+            
+        </div>
+        
+    </div>
+
+
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-close" (click)="delete()" label="{{DELETE_LABEL}}"></button>
+            <button type="button" pButton icon="fa fa-check" (click)="save()" label="{{SAVE_LABEL}}"></button>
+        </div>
+    </footer>
+</p-dialog>
+<!-- End Receptioin -->
+
+
+
+
+<!-- DIALOG Materials acquired -->
+<p-dialog header="Ajout - Materiel en gros reçu" [(visible)]="displayDialogMaterialsAcquired" [responsive]="true" showEffect="fade"
+    [modal]="true" width="700" height="1000">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="materialsAcquired">
+        <div>
+
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@reference" for="on">Reference : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="reference" class="form-control" [(ngModel)]="materialsAcquired.reference" 
+                    required="true" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@material" for="material">Matériel : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-autoComplete [(ngModel)]="materialsAcquired.material"
+                        (onDropdownClick)="materialDropdown.handleDropdownClick($event)"
+                        [suggestions]="materialDropdown.filteredMaterials" [dropdown]="true" id="material"
+                        (completeMethod)="materialDropdown.filter($event)" name="material" field="name"
+                        placeholder="Matériel Acquis" [minLength]="1" required="true" ></p-autoComplete>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@materialBrand" for="materialBrand">Marque du Matériel : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-autoComplete [(ngModel)]="materialsAcquired.materialBrand"
+                        (onDropdownClick)="materialBrandDropdown.handleDropdownClick($event)"
+                        [suggestions]="materialBrandDropdown.filteredMaterialBrands" [dropdown]="true" id="materialBrand"
+                        (completeMethod)="materialBrandDropdown.filter($event)" name="materialBrand" field="name"
+                        placeholder="La marque" [minLength]="1" required="true" ></p-autoComplete>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@vendor" for="vendor">Fournisseur : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-autoComplete [(ngModel)]="materialsAcquired.vendor"
+                        (onDropdownClick)="vendorDropdown.handleDropdownClick($event)"
+                        [suggestions]="vendorDropdown.filteredVendors" [dropdown]="true" id="vendor"
+                        (completeMethod)="vendorDropdown.filter($event)" name="vendor" field="name"
+                        placeholder="Fournisseur" [minLength]="1" required="true" ></p-autoComplete>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@amountPurchase" for="amountPurchase">Montant Achat : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="amountPurchase" class="form-control" [(ngModel)]="materialsAcquired.amountPurchase" 
+                        (input)="changePriceMaterialsAcquiredInout($event.target.value)" required="true" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@amountCustoms" for="amountCustoms">Montant de la Douane : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="amountCustoms" class="form-control" [(ngModel)]="materialsAcquired.amountCustoms" 
+                        (input)="changePriceMaterialsAcquiredInout($event.target.value)" required="true" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@amountTotal" for="amountTotal">Montant total : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="amountTotal" class="form-control" [(ngModel)]="materialsAcquired.amountTotal" 
+                        (input)="changePriceMaterialsAcquiredInout($event.target.value)" disabled=true />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@quantity" for="quantity">Quantité acquise : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="quantity" class="form-control" [(ngModel)]="materialsAcquired.quantity" 
+                        (input)="changePriceMaterialsAcquiredInout($event.target.value)" required="true"  />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@unitPrice" for="unitPrice">Prix unitaire : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="unitPrice" class="form-control" [(ngModel)]="materialsAcquired.unitPrice" 
+                        disabled=true />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@features" for="features">Caractéristique : </label>
+                </div>
+
+                <div class="ui-grid-col-9">
+                    <p-editor [(ngModel)]="materialsAcquired.features" [style]="{'height':'120px'}"></p-editor>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+           
+
+            
+        </div>
+        
+    </div>
+
+
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+    <div *ngIf="wait" class="alert alert-warning">Veuillez patientez...</div>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-close" (click)="deleteMaterialsAcquired()" label="{{DELETE_LABEL}}"></button>
+            <button type="button" pButton icon="fa fa-check" (click)="saveMaterialsAcquired()" label="{{SAVE_LABEL}}"></button>
+        </div>
+    </footer>
+</p-dialog>
+<!-- END DIALOG Materials acquired -->
+
+
+
+
+<!-- DIALOG Material acquired -->
+<p-dialog header="Modification - Materiel" [(visible)]="displayDialogMaterialAcquired" [responsive]="true" showEffect="fade"
+    [modal]="true" width="700" height="1000">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="materialAcquired">
+        <div>
+
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@identificationCode" for="on">Code d'identification : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="identificationCode" class="form-control" [(ngModel)]="materialAcquired.identificationCode" 
+                    required="true" disabled=true />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@serialNumber" for="serialNumber">Numéro de Série : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="serialNumber" class="form-control" [(ngModel)]="materialAcquired.serialNumber" 
+                        required="true" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@lastAssignmentDate" for="lastAssignmentDate">Dernière affectation :</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="lastAssignmentDate" [showIcon]="false"
+                        [(ngModel)]="materialAcquired.lastAssignmentDate" #lastAssignmentDate="ngModel"  disabled=true
+                        ></p-calendar>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@firstReleaseDateInStore" for="firstReleaseDateInStore">Première sortie dans le magasin :</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="firstReleaseDateInStore" [showIcon]="false"
+                        [(ngModel)]="materialAcquired.firstReleaseDateInStore" #firstReleaseDateInStore="ngModel"  disabled=true
+                        ></p-calendar>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@amountCustomsMaterialAcquired" for="amountCustomsMaterialAcquired">Montant de la Douane : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="amountCustomsMaterialAcquired" class="form-control" [(ngModel)]="materialAcquired.amountCustoms" 
+                        required="true" disabled=true />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@amountPurchaseMaterialAcquired" for="amountPurchaseMaterialAcquired">Montant Achat : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="amountPurchaseMaterialAcquired" class="form-control" [(ngModel)]="materialAcquired.amountPurchase" 
+                    disabled=true />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@originValue" for="originValue">Valeur Origine : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="originValue" class="form-control" [(ngModel)]="materialAcquired.originValue" 
+                        disabled=true />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@originValue" for="originValue">Est affecté ? : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <span *ngIf="materialAcquired.isAffected === true" >OUI</span>
+                    <span *ngIf="materialAcquired.isAffected === false" >NON</span>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+           
+
+            
+        </div>
+        
+    </div>
+
+
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-close" (click)="deleteMaterialAcquired()" label="{{DELETE_LABEL}}"></button>
+            <button type="button" pButton icon="fa fa-check" (click)="saveMaterialAcquired()" label="{{SAVE_LABEL}}"></button>
+        </div>
+    </footer>
+</p-dialog>
+<!-- END DIALOG Material acquired -->
+
+
+
+
+
+
+
+
+
+
+
+
+<p-dataTable [value]="receptions" selectionMode="single" [(selection)]="selectedreception" expandableRows="true"
+    [paginator]="true" [rows]="5" (onRowSelect)="onRowReceptionSelected($event)" [responsive]="true" 
+    (onRowExpand)="onRowReception($event)" >
+    <p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}">
+
+    </p-column>
+    <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+        [style]="col.style" [filter]="col.filter">
+        <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+            <span class="col-date">{{ data[ col.field ] | date:'dd/MM/yy' }}</span>
+        </ng-template>
+        <ng-template *ngIf="col.type === 'Raw'" let-col let-data="rowData" pTemplate type="body">
+            <span class="col-text" innerHTML="{{ data[ col.field ]}}"></span>
+        </ng-template>
+    </p-column>
+
+
+
+
+
+    <!-- Materials acquired -->
+    <ng-template let-course pTemplate="rowexpansion">
+        <div class="ui-grid ui-grid-responsive ui-fluid">
+            <div class="ui-grid-row">
+
+                <div class="ui-grid-col-2">
+                  <button type="button" class="btn btn-primary">
+                      <span class="badge badge-light">*</span>
+                    Materiels en Gros
+                  </button>
+                </div>
+
+                <div class="ui-grid-col-1"></div>
+
+                <div class="ui-grid-col-4">
+                    <div class="ui-grid-row" *ngIf="reception.docPurchaseOrder !== null">
+                        <div class="ui-grid-col-3">
+                            <a class="thumb btn btn-warning" href="assets/docs/immobilisation/commande/{{reception.docPurchaseOrder}}"
+                                target="_blank" style="text-align: center; height: 35px;" ><i class="fa fa-file-o"></i> VOIR</a>
+                        </div>
+                        <div class="ui-grid-col-9">
+                            <button type="button" pButton  style="text-align: center; height: 35px;" 
+                                (click)="showDialogToUploadDocumentsBonCommande(reception)">
+                                <i class="fa fa-file-o"></i> Doc bon de commande
+                            </button>
+                        </div>
+                    </div>
+                    <div  *ngIf="reception.docPurchaseOrder === null">
+                            <button type="button" pButton  style="text-align: center; height: 35px;" 
+                                (click)="showDialogToUploadDocumentsBonCommande(reception)">
+                                <i class="fa fa-file-o"></i> Doc bon de commande
+                            </button>
+                    </div>
+                </div>
+
+                <div class="ui-grid-col-1"></div>
+
+                <div class="ui-grid-col-4">
+                    <div class="ui-grid-row"  *ngIf="reception.docSupplierInvoice !== null">
+                        <div class="ui-grid-col-3">
+                            <a class="thumb btn btn-warning" href="assets/docs/immobilisation/facture_fournisseur/{{reception.docSupplierInvoice}}"
+                                target="_blank" style="text-align: center; height: 35px;" ><i class="fa fa-file-o"></i> VOIR</a>
+                        </div>
+                        <div class="ui-grid-col-9">
+                            <button type="button" pButton  style="text-align: center; height: 35px;" 
+                                (click)="showDialogToUploadDocumentsFactureFournisseur(reception)">
+                                <i class="fa fa-file-o"></i> Doc facture fournisseur</button>
+                        </div>
+                    </div>
+                    <div  *ngIf="reception.docSupplierInvoice === null">
+                            <button type="button" pButton  style="text-align: center; height: 35px;" 
+                                (click)="showDialogToUploadDocumentsFactureFournisseur(reception)">
+                                <i class="fa fa-file-o"></i> Doc facture fournisseur</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                    <p-dataTable [value]="materialsAcquireds" selectionMode="single" [(selection)]="selectedMaterialsAcquired" expandableRows="true"
+                        [paginator]="true" [rows]="5" (onRowSelect)="onRowMatrialsAcquiredSelected($event)" [responsive]="true" 
+                        (onRowExpand)="onRowMatrialsAcquired($event)">
+                        <p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}">
+                        </p-column>
+
+                        <p-column *ngFor="let colMaterialsAcquired of colsMaterialsAcquired" [field]="colMaterialsAcquired.field" [header]="colMaterialsAcquired.header" [sortable]="colMaterialsAcquired.sortable"
+                            [style]="colMaterialsAcquired.style" [filter]="colMaterialsAcquired.filter">
+                            <ng-template *ngIf="colMaterialsAcquired.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+                                <span class="col-date">{{ data[ colMaterialsAcquired.field ] | date:'dd/MM/yy' }}</span>
+                            </ng-template>
+                            <ng-template *ngIf="colMaterialsAcquired.type === 'Raw'" let-col let-data="rowData" pTemplate type="body">
+                                <span class="col-text" innerHTML="{{ data[ colMaterialsAcquired.field ]}}"></span>
+                            </ng-template>
+                        </p-column>
+
+
+
+
+
+
+
+                           <!-- Material acquired -->
+                            <ng-template let-course pTemplate="rowexpansion">
+                                <div class="ui-grid ui-grid-responsive ui-fluid">
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-12">
+                                        <button type="button" class="btn btn-primary">
+                                            <span class="badge badge-light">*</span>
+                                            Materiels
+                                        </button>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-12">
+                                            <p-dataTable [value]="materialAcquireds" selectionMode="single" [(selection)]="selectedMaterialAcquired" expandableRows="true"
+                                                [paginator]="true" [rows]="5" (onRowSelect)="onRowMatrialSelected($event)" [responsive]="true">
+                                                <p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}">
+                                                </p-column>
+
+                                                <p-column *ngFor="let colMaterialAcquired of colsMaterialAcquired" [field]="colMaterialAcquired.field" [header]="colMaterialAcquired.header" [sortable]="colMaterialAcquired.sortable"
+                                                    [style]="colMaterialAcquired.style" [filter]="colMaterialAcquired.filter" >
+                                                    <ng-template *ngIf="colMaterialAcquired.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+                                                        <span class="col-date">{{ data[ colMaterialAcquired.field ] | date:'dd/MM/yy' }}</span>
+                                                    </ng-template>
+                                                    <ng-template *ngIf="colMaterialAcquired.type === 'Raw'" let-col let-data="rowData" pTemplate type="body">
+                                                        <span class="col-text" innerHTML="{{ data[ colMaterialAcquired.field ]}}"></span>
+                                                    </ng-template>
+                                                    <ng-template *ngIf="colMaterialAcquired.type === 'Boolean'" let-col let-data="rowData" pTemplate type="body">
+                                                        <span class="col-text btn btn-success" *ngIf="data[ colMaterialAcquired.field ] === true">OUI</span>
+                                                        <span class="col-text btn btn-warning" *ngIf="data[ colMaterialAcquired.field ] === false">NON</span>
+                                                    </ng-template>
+
+                                                    
+                                                </p-column>
+                                                
+
+                                                <ng-template pTemplate="paginatorLeft">
+                                                    <button type="button" (click)="showDialogToAddMaterialAcquired()" pButton icon="fa fa-plus-circle"></button>
+                                                </ng-template>
+                                                <ng-template pTemplate="paginatorRight">
+                                                    <button type="button" (click)="getByIdMaterialsAcquired(materialsAcquired.id)" pButton icon="fa fa-refresh"></button>
+                                                </ng-template>
+
+
+                                            </p-dataTable>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <!-- End material acquired -->
+
+
+
+                        
+
+                        <ng-template pTemplate="paginatorLeft">
+                            <button type="button" (click)="showDialogToAddMaterialsAcquired()" pButton icon="fa fa-plus-circle"></button>
+                        </ng-template>
+                        <ng-template pTemplate="paginatorRight">
+                            <button type="button" (click)="getByIdReception(reception.id)" pButton icon="fa fa-refresh"></button>
+                        </ng-template>
+
+
+                    </p-dataTable>  
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <!-- End materials acquired -->
+
+
+    <ng-template pTemplate="paginatorLeft">
+        <button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"></button>
+    </ng-template>
+    <ng-template pTemplate="paginatorRight">
+        <button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+    </ng-template>
+</p-dataTable>

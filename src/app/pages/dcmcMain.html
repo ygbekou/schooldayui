@@ -1,0 +1,94 @@
+<div class="page-wrapper">
+  <header class="page-heading clearfix">
+    <h1 i18n="@@adminSpace" class="heading-title pull-left">
+      <img class="thumb" src="assets/images/scoolday.png" alt="" />
+    </h1>
+    <div class="breadcrumbs pull-right">
+      <ul class="breadcrumbs-list">
+        <li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+          ici:</li>
+        <li><a i18n="@@homeLink" href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+        <li><a i18n="@@admin" href="#">DCMC</a><i class="fa fa-angle-right"></i></li>
+        <li i18n="@@statistics" class="current">Statistiques</li>
+      </ul>
+    </div>
+    <!--//breadcrumbs-->
+  </header>
+  <div class="page-content">
+    <div [hidden]="currentUser.role===1||currentUser.role===5||currentUser.role===9" class="alert alert-danger"
+      i18n="@@youNeedToBeConnectedAsAdmin">Vous
+      devez etre connecte en tant que DCMC</div>
+
+    <div class="row page-row" [hidden]="!(currentUser.role===1||currentUser.role===5||currentUser.role===9)">
+      <app-dcmc-menu></app-dcmc-menu>
+
+			<!--//page-sidebar-->
+			<div class="content-wrapper col-md-10 col-sm-8">
+				<p-tabView (onChange)="onTabChange($event)"> <p-tabPanel
+					header="{{VISITS}}" leftIcon="fa fa-bar-chart"> <p-chart
+					type="line" [data]="data" (onDataSelect)="selectData($event)"></p-chart>
+
+				</p-tabPanel> <p-tabPanel header="{{PAYMENTS}}" leftIcon="fa fa-bar-chart">
+				<form (ngSubmit)="getPaymentGraph()" #searchForm="ngForm">
+					<div class="ui-grid ui-grid-responsive ui-fluid">
+						<div class="ui-grid-row">
+							<div class="ui-grid-col-4">
+								<p-autoComplete [(ngModel)]="schoolYear"
+									(onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+									[suggestions]="schoolYearDropdown.filteredSchoolYears"
+									[dropdown]="true" id="schoolYear"
+									(completeMethod)="schoolYearDropdown.filter($event)"
+									name="schoolYear" field="year" [size]="30"
+									placeholder="{{SCHOOLYEAR}}" [minLength]="1" #sYear="ngModel"></p-autoComplete>
+								<div [hidden]="sYear.valid || sYear.pristine"
+									class="alert alert-danger" i18n="@@schoolYearRequired">Annee
+									scolaire Requise</div>
+							</div>
+							<div class="ui-grid-col-1"></div>
+							<div class="ui-grid-col-2">
+								<button type="button" pButton icon="fa fa-search"
+									(click)="getPaymentGraph()" label="GO"
+									style="margin-top: 0px; height: 30px;"></button>
+							</div>
+							<div class="ui-grid-col-1"></div>
+							<div class="ui-grid-col-4">
+								<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+							</div>
+						</div>
+
+					</div>
+
+				</form>
+        <p-chart type="bar" [data]="data"></p-chart> </p-tabPanel> 
+        
+        <!--
+        <p-tabPanel
+					header="{{PROGRESSION}}" leftIcon="fa fa-bar-chart"> <p-tabView
+					(onChange)="onSubTabChange($event)"> <p-tabPanel
+					header="{{SEARCH}}" leftIcon="fa fa-search"
+					[selected]="activeTab === 0"> <app-admin-user-list
+					(onUserSelected)="onUserSelected($event)" [role]="3"></app-admin-user-list>
+        </p-tabPanel> 
+        
+        <p-tabPanel header="{{PROGRESSION}}" leftIcon="fa fa-bar-chart" *ngIf="user.id > 0" [selected]="activeTab === 1"> 
+          <app-student-chart></app-student-chart>
+        </p-tabPanel> 
+        
+        </p-tabView> 
+      </p-tabPanel> 
+      -->
+    </p-tabView>
+
+
+			</div>
+			<!--//content-wrapper-->
+
+
+      
+      <!--//content-wrapper-->
+    </div>
+    <!--//page-row-->
+  </div>
+  <!--//page-content-->
+</div>
+<!--//page-->

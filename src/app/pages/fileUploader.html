@@ -1,0 +1,24 @@
+<p-dialog header="Chargement d'un fichier"
+	[(visible)]="displayFileUploaderDialog" [responsive]="false"
+	[modal]="true">
+<div class="ui-grid-row">
+	<p-growl [value]="msgs"></p-growl>
+	<div [innerHTML]="errorMessage"></div>
+
+	<p-fileUpload name="file" url="{{uploadFileUrl}}"
+		(onUpload)="onUpload($event)" maxFileSize="" mode="basic"
+		auto="true"> <ng-template pTemplate type="content">
+	<ul *ngIf="uploadedFiles.length">
+		<li *ngFor="let file of uploadedFiles">{{file.name}} -
+			{{file.size}} bytes</li>
+	</ul>
+	</ng-template> </p-fileUpload>
+
+</div>
+
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="close()"
+			label="{{CLOSE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>

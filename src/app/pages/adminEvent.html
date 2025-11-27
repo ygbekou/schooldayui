@@ -1,0 +1,97 @@
+
+<p-dataTable [value]="events" selectionMode="single"
+	[(selection)]="selectedEvent" (onRowSelect)="onRowSelect($event)"
+	[paginator]="true" [rows]="15" [responsive]="true"> <p-column
+	*ngFor="let col of cols" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [filter]="col.filter"> <ng-template
+	*ngIf="col.type === 'string' || col.type === undefined" let-col
+	let-data="rowData" pTemplate type="body"> <span
+	class="col-string">{{ data[ col.field ] }}</span> </ng-template> <ng-template
+	*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+	type="body"> <span class="col-date">{{ data[
+	col.field ] | date:'dd/MM/yy HH:mm' }}</span> </ng-template> </p-column> <ng-template
+	pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>
+
+<p-dialog header="Evenement" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="450"
+	height="370">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="event">
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@start" for="startsAt">Debut</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="startsAt" [showTime]="true"
+				[(ngModel)]="event.startsAt" required></p-calendar>
+		</div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@end" for="endsAt">Fin</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="endsAt" [showTime]="true" [(ngModel)]="event.endsAt"
+				required></p-calendar>
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@title" for="title">Titre</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="title" [(ngModel)]="event.title" required />
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@description" for="description">Description</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<textarea pInputTextarea id="description"
+				[(ngModel)]="event.description"> </textarea>
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@address" for="address">Adresse</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="address" [(ngModel)]="event.address" required />
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@city" for="city">Ville</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="city" [(ngModel)]="event.city" required />
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@active" for="status">Active</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-checkbox [(ngModel)]="event.status" binary="true" id="status"></p-checkbox>
+		</div>
+
+	</div>
+</div>
+<br />
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>

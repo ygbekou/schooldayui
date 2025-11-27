@@ -1,0 +1,66 @@
+<aside class="page-sidebar col-md-2 col-sm-4 affix-top">
+  <section class="widget">
+    <ul class="nav">
+
+      <li class="{{depMain}}">
+        <a href="#/dep/depMain?depMain=active" i18n="@@statistics">Statistiques</a>
+      </li> 
+      	<li *ngIf="loggedInUser.userAccess == (0 || 2)" class="{{depRegistration}}"><a
+					href="#/dep/depRegistration?depRegistration=active" i18n="@@depRegistration">Gestion Inscription</a></li>
+      
+      <li class="{{depDemand}}">
+        <a href="#/dep/depDemand?depDemand=active" i18n="@@registrationRequest">Demandes d'inscription</a>
+      </li> 
+      
+      <li *ngIf="loggedInUser.userAccess == 0" class="{{depCourse}}">
+        <a href="#/dep/depCourse?depCourse=active" i18n="@@course">Cours</a>
+      </li> 
+      
+      <li class="{{depSchedule}}">
+        <a href="#/dep/depSchedule?depSchedule=active" i18n="@@schedule">Programme de cours</a>
+      </li>
+			<li class="{{depExam}}" *ngIf="loggedInUser.userAccess == (0 || 2)">
+        <a href="#/dep/depExam?depExam=active" i18n="@@examAndMarks">Examens et notes</a>
+      </li>
+
+			<li class="{{depStudentProject}}" *ngIf="loggedInUser.userAccess == (0 || 1)">
+        <a href="#/dep/depStudentProject?depStudentProject=active" i18n="@@examAndMarks">Projets étudiants</a>
+      </li>
+
+			<li class="{{depTeacher}}">
+        <a href="#/dep/depTeacher?depTeacher=active" i18n="@@teachers">Enseignants</a>
+      </li>
+
+			<li class="{{depStudent}}">
+        <a href="#/dep/depStudent?depStudent=active" i18n="@@students">Etudiants</a>
+      </li>
+
+			<li class="{{depParent}}">
+        <a href="#/dep/depParent?depParent=active" i18n="@@parents">Parents</a>
+      </li>
+
+			<li class="{{depProfile}}">
+        <a href="#/dep/depProfile?depProfile=active" i18n="@@myProfile">Mon Profile</a>
+      </li>
+
+			<li class="{{depReport}}" *ngIf="loggedInUser.userAccess == (0 || 2)">
+        <a href="#/dep/depReport?depReport=active" i18n="@@reports">Bulletins et Etats</a>
+      </li>
+      
+
+			<!-- <li *ngIf="loggedInUser.role==1 || loggedInUser.role==8" class="{{depYearInfo}}">
+        <a href="#/dep/depYearInfo?depYearInfo=active" i18n="@@configuration">Configuration</a>
+      </li> -->
+
+      <li *ngIf="loggedInUser.userAccess == 0" class="{{depYearInfo}}">
+        <a href="#/dep/depYearInfo?depYearInfo=active" i18n="@@configuration">Configuration</a>
+      </li>
+
+      <li class="{{depBourseOnline}}"><a
+        href="#/dep/depBourseOnline?depBourseOnline=active"
+        i18n="@@bourseOnline">Inscription Projet SIFA</a></li>
+
+    </ul>
+  </section>
+  <!--//widget-->
+</aside>

@@ -1,0 +1,155 @@
+<p-dialog header="Vos informations" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+	width="450" [style]="{ 'z-index': zIndexDialog }">
+
+	<div *ngIf="!isSubscribed">
+
+		<div class="ui-grid ui-grid-responsive ui-fluid">
+
+			<button type="button" pButton icon="fa fa-check" (click)="changerContenu()" label="Je me suis dejà inscrit"
+				style="margin-bottom: 20px;"></button>
+
+			<br>
+
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label for="lastName">Nom</label>
+				</div>
+				<div class="ui-grid-col-8">
+					<input pInputText [(ngModel)]="subscriber.lastName" name="lastName" id="lastName" />
+				</div>
+			</div>
+
+			<br>
+
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label for="prenom">Prénom</label>
+				</div>
+				<div class="ui-grid-col-8">
+					<input pInputText [(ngModel)]="subscriber.firstName" name="prenom" id="prenom" />
+				</div>
+			</div>
+
+
+			<br />
+
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label for="email">Email</label>
+				</div>
+				<div class="ui-grid-col-8">
+					<input pInputText [(ngModel)]="subscriber.email" name="email" id="email" />
+				</div>
+			</div>
+
+			<br />
+
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label for="telephone">Téléphone</label>
+				</div>
+				<div class="ui-grid-col-8">
+					<input pInputText [(ngModel)]="subscriber.phone" name="telephone" id="telephone" />
+				</div>
+			</div>
+
+
+			<br>
+
+			<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+
+
+
+		</div>
+
+	</div>
+
+	<div *ngIf="isSubscribed">
+
+		<div class="ui-grid ui-grid-responsive ui-fluid">
+
+			<button type="button" pButton (click)="changerContenu()" style="margin-bottom: 20px;"
+				label="S'inscire"></button>
+
+			<br />
+
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label for="email">Email</label>
+				</div>
+				<div class="ui-grid-col-8">
+					<input pInputText [(ngModel)]="subscriber.email" name="email" id="email" />
+				</div>
+			</div>
+
+			<br />
+
+			<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+		</div>
+
+
+
+
+
+	</div>
+
+
+
+	<footer>
+		<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+
+			<!-- <button type="button" pButton icon="fa fa-close" (click)="confirmDelete()"
+				label="Supprimer"></button> -->
+			<button type="button" pButton icon="fa fa-check" (click)="save()" label="Envoyer"></button>
+		</div>
+	</footer>
+</p-dialog>
+
+
+
+<div style="padding: 10px;">
+
+	<h3 class="title">Pourquoi nous choisir</h3>
+	<p>Par leur qualité et leur diversité, les programmes de iPNet
+		University :</p>
+	<p>
+		<i class="fa fa-caret-right"></i>Répondent a vos besoins de savoir, de
+		savoir-faire et de savoir être
+	</p>
+	<p>
+		<i class="fa fa-caret-right"></i>Développent vos connaissances et vos
+		compétences
+	</p>
+	<p>
+		<i class="fa fa-caret-right"></i>Vous préparent a relever les défis
+		du marche du travail et du monde qui vous entoure.
+	<!-- </p>
+	<div *ngIf="!isAuthorized">
+		<button (click)="showDialogToAdd()" *ngIf="flyer=='LES_PILIERS_DE_NOTRE_SYSTEME_D_ENSEIGNEMENT'"
+			class="btn btn-theme"><i class="fa fa-download"></i>Télécharger la brochure</button>
+
+		<button (click)="showDialogToAdd()" *ngIf="flyer!='LES_PILIERS_DE_NOTRE_SYSTEME_D_ENSEIGNEMENT'"
+			class="btn btn-theme"><i class="fa fa-download"></i>Télécharger la brochure</button>
+	</div>
+
+	<div *ngIf="isAuthorized">
+		<a *ngIf="flyer=='LES_PILIERS_DE_NOTRE_SYSTEME_D_ENSEIGNEMENT'" class="btn btn-theme" href="docs/{{flyer}}.jpg"
+			target="_blank"><i class="fa fa-download"></i>Télécharger la brochure</a>
+		<a *ngIf="flyer!='LES_PILIERS_DE_NOTRE_SYSTEME_D_ENSEIGNEMENT'" class="btn btn-theme" href="docs/{{flyer}}.pdf"
+			target="_blank"><i class="fa fa-download"></i>Télécharger la brochure</a>
+	</div> -->
+	<div>
+		<a *ngIf="flyer=='LES_PILIERS_DE_NOTRE_SYSTEME_D_ENSEIGNEMENT'" class="btn btn-theme" href="docs/{{flyer}}.jpg"
+			target="_blank"><i class="fa fa-download"></i>Télécharger la brochure</a>
+		<a *ngIf="flyer!='LES_PILIERS_DE_NOTRE_SYSTEME_D_ENSEIGNEMENT'" class="btn btn-theme" href="docs/{{flyer}}.pdf"
+			target="_blank"><i class="fa fa-download"></i>Télécharger la brochure</a>
+	</div>
+	<!--
+		<p>
+			<a class="btn btn-theme" href="#/documentsTelecharge"><i
+				class="fa fa-download"></i>Télécharger documents utiles</a>
+		</p>
+		-->
+
+</div>

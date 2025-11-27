@@ -1,0 +1,59 @@
+<form (ngSubmit)="run()" #searchForm="ngForm">
+
+    <div class="ui-grid ui-grid-responsive ui-fluid">
+      <div class="ui-grid-row">
+
+        <div class="ui-grid-col-3">
+          <p-autoComplete [(ngModel)]="cycleSelected" (onDropdownClick)="cycleDropdown.handleDropdownClick($event)"
+            [suggestions]="cycleDropdown.filteredCycles" [dropdown]="true" id="cycle"
+            (completeMethod)="cycleDropdown.filter($event)" name="cycle" field="name" [size]="30"
+            placeholder="Parcours" [minLength]="1" #cycle="ngModel"></p-autoComplete>
+        </div>
+        <div class="ui-grid-col-1"></div>
+        <div class="ui-grid-col-3">
+            <!-- <p-autoComplete [(ngModel)]="termSelected"
+                (onDropdownClick)="termDropdown.handleDropdownClick($event)"
+                [suggestions]="termDropdown.filteredTerms" [dropdown]="true"
+                id="term" (completeMethod)="termDropdown.filter($event)"
+                name="term" field="name" [size]="30" placeholder="trimestre"
+                [minLength]="1" #term="ngModel"></p-autoComplete> -->
+
+              <p-dropdown [(ngModel)]="termSelected"
+                  [options]="terms"
+                  id="term"
+                  name="term"
+                  placeholder="Sélectionnez un trimestre"
+                  [style]="{width: '200px'}">
+              </p-dropdown>
+
+        </div>
+        
+        <div class="ui-grid-col-1"></div>
+        <div class="ui-grid-col-2">
+          <button type="button" pButton icon="fa fa-print" (click)="run()" label="Générer"
+            style="margin-top: 0px; height: 35px;"></button>
+        </div>
+      </div>
+    
+    </div>
+  </form>
+
+  <br>
+
+  <div class="ui-grid-row">
+    <div class="ui-grid-col-3"></div>
+
+			<div class="ui-grid-col-3">
+
+        <a *ngIf="reportName" target="_blank" href="assets/reports/{{reportName}}"
+          i18n="@@downloadReport" class="btn btn-theme">
+              <i class="fa fa-download"></i>
+              Télécharger l'état
+        </a>
+				
+			</div>
+      <div class="ui-grid-col-3"></div>
+
+			
+</div>
+  

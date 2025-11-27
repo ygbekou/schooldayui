@@ -1,0 +1,121 @@
+<p-dialog header="Ajout - Compte Comptable" [(visible)]="displayDialog" [responsive]="true" showEffect="fade"
+    [modal]="true" width="700">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="account">
+        <div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@accountNumber" for="accountNumber">Numero de Compte : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="kaccountNumberey" class="form-control" [(ngModel)]="account.accountNumber" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@name" for="name">Intitulé : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="name" class="form-control" [(ngModel)]="account.name" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <!-- <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@lifetime" for="wording">Durée de vie : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="lifetime" class="form-control" [(ngModel)]="account.lifetime"/><span>Mois</span>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div> -->
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@description" for="description">Description : </label>
+                </div>
+
+                <div class="ui-grid-col-9">
+                    <p-editor [(ngModel)]="account.description" [style]="{'height':'120px'}" id="description"></p-editor>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@parent" for="parent">Compte comptable parent : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-autoComplete [(ngModel)]="account.parent"
+                        (onDropdownClick)="accountingDropdown.handleDropdownClick($event)"
+                        [suggestions]="accountingDropdown.filteredAccounts" [dropdown]="true" id="parent"
+                        (completeMethod)="accountingDropdown.filter($event)" name="parent" field="name"
+                        placeholder="Compte comptable" [minLength]="1"></p-autoComplete>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@lifetime" for="lifetime">Durée de vie : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="lifetime" class="form-control" [(ngModel)]="account.lifetime" 
+                    /><span>Mois</span>
+                </div>
+                <div class="ui-grid-col-1">
+                   
+                </div>
+            </div>
+
+            <!-- <div class="ui-grid-row">
+                <div class="ui-grid-col-4">
+                  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+                  <div *ngIf="msg" class="alert alert-success">{{msg}}</div>
+                </div>
+            </div> -->
+
+        </div>
+    </div>
+
+
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-close" (click)="delete()" label="{{DELETE_LABEL}}"></button>
+            <button type="button" pButton icon="fa fa-check" (click)="save()" label="{{SAVE_LABEL}}"></button>
+        </div>
+    </footer>
+</p-dialog>
+
+
+<p-dataTable [value]="accounts" selectionMode="single" [(selection)]="selectedaccount" expandableRows="true"
+    [paginator]="true" [rows]="5" (onRowSelect)="onRowSelect($event)" [responsive]="true">
+
+    <p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}">
+
+    </p-column>
+
+
+    <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+        [style]="col.style" [filter]="col.filter">
+        <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+            <span class="col-date">{{ data[ col.field ] | date:'dd/MM/yy' }}</span>
+        </ng-template>
+        <ng-template *ngIf="col.type === 'Raw'" let-col let-data="rowData" pTemplate type="body">
+            <span class="col-text" innerHTML="{{ data[ col.field ]}}"></span>
+        </ng-template>
+    </p-column>
+
+    <ng-template pTemplate="paginatorLeft">
+        <button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"></button>
+    </ng-template>
+    
+    <ng-template pTemplate="paginatorRight">
+        <button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+    </ng-template>
+
+
+</p-dataTable>

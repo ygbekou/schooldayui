@@ -1,0 +1,57 @@
+<div class="page-wrapper">
+  <header class="page-heading clearfix">
+    <h1 i18n="@@adminSpace" class="heading-title pull-left">
+      <img class="thumb" src="assets/images/scoolday.png" alt="" />
+    </h1>
+    <div class="breadcrumbs pull-right">
+      <ul class="breadcrumbs-list">
+        <li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+          ici:</li>
+        <li><a i18n="@@homeLink" href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+        <li><a i18n="@@admin" href="#">Admin</a><i class="fa fa-angle-right"></i></li>
+        <li i18n="@@information" class="current">Information</li>
+      </ul>
+    </div>
+    <!--//breadcrumbs-->
+  </header>
+  <div class="page-content">
+    <div [hidden]="currentUser.role===1" class="alert alert-danger" i18n="@@youNeedToBeConnectedAsAdmin">Vous devez etre
+      connecte
+      en tant qu'administrateur pour voir ce contenu</div>
+    <div class="row page-row" [hidden]="!(currentUser.role===1)">
+      <app-admin-menu></app-admin-menu>
+      <!--//page-sidebar-->
+      <div class="content-wrapper col-md-10 col-sm-8">
+        <p-tabView (onChange)="onTabChange($event)">
+          <p-tabPanel header="{{EMAIL_SMS}}" leftIcon="fa fa-envelope-o">
+            <app-admin-comm></app-admin-comm>
+          </p-tabPanel>
+          <p-tabPanel header="{{NEWS}}" leftIcon="fa fa-newspaper-o">
+            <app-admin-news></app-admin-news>
+          </p-tabPanel>
+          <p-tabPanel header="{{EVENTS}}" leftIcon="fa fa-bookmark">
+            <app-admin-event></app-admin-event>
+          </p-tabPanel>
+          <p-tabPanel header="{{VIDEOS}}" leftIcon="fa fa-file-video-o">
+            <app-admin-video></app-admin-video>
+          </p-tabPanel>
+          <p-tabPanel header="{{CAMPUS_IMAGE}}" leftIcon="fa fa-file-video-o">
+            <app-admin-campusimage></app-admin-campusimage>
+          </p-tabPanel>
+          <p-tabPanel header="{{PHOTO_JPOPE}}" leftIcon="fa fa-file-video-o">
+            <app-admin-album-photos-jpope></app-admin-album-photos-jpope>
+          </p-tabPanel>
+          <p-tabPanel header="{{FAQ}}" leftIcon="fa fa-bookmark">
+            <app-admin-faq></app-admin-faq>
+          </p-tabPanel>
+        </p-tabView>
+
+
+      </div>
+      <!--//content-wrapper-->
+    </div>
+    <!--//page-row-->
+  </div>
+  <!--//page-content-->
+</div>
+<!--//page-->

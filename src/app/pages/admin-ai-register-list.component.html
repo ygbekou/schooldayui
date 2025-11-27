@@ -1,0 +1,43 @@
+
+
+
+<div class="page-wrapper">
+	<!--<header class="page-heading clearfix">
+		<h1 i18n="@@adminSpace" class="heading-title pull-left">
+			<img class="thumb" src="assets/images/scoolday.png" alt="" />
+		</h1>
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+					ici:</li>
+				<li><a i18n="@@homeLink" href="index.html">Home</a><i
+					class="fa fa-angle-right"></i></li>
+				<li><a i18n="@@admin" href="#">Admin</a><i
+					class="fa fa-angle-right"></i></li>
+				<li i18n="@@training" class="current">Inscription séminaire IA </li>
+			</ul>
+		</div>
+	</header>-->
+	<div class="page-content">
+		<div class="row page-row">
+			<!--<app-admin-menu></app-admin-menu>-->
+			<!--//page-sidebar-->
+			<div class="content-wrapper col-md-12 col-sm-12">
+
+				<p-dataTable [value]="registers" selectionMode="single"
+        
+        [paginator]="true" [rows]="15" [responsive]="true"> <p-column
+        *ngFor="let col of cols" [field]="col.field" [style]="col.style"
+        [header]="col.header" [sortable]="col.sortable" [filter]="col.filter"><ng-template
+		*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+		type="body"> <span class="col-date">{{ data[
+		col.field ] | date:'dd/MM/yy' }}</span> </ng-template></p-column>
+      </p-dataTable>
+			</div>
+			<!--//content-wrapper-->
+		</div>
+		<!--//page-row-->
+	</div>
+	<!--//page-content-->
+</div>
+<!--//page-->

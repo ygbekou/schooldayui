@@ -1,0 +1,106 @@
+<form (ngSubmit)="getStudentMarks()" #searchForm="ngForm">
+	<div class="ui-grid ui-grid-responsive ui-fluid">
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-4">
+				<p-autoComplete [(ngModel)]="schoolYear"
+					(onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+					[suggestions]="schoolYearDropdown.filteredSchoolYears"
+					[dropdown]="true" id="schoolYear"
+					(completeMethod)="schoolYearDropdown.filter($event)"
+					name="schoolYear" field="year" [size]="30"
+					placeholder="{{SCHOOLYEAR}}" [minLength]="1" #sYear="ngModel"></p-autoComplete>
+				<div [hidden]="sYear.valid || sYear.pristine"
+					class="alert alert-danger" i18n="@@schoolYearRequired">Annee
+					scolaire Requise</div>
+			</div>
+			<div class="ui-grid-col-1"></div>
+			<div class="ui-grid-col-3">
+				<button type="button" pButton icon="fa fa-search"
+					(click)="getStudentMarks()" label="{{SHOW_NOTES}}"
+					style="margin-top: 0px; height: 30px;"></button>
+			</div>
+			<div class="ui-grid-col-3">
+				<button type="button" pButton icon="fa fa-search"
+					(click)="getStudentTermResults()" label="{{SHOW_AVERAGES}}"
+					style="margin-top: 0px; height: 30px; margin: 2px;"></button>
+			</div>
+
+		</div>
+
+	</div>
+
+</form>
+
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+<div>
+	<p-dataGrid [value]="termResult.resultSummaries"
+		*ngIf="termResult.resultSummaries"> <ng-template
+		let-resultSummary pTemplate="item">
+	<div style="padding: 3px" class="ui-g-12 ui-md-3">
+		<p-panel [header]="" [style]="{'text-align':'center'}"> <p-header>
+		{{resultSummary.term}} </p-header>
+		<div class="car-detail">Rang: {{resultSummary.rankNbr}}</div>
+		<div class="car-detail">Note: {{resultSummary.mark| number :
+			'1.2-2' }} - {{resultSummary.gradeName}}</div>
+		<div class="car-detail">Decision: {{resultSummary.decision}}</div>
+		<hr class="ui-widget-content" style="border-top: 0">
+		<i class="fa fa-search" (click)="getAverages(resultSummary)"
+			style="cursor: pointer"></i> </p-panel>
+	</div>
+	</ng-template> </p-dataGrid>
+</div>
+<br />
+
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="950">
+<p-dataTable [value]="selectedResultSummary.averages" [paginator]="true"
+	[rows]="15" [responsive]="true"> <p-column
+	*ngFor="let col of averageCols" [field]="col.field"
+	[header]="col.header" [sortable]="col.sortable" [filter]="col.filter">
+</p-column> <p-column header="{{TEACHER}}"> <ng-template let-col
+	let-bulletin="rowData" let-ri="rowIndex" pTemplate="body">
+<span>{{getName(ri)}}</span> </ng-template> </p-column> <p-footer> </p-footer> </p-dataTable> <footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="close()"
+			label="{{CLOSE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+<!-- <p-dataTable [value]="marks" [paginator]="true" [rows]="15" *ngIf="marks"
+	[responsive]="true"> <p-column *ngFor="let col of cols"
+	[field]="col.field" [header]="col.header" [sortable]="col.sortable"
+	[filter]="col.filter"> <ng-template
+	*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+	type="body"> <span class="col-date">{{
+	data[col.field] | date:'dd/MM/yyyy' }}</span> </ng-template> </p-column> <footer>
+	<div class="ui-helper-clearfix" style="width: 100%"></div>
+</footer> </p-dataTable> -->
+
+<p-dataTable [value]="marks" [paginator]="true" [rows]="15" *ngIf="marks" [responsive]="true">
+	<p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [sortable]="col.sortable" [filter]="col.filter">
+	  
+	  <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+		<span class="col-date">{{ data[col.field] | date:'dd/MM/yyyy' }}</span>
+	  </ng-template>
+  
+	  <ng-template *ngIf="col.field === 'examType'" let-col let-data="rowData" pTemplate type="body">
+		<ng-container *ngIf="data['examType'] === 'TP'; else defaultExamType">
+		  {{ data['tpType'] }}
+		</ng-container>
+		<ng-template #defaultExamType>
+		  {{ data['examType'] }}
+		</ng-template>
+	  </ng-template>
+  
+	  <ng-template *ngIf="col.field !== 'examType' && col.type !== 'Date'" let-col let-data="rowData" pTemplate type="body">
+		{{ data[col.field] }}
+	  </ng-template>
+  
+	</p-column>
+	<footer>
+	  <div class="ui-helper-clearfix" style="width: 100%"></div>
+	</footer>
+  </p-dataTable>
+  

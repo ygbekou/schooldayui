@@ -1,0 +1,112 @@
+<style>
+	.ui-autocomplete input {
+		width:100%;
+	}
+
+	.ui-growl {
+		left: 50%;
+		right: 0;
+		margin-left:-150px;
+	}
+</style>
+
+<div class="page-wrapper">
+	<p-growl [(value)]="msgs"></p-growl>
+	<header class="page-heading clearfix">
+		<h1 i18n="@@onlineRegistrationLink" class="heading-title pull-left">
+      Demandez un rendez-vous pour des questions d'orientation
+    </h1>
+		
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+					ici:</li>
+				<li><a i18n="@@homeLink" href="index.html">Home</a><i
+					class="fa fa-angle-right"></i></li>
+				<li class="current"><a i18n="@@onlineRegistrationLink" href="#/AI">rendez-vous pour des questions d'orientation
+						</a><i class="fa fa-angle-right"></i></li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+    <form (ngSubmit)="saveUser()" #aiRegistrationForm="ngForm">
+      <div class="form-group">
+				<label i18n="@@lastName" for="lastName">Nom*:</label> <input
+					type="text" pInputText class="form-control" id="lastName" required [(ngModel)]="aiRegister.lastName"
+					name="lastName" #lastName="ngModel">
+				<!--<div [hidden]="lastName.valid || lastName.pristine"
+					class="alert alert-danger" i18n="@@lastNameRequired">Nom
+					Requis</div>-->
+				</div>
+
+      <div class="form-group">
+				<label i18n="@@firstName" for="firstName">Prenom*:</label> <input
+					type="text" pInputText class="form-control" id="firstName" required
+					 [(ngModel)]="aiRegister.firstName"
+					name="firstName" #firstName="ngModel">
+				<!--<div [hidden]="firstName.valid || firstName.pristine"
+					class="alert alert-danger" i18n="@@firstNameRequired">Prenom
+					Requis
+				</div>-->
+			</div>
+
+			<div class="form-group">
+				<label i18n="@@email" for="email">E-mail*</label> <input type="email"
+					pInputText class="form-control" id="email" required
+					[(ngModel)]="aiRegister.email" name="email"
+					#email="ngModel">
+				<!--<div [hidden]="email.valid || email.pristine"
+					class="alert alert-danger" i18n="@@emailRequired">Email
+					Requis
+				</div>-->
+			</div>
+
+      		<div class="form-group">
+				<label i18n="@@phone" for="phone">Contact*</label> <input type="text"
+					pInputText class="form-control" id="phone" required
+					[(ngModel)]="aiRegister.phone" name="phone"
+					#phone="ngModel">
+				<!--<div [hidden]="phone.valid || phone.pristine"
+					class="alert alert-danger" i18n="@@phoneRequired">Contact
+					Requis
+				</div>-->
+			</div>
+
+      		<div class="form-group">
+				<label i18n="@@originCountry" for="countryOrigin">Pays
+					de résidence</label>
+				<div>
+					<p-autoComplete [(ngModel)]="aiRegister.countryResidence"
+					(onDropdownClick)="handleDropdownClick($event)"
+					[suggestions]="filteredCountries" [dropdown]="true"
+					id="countryOrigin"
+					(completeMethod)="filterCountry($event)" name="countryOrigin"
+					field="name" [size]="30" placeholder="Pays"
+					[minLength]="1"></p-autoComplete>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label i18n="@@cityResidence" for="cityResidence">Ville*</label> <input type="text"
+					pInputText class="form-control" id="cityResidence" required
+					[(ngModel)]="aiRegister.cityResidence" name="cityResidence"
+					#cityResidence="ngModel">
+				<!--<div [hidden]="cityResidence.valid || cityResidence.pristine"
+					class="alert alert-danger" i18n="@@cityResidenceRequired">Ville
+					Requis
+				</div>-->
+			</div>
+
+			<button pButton type="submit"
+				icon="fa fa fa-play-circle"
+				style="margin-top: 0px; width: 40%; height: 50px;"
+				label="S'enregistrer"></button>
+			<br>
+			<br>
+
+			<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+    </form>
+
+  </div>
+</div>

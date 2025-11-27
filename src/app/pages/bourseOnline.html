@@ -1,0 +1,400 @@
+
+<div class="page-wrapper">
+    <header class="page-heading clearfix">
+        <div class="row page-row">
+            <div class="col-md-9 col-sm-8">
+                <h1 class="heading-title pull-left">
+                   Bourses en Ligne
+                    <span style="position: relative;/* left: 4%*/; top: 10px;">
+                      <!--div class="fb-like" data-href="http://www.ipnetinstitute.com/#/projetsProfesionnels" data-width=""
+                           data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true">
+                      </div-->
+                      <div class="fb-like" data-href="http://www.ipnetinstitute.com/#/BourseAidePret" data-width=""
+                           data-layout="standard" data-action="like" data-size="small" data-show-faces="true"
+                           data-share="true">
+                      </div>
+                    </span>
+                </h1>
+            </div>
+            <div class="col-md-3 col-sm-4">
+                <div class="breadcrumbs pull-right">
+                    <ul class="breadcrumbs-list">
+
+                        <li class="breadcrumbs-label">Vous etes ici:</li>
+                        <li><a href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+                        <li class="current"> Bourses en Ligne</li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+	<div class="page-content">
+
+      
+            <!-- <p-tabPanel header="Onglet 1" leftIcon="fa fa-pencil-square-o"> -->
+                <form (ngSubmit)="saveUser()" #profileForm="ngForm">
+                    <br />
+                    <p-steps [model]="items" [(activeIndex)]="activeIndex"
+                        styleClass="steps-custom"></p-steps>
+                    <br />
+                           <!-- STEP 1 -->
+
+                        <fieldset style="padding: 20px;" *ngIf="activeIndex===0 ||activeIndex===3">
+                            <legend>Etat Civil</legend>
+                 
+                    <div class="form-group">
+                        <label i18n="@@lastName" for="lastName">Nom:</label> <input
+                            type="text" pInputText class="form-control" id="lastName" required
+                            [disabled]="activeIndex===3" [(ngModel)]="user.lastName"
+                            name="lastName" #lastName="ngModel">
+                        <div [hidden]="lastName.valid || lastName.pristine"
+                            class="alert alert-danger" i18n="@@lastNameRequired">Nom
+                            Requis</div>
+                    </div>
+                    <div class="form-group">
+                        <label i18n="@@firstName" for="firstName">Prenom:</label> <input
+                            type="text" pInputText class="form-control" id="firstName" required
+                            [disabled]="activeIndex===3" [(ngModel)]="user.firstName"
+                            name="firstName" #firstName="ngModel">
+                        <div [hidden]="firstName.valid || firstName.pristine"
+                            class="alert alert-danger" i18n="@@firstNameRequired">Prenom
+                            Requis</div>
+                    </div>
+                    <div class="form-group">
+                        <label i18n="@@email" for="email1">E-mail</label> <input
+                            type="email" pInputText class="form-control" id="email1" required
+                            [(ngModel)]="user.email" [disabled]="activeIndex===3" name="email1"
+                            #email1="ngModel">
+                        <div [hidden]="email1.valid || email1.pristine"
+                            class="alert alert-danger" i18n="@@emailRequired">Email
+                            Requis</div>
+                    </div>
+                    <div class="form-group">
+                        <label i18n="@@password" for="password">Mot de Passe</label> <input
+                            type="password" pPassword class="form-control" id="password"
+                            required [disabled]="activeIndex===3" [(ngModel)]="user.password"
+                            name="password" #password="ngModel">
+                        <div [hidden]="password.valid || password.pristine"
+                            class="alert alert-danger" i18n="@@passwordRequired">Le mot
+                            de passe est requis</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label i18n="@@birthDate" for="birthDate">Date de Naissance</label>
+                        <br>
+                        <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="birthDate" [(ngModel)]="user.birthDate"
+                            [disabled]="activeIndex===3" [showIcon]="true" name="birthDate"
+                            #birthDate="ngModel"></p-calendar>
+                
+                        <div [hidden]="birthDate.valid || birthDate.pristine"
+                            class="alert alert-danger" i18n="@@birthDateRequired">Date de
+                            naissance est requise</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label i18n="@@cityOfBirth" for="cityOfBirth">Lieu de
+                          Naissance</label> <input type="text" pInputText class="form-control"
+                          id="cityOfBirth" required [(ngModel)]="user.cityOfBirth" name="cityOfBirth"
+                          #birthPlace="ngModel" [disabled]="activeIndex===3">
+                      </div>
+                 
+                    <div class="form-group">
+                        <label i18n="@@originCountry" for="countryOrigin">Nationalité</label>
+                            <br>
+                        <p-autoComplete [(ngModel)]="citizenship"
+                            (onDropdownClick)="handleDropdownClick($event)"
+                            [suggestions]="filteredCountries" [dropdown]="true"
+                            id="countryOrigin" [disabled]="activeIndex===3"
+                            (completeMethod)="filterCountry($event)" name="countryOrigin"
+                            field="name" [size]="30" placeholder="{{COUNTRY_ORIGIN}}"
+                            [minLength]="1"></p-autoComplete>
+                    </div>
+
+                      <!-- <div class="form-group">
+                        <label i18n="@@maritalStatus" for="maritalStatus">Situation matrimoniale:</label>
+                        <br>
+                        <p-dropdown id="maritalStatus" [options]="maritalStatusOptions" optionLabel="label" [(ngModel)]="maritalStatusOption" 
+                        name="maritalStatus" [disabled]="activeIndex===3"></p-dropdown>
+                    </div> -->
+                   
+                    <div class="form-group">
+                        <label i18n="@@Iam" for="sex">Je suis:</label>
+                
+                        <div class="ui-g-12">
+                            <p-radioButton name="sex" value="F" label="{{FEMALE}}"
+                                [disabled]="activeIndex===3" [(ngModel)]="user.sex"></p-radioButton>
+                            <p-radioButton name="sex" value="M" label="{{MALE}}"
+                                [disabled]="activeIndex===3" [(ngModel)]="user.sex"></p-radioButton>
+                        </div>
+                
+                    </div>
+
+
+                </fieldset>
+
+                <fieldset style="padding: 20px;" *ngIf="activeIndex===0 ||activeIndex===3">
+                    <legend>Votre Adresse</legend>
+
+                    <div class="form-group">
+                        <label i18n="@@address" for="address">Adresse</label> <input
+                            type="text" pInputText class="form-control" id="address" required
+                            [disabled]="activeIndex===3" [(ngModel)]="user.address"
+                            name="address" #address="ngModel">
+                        <div [hidden]="address.valid || address.pristine"
+                            class="alert alert-danger" i18n="@@addressRequired">Address
+                            Requis</div>
+                    </div>
+                    <div class="form-group">
+                        <label i18n="@@zipCode" for="zipCode">Code Postal</label> <input
+                            type="text" pInputText class="form-control" id="zipCode"
+                            [disabled]="activeIndex===3" [(ngModel)]="user.zipCode"
+                            name="zipCode" #zipCode="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label i18n="@@cityResidence" for="cityResidence">Ville de
+                            residence</label> <input type="text" pInputText class="form-control"
+                            id="cityResidence" [disabled]="activeIndex===3" required
+                            [(ngModel)]="user.cityResidence" name="cityResidence"
+                            #cityResidence="ngModel">
+                        <div
+                            [hidden]="cityResidence.valid || cityResidence.pristine"
+                            class="alert alert-danger" i18n="@@cityResidenceRequired">Ville
+                            de residence Requise</div>
+                    </div>
+                
+                    <div class="form-group">
+                        <label i18n="@@countryResidence" for="countryResidence">Pays
+                            de residence</label>
+                        <p-autoComplete [(ngModel)]="user.countryResidence"
+                            (onDropdownClick)="handleDropdownClick($event)"
+                            [suggestions]="filteredCountries" [dropdown]="true"
+                            id="countryResidence" [disabled]="activeIndex===3" required
+                            (completeMethod)="filterCountry($event)" name="countryResidence"
+                            field="name" [size]="30" placeholder="{{COUNTRY_RESIDENCE}}"
+                            [minLength]="1"></p-autoComplete>
+                    </div>
+                
+                    <div class="form-group">
+                        <label i18n="@@phone" for="phone">Telephone</label> <input
+                            type="text" pInputText [disabled]="activeIndex===3"
+                            class="form-control" id="phone" required [(ngModel)]="user.phone"
+                            name="phone" #phone="ngModel">
+                        <div [hidden]="phone.valid || phone.pristine"
+                            class="alert alert-danger" i18n="@@phoneRequired">Telephone
+                            Requis</div>
+                    </div>
+
+                    
+
+                </fieldset>
+
+             
+
+                 <!-- STEP 2 -->
+
+                 <div class="form-group" *ngIf="activeIndex===1 ||activeIndex===3">
+                    <label i18n="@@lastDegree" for="lastDegree">Dernier diplôme :</label> <input
+                        type="text" pInputText class="form-control" id="lastDegree" required
+                        [disabled]="activeIndex===3" [(ngModel)]="user.lastDegree"
+                        name="lastDegree" #lastDegree="ngModel">
+                    <div [hidden]="lastDegree.valid || lastDegree.pristine"
+                        class="alert alert-danger" i18n="@@lastDegreeRequired">Dernier diplôme requis</div>
+                </div>
+                
+
+                <fieldset style="padding: 20px;" *ngIf="activeIndex===1 ||activeIndex===3">
+                    <legend>Inscription</legend>
+
+                    <div class="form-group">
+                    <label i18n="@@schoolYearChoice" for="phone" style="margin-right: 30px;">Pour Quelle
+                        Annee scolaire allez-vous vous inscrire ?</label>
+                    <p-autoComplete [(ngModel)]="user.schoolYear"
+                        (onDropdownClick)="handleBourseSchoolYearDropdownClick($event)"
+                        [suggestions]="filteredSchoolYears" [dropdown]="true"
+                        id="schoolYear" #schoolYear="ngModel" required
+                        (completeMethod)="filterSchoolYear($event)" name="schoolYear"
+                        field="year" [disabled]="activeIndex===3" [size]="50"
+                        placeholder="{{SCHOOL_YEAR}}" [minLength]="1"></p-autoComplete>
+            
+                </div>
+            
+
+                    <!-- <div class="form-group">
+                        <label i18n="@@Iam" for="filiere">Filiére</label>
+                
+                        <div class="ui-g-12">
+                            <p-radioButton name="filiere" value="TLW" label="Technicien Logociel - Webdesign"
+                                [disabled]="activeIndex===3" [(ngModel)]="user.filiere"></p-radioButton><br>
+                            <p-radioButton name="filiere" value="CIM" label="Certificat Infographie & Multimédiat"
+                                [disabled]="activeIndex===3" [(ngModel)]="user.filiere"></p-radioButton><br>
+                            <p-radioButton name="filiere" value="CA" label="Devenez CyberSecurity Analyst en 6 mois"
+                                [disabled]="activeIndex===3" [(ngModel)]="user.filiere"></p-radioButton>
+                        </div>
+                
+                    </div> -->
+                   
+
+                    <div class="ui-g-12">
+                        <div class="ui-g-6">
+                            <p-radioButton name="bourse" value="true" label="Rentrée du 15 Mai" [(ngModel)]="bourse1" [disabled]="activeIndex===3" (ngModelChange)="onBourseChange(true)"></p-radioButton>
+                            <h6>(100% d'exemption de frais de scolarité)</h6>
+                            
+
+                            <div class="form-group" *ngIf="bourse1">
+                            <label i18n="@@levelChoice" for="phone" style="margin-right: 41px;">Dans quelle
+                                filiere/classe souhaitez-vous vous inscrire dans la rentrée du 15 Mai ?</label>
+            
+            
+                            <p-autoComplete [(ngModel)]="user.level"
+                                (onDropdownClick)="levelDropdown.handleBourseDropdownClick($event)"
+                                [suggestions]="levelDropdown.filtereBoursedLevels" [dropdown]="true"
+                                id="level" [disabled]="activeIndex===3" (completeMethod)="levelDropdown.filterBourse1($event)"
+                                name="level" field="name" required [size]="50"
+                                placeholder="Choisissez la filiére" [minLength]="1" #level="ngModel"></p-autoComplete>
+                        </div>
+
+
+                           
+                            
+                        </div>
+                      
+                        <div class="ui-g-6">
+                            <p-radioButton name="bourse" value="false" label="Rentrée du 15 Octobre" [disabled]="activeIndex===3" [(ngModel)]="bourse2" (ngModelChange)="onBourseChange(false)"></p-radioButton>
+                            <h6>(100% d'exemption de frais de scolarité + allocation mensuelle)</h6>
+                 
+                            <div class="form-group" *ngIf="bourse2">
+                                <label i18n="@@levelChoice" for="phone" style="margin-right: 41px;">Dans quelle
+                                    filiere/classe souhaitez-vous vous inscrire ?</label>
+                
+                
+                                <p-autoComplete [(ngModel)]="user.level"
+                                    (onDropdownClick)="levelDropdown.handleBourseDropdownClick2($event)"
+                                    [suggestions]="levelDropdown.filtereBoursedLevels2" [dropdown]="true"
+                                    id="level" (completeMethod)="levelDropdown.filterBourse2($event)"
+                                    name="level" [disabled]="activeIndex===3" field="name" required [size]="50"
+                                    placeholder="Choisissez la filiére" [minLength]="1" #level="ngModel"></p-autoComplete>
+                            </div>
+              
+                        </div>
+                  
+
+                    </div>
+                </fieldset>
+
+               
+                
+                    <!-- STEP 3 -->
+
+
+                    <fieldset style="padding: 20px;" *ngIf="activeIndex===2 ||activeIndex===3">
+                        <legend>Situation familiale</legend>
+
+                        <div class="form-group">
+                            <label i18n="@@Iam" for="familySituation">Cochez la ou les catégorie(s) pertinente</label>
+                    
+                            <div class="ui-g-12">
+                                <p-checkbox name="familySituation" [binary]="true" label="Orphélin de pére" [disabled]="activeIndex===3" [(ngModel)]="user.isOrphanedFromFather"></p-checkbox><br>
+                                <p-checkbox name="familySituation" [binary]="true" label="Orphélin de mére" [disabled]="activeIndex===3" [(ngModel)]="user.isOrphanedFromMother"></p-checkbox><br>
+                                <p-checkbox name="familySituation" [binary]="true" label="Personne handicapée" [disabled]="activeIndex===3" [(ngModel)]="user.isDisabled"></p-checkbox><br>
+                                <p-checkbox name="familySituation" [binary]="true" label="Famille démunie" [disabled]="activeIndex===3" [(ngModel)]="user.hasNeedyFamily"></p-checkbox>
+                                
+                            </div>
+
+
+                            
+                        </div>
+
+
+                    </fieldset>
+
+                    <fieldset style="padding: 20px;" *ngIf="activeIndex===2 ||activeIndex===3">
+                        <legend>Circonstances Spécifiques (pour les handicapés)</legend>
+
+                        <div class="form-group">
+                            <label i18n="@@disabilityType" for="disabilityType">Nature du handicap :</label>
+                            <input type="text" pInputText class="form-control" id="disabilityType" 
+                                [(ngModel)]="user.natureOfHandicap" [disabled]="activeIndex===3" name="disabilityType" #disabilityType="ngModel">
+                            <div *ngIf="activeIndex!==3" [hidden]="disabilityType.valid || disabilityType.pristine"
+                                class="alert alert-danger" i18n="@@disabilityTypeRequired">Nature du handicap Requise</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label i18n="@@specificNeeds" for="specificNeeds">Besoins spécifiques / Commentaires :</label>
+                            <textarea pInputTextarea class="form-control" id="specificNeeds" rows="4" 
+                                [(ngModel)]="user.specificNeeds" [disabled]="activeIndex===3" name="specificNeeds" #specificNeeds="ngModel"></textarea>
+                            <div *ngIf="activeIndex!==3" [hidden]="specificNeeds.valid || specificNeeds.pristine"
+                                class="alert alert-danger" i18n="@@specificNeedsRequired">Besoins spécifiques / Commentaires requis</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label i18n="@@mc" for="medicalCertification">Certificat médical ou document justificatif joint</label>
+                    
+                            <div class="ui-g-12">
+                                <p-radioButton name="medicalCertification" value="true" label="Oui" (ngModelChange)="onChange(true)"
+                                    [disabled]="activeIndex===3" [(ngModel)]="user.hasMedicalCertification"></p-radioButton><br>
+                                <p-radioButton name="medicalCertification" value="false" label="Non" (ngModelChange)="onChange(false)"
+                                    [disabled]="activeIndex===3" [(ngModel)]="user.hasMedicalCertification"></p-radioButton><br>
+                                
+                            </div>
+                    
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset style="padding: 20px;" *ngIf="activeIndex===2 ||activeIndex===3">
+                        <legend>Aspiration académique et professionnels</legend>
+
+                        <div class="form-group">
+                            <label i18n="@@careerProjects" for="careerProjects">Projets professionnels:</label>
+                            <textarea pInputTextarea class="form-control" id="careerProjects" rows="4" 
+                                [(ngModel)]="user.professionalProject" [disabled]="activeIndex===3" name="careerProjects" #careerProjects="ngModel"></textarea>
+                            <div *ngIf="activeIndex!==3" [hidden]="careerProjects.valid || careerProjects.pristine"
+                                class="alert alert-danger" i18n="@@careerProjectsRequired">Projets professionnels requis</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label i18n="@@motivation" for="motivation">Motivation  :</label>
+                            <textarea pInputTextarea class="form-control" id="motivation" rows="4" 
+                                [(ngModel)]="user.motivation" [disabled]="activeIndex===3" name="motivation" #motivation="ngModel"></textarea>
+                            <div *ngIf="activeIndex!==3" [hidden]="motivation.valid || motivation.pristine"
+                                class="alert alert-danger" i18n="@@motivationRequired">Motivation requis</div>
+                        </div>
+                    
+                    </fieldset>
+
+                    <div style="position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%);" *ngIf="patience">
+                        <p-progressSpinner ariaLabel="loading"></p-progressSpinner>
+                        <h6><strong>patientez...</strong></h6>
+                    </div>
+
+                    <button pButton style="margin-top: 0px; width: 40%; height: 50px;" 
+                        type="button" (click)="previousStep()" icon="fa fa fa-play-circle"
+                        label="Précédent"[disabled]="activeIndex === 0"></button>
+                
+                    <button pButton *ngIf="activeIndex === 0 || activeIndex === 1 || activeIndex === 2"  type="button" (click)="nextStep()" 
+                        icon="fa fa fa-play-circle"
+                        style="margin-top: 0px; width: 40%; height: 50px; float: right;"
+                        label="Suivant"></button>
+
+                        <button pButton style="margin-top: 0px; width: 40%; height: 50px; float: right;" 
+                        type="submit" icon="fa fa fa-play-circle"
+                        label="Enregistrer" *ngIf="activeIndex === 3"></button>
+                
+                    <br>
+                    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+  
+                
+                </form>
+            <!-- </p-tabPanel> -->
+
+          
+      
+		<br />
+		<!--//page-row-->
+	</div>
+
+   
+	<!--//page-content-->
+</div>

@@ -1,0 +1,53 @@
+
+<form (ngSubmit)="save()" #parentInfoForm="ngForm">
+	<div class="form-group">
+		<label i18n="@@profession" for="profession">Profession:</label> <input
+			type="text" pInputText class="form-control" id="profession" required
+			[(ngModel)]="parent.profession" name="profession"
+			#profession="ngModel">
+		<div [hidden]="profession.valid || profession.pristine"
+			class="alert alert-danger" i18n="@@professionRequired">Profession
+			Requis</div>
+	</div>
+
+	<div class="form-group">
+		<label i18n="@@company" for="workPlace">Compagnie:</label> <input
+			type="text" pInputText class="form-control" id="workPlace" required
+			[(ngModel)]="parent.workPlace" name="workPlace" #workPlace="ngModel">
+		<div [hidden]="workPlace.valid || workPlace.pristine"
+			class="alert alert-danger" i18n="@@companyRequired">Compagnie
+			Requis</div>
+	</div>
+
+	<div class="form-group">
+		<label i18n="@@status" for="status">Etat:</label>
+
+		<div class="ui-g-12">
+			<p-radioButton id="status" name="status" value="1" label="{{ACTIF}}"
+				[(ngModel)]="parent.status"></p-radioButton>
+			<p-radioButton id="status" name="status" value="0"
+				label="{{INACTIF}}" [(ngModel)]="parent.status"></p-radioButton>
+		</div>
+	</div>
+
+
+	<input type="hidden" pInputText class="form-control" id="userId"
+		required [(ngModel)]="parent.user.id" name="userId" #userId="ngModel">
+
+	<button [disabled]="!parentInfoForm.form.valid" pButton type="submit" *ngIf="currentUser.userAccess != 2"
+		label="{{SAVE_LABEL}}"></button>
+
+	<button [disabled]="parent.id <= 0" pButton type="button" *ngIf="currentUser.userAccess != 2"
+		(click)="delete()" label="{{DELETE_LABEL}}"></button>
+
+	<br>
+	<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+	<div *ngIf="success" class="alert alert-success">{{success}}</div>
+
+</form>
+<!-- Initialize Quill editor -->
+<script>
+	var quill = new Quill('#editor', {
+		theme : 'bubble'
+	});
+</script>

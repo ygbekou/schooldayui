@@ -1,0 +1,168 @@
+<file-uploader></file-uploader>
+
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+  width="850">
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="subject">
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@code" for="code">Code</label>
+      </div>
+      <div class="ui-grid-col-10">
+        <input pInputText id="code" [(ngModel)]="subject.code" />
+      </div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@name" for="name">Nom</label>
+      </div>
+      <div class="ui-grid-col-10">
+        <input pInputText id="name" [(ngModel)]="subject.name" />
+      </div>
+    </div>
+
+    <div class="ui-grid-row" *ngIf="lmd===1">
+      <div class="ui-grid-col-2">
+        <label i18n="@@duration" for="Duree">Duree</label>
+      </div>
+      <div class="ui-grid-col-10">
+        <input pInputText id="Duree" [(ngModel)]="subject.duration" />
+      </div>
+    </div>
+    <div class="ui-grid-row" *ngIf="lmd===1">
+      <div class="ui-grid-col-2">
+        <label i18n="@@cost" for="Cost">Cout Particulier</label>
+      </div>
+      <div class="ui-grid-col-4">
+        <input pInputText id="Cost" [(ngModel)]="subject.cost" />
+      </div>
+      <div class="ui-grid-col-2">
+        <label i18n="@@cost" for="CostEnt">Cout Entreprise</label>
+      </div>
+      <div class="ui-grid-col-4">
+        <input pInputText id="CostEnt" [(ngModel)]="subject.costEnt" />
+      </div>
+    </div>
+    <div class="ui-grid-row" *ngIf="lmd===1">
+      <div class="ui-grid-col-2">
+        <label i18n="@@credits" for="credit">Crédits</label>
+      </div>
+      <div class="ui-grid-col-10">
+        <input pInputText id="credit" name="credit" [(ngModel)]="subject.credit" #credit="ngModel" />
+      </div>
+      <div [hidden]="credit.valid || credit.pristine" class="alert alert-danger" i18n="@@creditsRequired">Credits</div>
+    </div>
+
+    <div class="ui-grid-row" *ngIf="lmd===1">
+      <div class="ui-grid-col-2">
+        <label i18n="@@exam" for="Examen">Examen</label>
+      </div>
+      <div class="ui-grid-col-10">
+        <input pInputText id="Examen" [(ngModel)]="subject.exam" />
+      </div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@objectives" for="objectif">Objectifs</label>
+      </div>
+
+      <div class="ui-grid-col-10">
+        <p-editor [(ngModel)]="subject.objectif" [style]="{'height':'100px'}"></p-editor>
+      </div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@description" for="description">Description</label>
+      </div>
+
+      <div class="ui-grid-col-10">
+        <p-editor [(ngModel)]="subject.description" [style]="{'height':'100px'}"></p-editor>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+  <footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="confirmDelete()" label="{{DELETE_LABEL}}"></button>
+      <button type="button" pButton icon="fa fa-check" (click)="save()" label="{{SAVE_LABEL}}"></button>
+    </div>
+  </footer>
+</p-dialog>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" width="425" [closable]="false"></p-confirmDialog>
+
+
+<p-dataTable [value]="subjects" selectionMode="single" [(selection)]="selectedSubject" expandableRows="true"
+  (onRowExpand)="getPrerequisits($event)" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15"
+  [responsive]="true">
+  <p-column expander="true" styleClass="col-icon" [style]="{'width':'7%'}"></p-column>
+  <p-column *ngFor="let col of cols" [style]="col.style" [field]="col.field" [header]="col.header"
+    [sortable]="col.sortable" [filter]="col.filter">
+  </p-column>
+  <p-column field="id" header="actions" [style]="{'width':'15%'}">
+    <ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+      <button type="button" pButton icon="fa fa-download" (click)="showDialogToUploadSyllabus(data)"
+        label="Syllabus"></button>
+    </ng-template>
+  </p-column>
+  <ng-template let-subject pTemplate="rowexpansion">
+    <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size: 16px; padding: 20px">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-4">
+          <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+          <div *ngIf="msg" class="alert alert-success">{{msg}}</div>
+        </div>
+        <div class="ui-grid-col-8">Les pre-requis</div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-4">
+          <img class="thumb" src="assets/images/subject/{{subject.pic}}" alt="" />
+        </div>
+        <div class="ui-grid-col-8 ui-fluid">
+          <p-dataTable [value]="subject.prerequisits" [editable]="true">
+            <p-column header="Code" [style]="{'width':'70%', 'overflow':'visible'}">
+              <ng-template let-col let-prerequisit="rowData" pTemplate="body">
+                <p-autoComplete [(ngModel)]="prerequisit.reqSubject"
+                  (onDropdownClick)="subjectDropdown.handleDropdownClick($event)"
+                  [suggestions]="subjectDropdown.filteredSubjects" [dropdown]="true" id="subject"
+                  [style]="{'width':'90%'}" (completeMethod)="subjectDropdown.filter($event)" name="subject"
+                  field="name" [size]="5" placeholder="{{SUBJECT}}" [minLength]="1" #reqSubject="ngModel" required>
+                </p-autoComplete>
+              </ng-template>
+            </p-column>
+            <p-column [style]="{'width':'30%'}" header="Actions">
+              <ng-template let-col let-prerequisit="rowData" pTemplate="body">
+
+                <button (click)="deletePrerequisit(prerequisit)" pButton type="submit"
+                  icon="fa fa fa-trash fa-2x text-danger"
+                  style="margin-top: 0px; width: 40%; height: 30px; float: left"></button>
+
+                <button (click)="savePrerequisit(prerequisit)" pButton type="submit"
+                  icon="fa fa fa-floppy-o fa-2x text-success"
+                  style="margin-top: 0px; width: 40%; height: 30px; float: right"></button>
+              </ng-template>
+            </p-column>
+            <p-footer>
+              <div class="ui-helper-clearfix" style="width: 100%">
+                <button type="button" pButton icon="fa fa-plus" style="float: left" (click)="addNewPrerequisit()"
+                  label="{{ADD_LABEL}}"></button>
+              </div>
+            </p-footer>
+          </p-dataTable>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div [innerHTML]="subject.description" class="ui-grid-col-12"></div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="paginatorLeft">
+    <button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"></button>
+  </ng-template>
+  <ng-template pTemplate="paginatorRight">
+    <button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+  </ng-template>
+</p-dataTable>

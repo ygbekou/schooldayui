@@ -1,0 +1,14 @@
+
+<button *ngIf="invoiceView.proformaId" type="button"
+	class="btn btn-primary">Numéro : {{ invoiceView.number }} |
+	Client : {{ invoiceView.customerName }}</button>
+
+<p-tabView id="tabList" (onChange)="onTabChange($event)"> <p-tabPanel
+	header="{{SEARCH}}" leftIcon="fa fa-search"
+	[selected]="activeTab === 0"> <app-admin-proformasearch
+	(onNewProformaSelected)="onNewProformaSelected()"
+	(onProformaSelected)="onProformaSelected($event)">
+
+</app-admin-proformasearch> </p-tabPanel> <p-tabPanel header="{{PROFORMA}}" leftIcon="fa fa-money"
+	[selected]="activeTab === 1"> <app-admin-proformainfodetails></app-admin-proformainfodetails>
+</p-tabPanel> </p-tabView>

@@ -1,0 +1,120 @@
+<p-dialog header="Avantages" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="700">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="letterContent">
+	<div>
+
+	<div class="ui-grid-row form-group">
+      <div class="ui-grid-col-2">
+        <label i18n="@@letterNumeroRef" for="letterNumeroRef">Référence : </label>
+      </div>
+      <div class="ui-grid-col-9">
+				<p-autoComplete [(ngModel)]="letterContent.letterNumeroRef" (onDropdownClick)="letterNumeroRefDropdown.handleDropdownClick($event)"
+		      [suggestions]="letterNumeroRefDropdown.filteredLetterNumeroRefs" [dropdown]="true" id="letterNumeroRef"
+		      (completeMethod)="letterNumeroRefDropdown.filter($event)" name="letterNumeroRef" field="name"
+		        placeholder="Référence" [minLength]="1"></p-autoComplete>
+      </div>
+      <div class="ui-grid-col-1"></div>
+		</div>
+			<div class="ui-grid-row form-group">
+      <div class="ui-grid-col-2">
+        <label i18n="@@letterObject" for="letterObject">Objet : </label>
+      </div>
+      <div class="ui-grid-col-9">
+				<p-autoComplete [(ngModel)]="letterContent.letterObject" (onDropdownClick)="letterObjectDropdown.handleDropdownClick($event)"
+		      [suggestions]="letterObjectDropdown.filteredLetterObjects" [dropdown]="true" id="letterNumeroRef"
+		      (completeMethod)="letterObjectDropdown.filter($event)" name="letterObject" field="name"
+		        placeholder="Objet de la lettre" [minLength]="1"></p-autoComplete>
+      </div>
+      <div class="ui-grid-col-1"></div>
+		</div>
+		<div class="ui-grid-row form-group">
+      <div class="ui-grid-col-2">
+        <label i18n="@@accountNumber" for="accountNumber">Numéro : </label>
+      </div>
+      <div class="ui-grid-col-9">
+				<p-autoComplete [(ngModel)]="letterContent.accountNumber" (onDropdownClick)="accountNumberDropdown.handleDropdownClick($event)"
+		      [suggestions]="accountNumberDropdown.filteredAccountNumbers" [dropdown]="true" id="accountNumber"
+		      (completeMethod)="accountNumberDropdown.filter($event)" name="accountNumber" field="number"
+		        placeholder="Numéro bancaire" [minLength]="1"></p-autoComplete>
+      </div>
+      <div class="ui-grid-col-1"></div>
+		</div>
+		<div class="ui-grid-row form-group">
+      <div class="ui-grid-col-2">
+        <label i18n="@@civility" for="civility">Civilité : </label>
+      </div>
+      <div class="ui-grid-col-9">
+				<p-autoComplete [(ngModel)]="letterContent.civility" (onDropdownClick)="civilityDropdown.handleDropdownClick($event)"
+		      [suggestions]="civilityDropdown.filiteredCivilities" [dropdown]="true" id="civility"
+		      (completeMethod)="civilityDropdown.filter($event)" name="civility" field="name"
+		        placeholder="Civilité" [minLength]="1"></p-autoComplete>
+      </div>
+      <div class="ui-grid-col-1"></div>
+		</div>
+			<div class="ui-grid-row form-group">
+			<div class="ui-grid-col-2">
+				<label i18n="@@phoneNumber" for="amountInLetter">Montant en lettre : </label>
+			</div>
+			<div class="ui-grid-col-9">
+        <input pInputText id="amountInLetter" class="form-control"
+          [(ngModel)]="letterContent.amountInLetter" />
+			</div>
+			<div class="ui-grid-col-1"></div>
+		</div>
+
+	</div>
+</div>
+
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+
+<p-dataTable [value]="letterContentViews" selectionMode="single"
+	[(selection)]="selectedLetterContenView" expandableRows="true"
+	[paginator]="true" [rows]="5"
+	(onRowSelect)="onRowSelect($event)" (onRowExpand)="getLetterContent($event)"
+	[responsive]="true">
+	<p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}">
+
+	</p-column>
+	<p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [style]="col.style" [filter]="col.filter">
+		<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+			<span class="col-date">{{ data[ col.field ] | date:'dd/MM/yy' }}</span>
+		</ng-template>
+	</p-column>
+	<ng-template let-LetterConten pTemplate="rowexpansion">
+		<div class="ui-grid-row">
+        <div class="ui-grid-col-5">
+          <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+        </div>
+        <div class="ui-grid-col-2">
+          <span i18n="@@thePayments">Lettre de virement</span>
+        </div>
+        <div class="ui-grid-col-2">
+          <button type="button" pButton icon="fa fa-print" style="float: left" (click)="printLetter()"
+            label="{{PRINT}}"></button>
+        </div>
+        <div class="ui-grid-col-3">
+          <a *ngIf="reportName" target="_blank" href="assets/reports/{{reportName}}" i18n="@@downloadReport">Telecharger
+            la lettre</a>
+        </div>
+      </div>
+	</ng-template>
+
+  <ng-template pTemplate="paginatorLeft">
+    <button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"></button>
+  </ng-template>
+  <ng-template pTemplate="paginatorRight">
+    <button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+  </ng-template>
+</p-dataTable>

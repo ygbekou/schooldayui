@@ -1,0 +1,127 @@
+<form (ngSubmit)="save()" #studentInfoForm="ngForm">
+	<div class="form-group">
+		<label i18n="@@registrationDate" for="registrationDate">Date
+			d'Enregistrement:</label>
+		<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="registrationDate"
+			name="registrationDate" [showIcon]="true" [(ngModel)]="student.registrationDate" #registrationDate="ngModel"
+			required></p-calendar>
+		<div [hidden]="registrationDate.valid || registrationDate.pristine" class="alert alert-danger">Date
+			d'enregistrement Requis</div>
+	</div>
+
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-6">
+
+			<div class="form-group">
+				<label><span i18n="@@matricule">Matricule</span>:
+					{{student.matricule}} </label>
+			</div>
+
+
+		</div>
+		<div class="ui-grid-col-6">
+			<div>
+				<p-checkbox name="bulletinStatus" [binary]="true" label="Je confirme que son relevé est correcte"
+					[(ngModel)]="student.bulletin_status" [disabled]="student.printDegree"></p-checkbox>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label i18n="@@status" for="status">Etat:</label>
+
+		<div class="ui-g-12">
+			<p-radioButton id="status" name="status" value="0" label="{{INACTIF}}"
+				[(ngModel)]="student.status"></p-radioButton>
+
+			<p-radioButton id="status" name="status" value="1" label="{{ACTIF}}"
+				[(ngModel)]="student.status"></p-radioButton>
+
+			<p-radioButton id="status" name="status" value="2" label="Fini"
+				[(ngModel)]="student.status"></p-radioButton>
+
+			<p-radioButton id="status" name="status" value="3" label="Abandon"
+				[(ngModel)]="student.status"></p-radioButton>
+		</div>
+	</div>
+
+	<div style="margin-top: 30px; margin-bottom: 30px;">
+		<p-checkbox name="smsStatus" [binary]="true" label="Ne pas envoyer SMS d'absence"
+			[(ngModel)]="student.sms_status"></p-checkbox>
+	</div>
+	<!--
+	Commentaires et date d'abandon
+	-->
+	<div *ngIf="student.status == 3">
+
+
+		<div class="form-group">
+			<div class="ui-grid-col-2">
+				<label i18n="@@abandonmentDate" for="abandonmentDate">Date
+					d'abandon:</label>
+			</div>
+
+			<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="abandonmentDate"
+				name="abandonmentDate" [showIcon]="true" [(ngModel)]="student.abandonmentDate"
+				#abandonmentDate="ngModel" required></p-calendar>
+			<div [hidden]="abandonmentDate.valid || abandonmentDate.pristine" class="alert alert-danger">Date d'abandon
+				Requis</div>
+		</div>
+
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-2">
+				<label i18n="@@abandonmentReason" for="abandonmentReason">Raison d'abandon</label>
+			</div>
+			<div class="ui-grid-col-10">
+				<textarea id="abandonmentReason" [(ngModel)]="student.abandonmentReason" #abandonmentReason="ngModel"
+					name="abandonmentReason" pInputTextarea></textarea>
+			</div>
+		</div>
+	</div>
+
+	<input type="hidden" pInputText class="form-control" id="userId" required [(ngModel)]="student.user.id"
+		name="userId" #userId="ngModel">
+
+	<button [disabled]="!studentInfoForm.form.valid" pButton type="submit" label="{{SAVE_LABEL}}" *ngIf="currentUser.userAccess != 2"></button>&nbsp;&nbsp;
+
+	<button [disabled]="student.id <= 0" pButton type="button" (click)="delete()" label="{{DELETE_LABEL}}" *ngIf="currentUser.userAccess != 2"></button>
+	&nbsp;&nbsp;
+	<button *ngIf="student.status == 1 && currentUser.userAccess != 2" pButton type="button" (click)="printCard()" label="{{PRINT_CARD}}"></button>
+	&nbsp;&nbsp;
+	<!--
+	<a *ngIf="reportName" target="_blank" href="assets/reports/{{reportName}}" i18n="@@downloadReport">Telecharger la
+		carte</a>
+	-->
+	<a *ngIf="reportName" target="_blank" href="assets/reports/{{reportName}}" i18n="@@downloadReport"
+		class="btn btn-theme">
+		<i class="fa fa-download"></i>
+		Télécharger la carte
+	</a>&nbsp;&nbsp;
+
+	<a *ngIf="bulletinPdfName && student.printDegree" target="_blank" href="assets/reports/{{bulletinPdfName}}">
+		<button pButton type="button" label="Télécharger le relevé"> </button>
+	</a>
+
+	&nbsp;&nbsp;
+
+	<a *ngIf="degreePdfName && student.printDegree" target="_blank" href="assets/reports/{{degreePdfName}}">
+		<button pButton type="button" label="Télécharger le diplôme"> </button>
+	</a>
+
+	<br>
+	<div style="margin-top: 15px;">
+
+		<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+		<div *ngIf="success" class="alert alert-success">{{success}}</div>
+
+	</div>
+
+
+</form>
+<!-- Initialize Quill editor -->
+<script>
+	var quill = new Quill('#editor', {
+		theme: 'bubble'
+	});
+</script>

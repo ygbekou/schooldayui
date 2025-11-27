@@ -1,0 +1,559 @@
+<file-uploader></file-uploader>
+
+<div *ngIf="newInvoice">
+
+	<div class="alert alert-danger" *ngIf="error" style="margin-top: 20px;">{{
+		this.error }}</div>
+
+	<div class="alert alert-danger" *ngIf="errorClient" style="margin-top: 20px;">{{ this.errorClient }}</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@pro" for="pro">Type de la facture</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<p-selectButton [options]="proformaTypes" (onChange)="proformaTypeChange()"
+				[(ngModel)]="proformaType"></p-selectButton>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+
+
+
+
+	
+
+	<div class="ui-grid-row" style="margin-top: 20px;" *ngIf="proformaType==0">
+		<div class="ui-grid-col-6">
+			<button *ngIf="user.role==1 || user.role==5 || user.role==9" type="button"
+				class="btn btn-primary">
+				<span class="badge badge-light">1</span>Selectionnez la compagnie
+			</button>
+			<form (ngSubmit)="searchCompany()" #searchForm="ngForm">
+				<div class="ui-grid ui-grid-responsive ui-fluid"
+					[hidden]="user.role>1 && user.role!=5 && user.role!=9">
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-10">
+							<input type="text" pInputText class="form-control"
+								id="searchTextCompany" required
+								[(ngModel)]="searchTextObject.searchText"
+								placeholder="Entrez le nom ou un mot du nom de la compagnie" name="searchT"
+								#searchTextC="ngModel">
+						</div>
+						<div class="ui-grid-col-2">
+							<button type="button" pButton icon="fa fa-search"
+								(click)="searchCompany()" label="Go"
+								style="margin-top: 0px; height: 35px;"></button>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<p-dataTable [value]="companies" selectionMode="single"
+				*ngIf="companies" expandableRows="true"
+				(onRowSelect)="onCompanySelected($event)" [paginator]="true"
+				[rows]="15" [responsive]="true"> <p-column
+				*ngFor="let col of companiesCols" [field]="col.field"
+				[header]="col.header" [sortable]="col.sortable"
+				[filter]="col.filter"> </p-column> </p-dataTable>
+
+		</div>
+		<div class="ui-grid-col-6">
+			<button *ngIf="user.role==1 || user.role==5 || user.role==9" type="button"
+				class="btn btn-primary">
+				<span class="badge badge-light">1</span>Selectionnez la personne en charge de la facture
+			</button>
+			<form (ngSubmit)="searchInvoiceContact()" #searchIvConForm="ngForm">
+				<div class="ui-grid ui-grid-responsive ui-fluid"
+					[hidden]="user.role>1 && user.role!=5 && user.role!=9">
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-10">
+							<input type="text" pInputText class="form-control"
+								id="searchTextInvoiceContact" required [(ngModel)]="searchTextInvoiceContactObject.searchText"
+								placeholder="{{USER_SEARCH_PARTS}}" name="searchInvoiceContact"
+								#searchT="ngModel">
+						</div>
+						<div class="ui-grid-col-2">
+							<button type="button" pButton icon="fa fa-search"
+								(click)="searchInvoiceContact()" label="Go"
+								style="margin-top: 0px; height: 35px;"></button>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<p-dataTable [value]="invoiceContacts" selectionMode="single" *ngIf="invoiceContacts"
+				expandableRows="true" (onRowSelect)="onInvoiceContactSelected($event)"
+				[paginator]="true" [rows]="15" [responsive]="true"> <p-column
+				*ngFor="let col of invoiceContactCols" [field]="col.field"
+				[header]="col.header" [sortable]="col.sortable"
+				[filter]="col.filter"> </p-column> </p-dataTable>
+
+		</div>
+		<div class="ui-grid-col-6">
+			<button *ngIf="user.role==1 || user.role==5 || user.role==9" type="button"
+				class="btn btn-primary">
+				<span class="badge badge-light">1</span>Selectionnez le vendeur
+			</button>
+			<form (ngSubmit)="searchUser()" #searchForm="ngForm">
+				<div class="ui-grid ui-grid-responsive ui-fluid"
+					[hidden]="user.role>1 && user.role!=5 && user.role!=9">
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-10">
+							<input type="text" pInputText class="form-control"
+								id="searchTextUser" required [(ngModel)]="searchTextUser"
+								placeholder="{{USER_SEARCH_PARTS}}" name="searchT"
+								#searchT="ngModel">
+						</div>
+						<div class="ui-grid-col-2">
+							<button type="button" pButton icon="fa fa-search"
+								(click)="searchUser()" label="Go"
+								style="margin-top: 0px; height: 35px;"></button>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<p-dataTable [value]="users" selectionMode="single" *ngIf="users"
+				expandableRows="true" (onRowSelect)="onVendeurSelected($event)"
+				[paginator]="true" [rows]="15" [responsive]="true"> <p-column
+				*ngFor="let col of userCols" [field]="col.field"
+				[header]="col.header" [sortable]="col.sortable"
+				[filter]="col.filter"> </p-column> </p-dataTable>
+
+		</div>
+	</div>
+	
+
+	<div class="ui-grid-row" style="margin-top: 20px;" *ngIf="proformaType==0 && !addInvoiceContact">
+		<div class="ui-grid-col-6">
+			
+		</div>
+		
+		<div class="ui-grid-col-6">
+			<button type="button" pButton icon="fa fa-plus" (click)="newInvoiceContact()"
+				label="Nouvelle personne"></button>
+		</div>
+	</div>
+
+
+	<ng-container *ngIf="proformaType==0 && addInvoiceContact">
+
+		<h3 style="font-weight: bold;margin-top: 20px;">Enregistrement de la personne</h3>
+
+		<div class="alert alert-danger" *ngIf="errorInvoiceContact" style="margin-top: 20px;">{{
+		this.errorInvoiceContact }}</div>
+
+		<div class="ui-grid-row" style="margin-top: 20px;">	
+
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-6">
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-4">
+							<label i18n="@@nomContact" for="nomContact">Nom</label>
+						</div>
+						<div class="ui-grid-col-6">
+							<input pInputText id="nomContact" class="form-control"
+								[(ngModel)]="invoiceContact.lastName" />
+						</div>
+						<div class="ui-grid-col-2"></div>
+					</div>
+				</div>
+
+				<div class="ui-grid-col-6">
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-4">
+							<label i18n="@@emailContact" for="emailContact">Email</label>
+						</div>
+						<div class="ui-grid-col-8">
+							<input pInputText id="emailContact" class="form-control"
+								[(ngModel)]="invoiceContact.email" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="ui-grid-row" style="margin-top: 20px;">	
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-6">
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-4">
+							<label i18n="@@prenomContact" for="prenomContact">Prénom</label>
+						</div>
+						<div class="ui-grid-col-6">
+							<input pInputText id="prenomContact" class="form-control"
+								[(ngModel)]="invoiceContact.firstName" />
+						</div>
+						<div class="ui-grid-col-2"></div>
+					</div>
+				</div>
+
+				<div class="ui-grid-col-6">
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-4">
+							<label i18n="@@telephoneContact">Contact</label>
+						</div>
+						<div class="ui-grid-col-8">
+							<input pInputText id="telephoneContact" class="form-control"
+								[(ngModel)]="invoiceContact.phone" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="ui-grid-row" style="margin-top: 20px;">	
+
+			<div class="ui-grid-col-6">
+				<button type="button" pButton icon="fa fa-check" (click)="saveInvoiceContact()"
+					label="Enregistrer"></button>
+			
+				<button type="button" pButton icon="fa fa-close" (click)="cancelInvoiceContact()"
+					label="Annuler"></button>
+			</div>
+		</div>
+	</ng-container>
+
+
+
+
+
+	
+
+	<div class="ui-grid-row" style="margin-top: 20px;" *ngIf="proformaType==1">
+		
+		<div class="ui-grid-col-6">
+			<button *ngIf="user.role==1 || user.role==5 || user.role==9" type="button"
+				class="btn btn-primary">
+				<span class="badge badge-light">1</span>Selectionnez le client
+			</button>
+			<form (ngSubmit)="searchUser()" #searchForm="ngForm">
+				<div class="ui-grid ui-grid-responsive ui-fluid"
+					[hidden]="user.role>1 && user.role!=5 && user.role!=9">
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-10">
+							<input type="text" pInputText class="form-control"
+								id="searchTextUser" required [(ngModel)]="searchTextUser"
+								placeholder="{{USER_SEARCH_PARTS}}" name="searchT"
+								#searchT="ngModel">
+						</div>
+						<div class="ui-grid-col-2">
+							<button type="button" pButton icon="fa fa-search"
+								(click)="searchUser()" label="Go"
+								style="margin-top: 0px; height: 35px;"></button>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<p-dataTable [value]="users" selectionMode="single" *ngIf="users"
+				expandableRows="true" (onRowSelect)="onUserSelected($event)"
+				[paginator]="true" [rows]="15" [responsive]="true"> <p-column
+				*ngFor="let col of userCols" [field]="col.field"
+				[header]="col.header" [sortable]="col.sortable"
+				[filter]="col.filter"> </p-column> </p-dataTable>
+
+		</div>
+
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<ng-container *ngIf="!addInvoiceContact">
+
+		<div class="ui-grid-row" style="margin-top: 20px;" *ngIf="proformaType==0">
+			<div class="ui-grid-col-6">
+
+				<h3 *ngIf="invoice.company" style="font-weight: none;">Entreprise
+					: {{invoice.company.name}}</h3>
+
+			</div>
+			<div class="ui-grid-col-6">
+
+				<h3 *ngIf="invoice.vendeur" style="font-weight: none;">Vendeur
+					: {{invoice.vendeur.lastName}} {{invoice.vendeur.firstName}}</h3>
+
+			</div>
+			<div class="ui-grid-col-6" *ngIf="invoice.invoiceContact">
+
+				<h3 style="font-weight: none;">Personne ressource : {{invoice.invoiceContact.lastName}} {{invoice.invoiceContact.firstName}}</h3>
+
+			</div>
+		</div>
+
+		<div class="ui-grid-row" style="margin-top: 20px;" *ngIf="proformaType==1">
+			<div class="ui-grid-col-6">
+
+				<h3 *ngIf="invoice.user" style="font-weight: none;">Client :
+					{{invoice.user.lastName}} {{invoice.user.firstName}}</h3>
+
+			</div>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+	<!--
+
+	<div class="ui-grid-row" style="margin-top: 20px;">
+		<div class="ui-grid-col-6">
+			<button *ngIf="user.role==1||user.role==5" type="button" class="btn btn-primary">
+				<span class="badge badge-light">1</span>Selectionnez la compagnie
+			</button>
+			<form (ngSubmit)="searchCompany()" #searchForm="ngForm">
+				<div class="ui-grid ui-grid-responsive ui-fluid" [hidden]="user.role>1&&user.role!=5">
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-10">
+							<input type="text" pInputText class="form-control" id="searchTextCompany" required [(ngModel)]="searchTextObject.searchText"
+							 placeholder="{{USER_SEARCH_PARTS}}" name="searchT" #searchTextC="ngModel">
+						</div>
+						<div class="ui-grid-col-2">
+							<button type="button" pButton icon="fa fa-search" (click)="searchCompany()" label="Go" style="margin-top: 0px; height: 35px;"></button>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<p-dataTable [value]="companies" selectionMode="single" *ngIf="companies" expandableRows="true" (onRowSelect)="onCompanySelected($event)"
+			 [paginator]="true" [rows]="15" [responsive]="true">
+				<p-column *ngFor="let col of companiesCols" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+				 [filter]="col.filter"> </p-column>
+			</p-dataTable>
+
+		</div>
+		<div class="ui-grid-col-6">
+			<button *ngIf="user.role==1||user.role==5" type="button" class="btn btn-primary">
+				<span class="badge badge-light">1</span>Selectionner le client
+			</button>
+			<form (ngSubmit)="searchUser()" #searchForm="ngForm">
+				<div class="ui-grid ui-grid-responsive ui-fluid" [hidden]="user.role>1&&user.role!=5">
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-10">
+							<input type="text" pInputText class="form-control" id="searchTextUser" required [(ngModel)]="searchTextUser"
+							 placeholder="{{USER_SEARCH_PARTS}}" name="searchT" #searchT="ngModel">
+						</div>
+						<div class="ui-grid-col-2">
+							<button type="button" pButton icon="fa fa-search" (click)="searchUser()" label="Go" style="margin-top: 0px; height: 35px;"></button>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<p-dataTable [value]="users" selectionMode="single" *ngIf="users" expandableRows="true" (onRowSelect)="onUserSelected($event)"
+			 [paginator]="true" [rows]="15" [responsive]="true">
+				<p-column *ngFor="let col of userCols" [field]="col.field" [header]="col.header" [sortable]="col.sortable" [filter]="col.filter">
+				</p-column>
+			</p-dataTable>
+
+		</div>
+	</div>
+
+	<div class="ui-grid-row" style="margin-top: 20px;" *ngIf="invoice.user || invoice.company">
+		<div class="ui-grid-col-6">
+
+			<h3 *ngIf="invoice.company" style="font-weight: bold;">Entreprise
+				: {{invoice.company.name}}</h3>
+
+		</div>
+		<div class="ui-grid-col-6">
+
+			<h3 *ngIf="invoice.user" style="font-weight: bold;">Client :
+				{{invoice.user.lastName}} {{invoice.user.firstName}}</h3>
+
+		</div>
+	</div>
+
+	-->
+
+	<br /> <br />
+
+	<div class="ui-grid-row" *ngIf="errorReference">
+		<div class="ui-grid-col-5">
+			<div class="alert alert-danger">{{ this.errorReference }}</div>
+		</div>
+
+		<div class="ui-grid-col-7"></div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-6">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label i18n="@@contact" for="contact">Référence</label>
+				</div>
+				<div class="ui-grid-col-6">
+					<input pInputText id="contact" class="form-control" [(ngModel)]="invoice.reference" required />
+				</div>
+				<div class="ui-grid-col-2"></div>
+			</div>
+		</div>
+
+		<div class="ui-grid-col-6">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label i18n="@@numero">Numéro</label>
+				</div>
+				<div class="ui-grid-col-8">
+					<h4 *ngIf="!invoice.number">-</h4>
+					<label *ngIf="invoice.number">{{ invoice.number }}</label>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-6">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label i18n="@@tax" for="tax">Taxe (%)</label>
+				</div>
+				<div class="ui-grid-col-6">
+					<input pInputText class="form-control" id="tax" [(ngModel)]="invoice.tax" required />
+				</div>
+				<div class="ui-grid-col-2"></div>
+			</div>
+		</div>
+
+		<div class="ui-grid-col-6">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label i18n="@@numero">Date</label>
+				</div>
+				<div class="ui-grid-col-8">
+					<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="invoiceDate" name="invoiceDate" [(ngModel)]="invoice.invoiceDate" #invoiceDate="ngModel"
+					 placeholder="dd/mm/yyyy" required></p-calendar>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-6">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label i18n="@@discountPerc" for="discountPerc">Remise
+						globale</label>
+				</div>
+				<div class="ui-grid-col-6">
+					<input pInputText class="form-control" id="discountPerc" [(ngModel)]="invoice.discountPerc" />
+				</div>
+				<div class="ui-grid-col-2"></div>
+			</div>
+		</div>
+		<div class="ui-grid-col-6">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<label i18n="@@numero">Date payement</label>
+				</div>
+				<div class="ui-grid-col-8">
+					<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="paymentDate" name="paymentDate" [(ngModel)]="invoice.paymentDate" #paymentDate="ngModel"
+					 placeholder="dd/mm/yyyy"></p-calendar>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@description">Description</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<p-editor [(ngModel)]="invoice.description" [style]="{'height':'150px'}"></p-editor>
+		</div>
+	</div>
+
+	<br />
+
+
+	<div class="alert alert-danger" *ngIf="errorSaleCond" style="margin-top: 20px;">{{ this.errorSaleCond }}</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@conditionVente">Conditions de vente</label>
+		</div>
+
+		<div class="ui-grid-col-10"> 
+			<p-editor [(ngModel)]="invoice.saleCond" [style]="{'height':'150px'}"></p-editor>
+		</div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-6">
+			<button type="button" pButton icon="fa fa-check" (click)="save()" label="{{SAVE_LABEL}}"></button>
+			<button type="button" pButton icon="fa fa-close" (click)="delete()" label="{{DELETE_LABEL}}"></button>
+		</div>
+	</div>
+	</ng-container>
+</div>
+
+<p-tabView (onChange)="onTabChange($event)" *ngIf="!newInvoice">
+	<p-tabPanel header="Facture" [selected]="activeTab === 0" leftIcon="fa fa-money">
+		<app-admin-invoice-info-only [invoiceView]="invoiceView" (onInvoiceUpdateSelected)="onInvoiceUpdateSelected($event)"></app-admin-invoice-info-only>
+	</p-tabPanel>
+	<p-tabPanel header="Update" [selected]="activeTab === 1" leftIcon="fa fa-newspaper-o" *ngIf="updateInvoice">
+		<app-admin-invoice-info [invoiceView]="invoiceView" (onCancelInvoiceUpdateSelected)="onCancelInvoiceUpdateSelected()"></app-admin-invoice-info>
+	</p-tabPanel>
+	<!--
+	<p-tabPanel header="Détails" (onInvoiceDetailsSaved)="onInvoiceDetailsSaved($event)" [selected]="activeTab === 2"
+	 leftIcon="fa fa-plus">
+		<app-admin-invoice-details [invoiceView]="invoiceView"></app-admin-invoice-details>
+	</p-tabPanel>
+	-->
+	
+	<ng-container *ngIf="!updateInvoice">
+		<p-tabPanel header="Détails" (onInvoiceDetailsSaved)="onInvoiceDetailsSaved($event)" [selected]="activeTab === 1"
+		leftIcon="fa fa-plus">
+			<app-admin-invoice-details [invoiceView]="invoiceView"></app-admin-invoice-details>
+		</p-tabPanel>
+		
+		<p-tabPanel header="Personne ressource" [selected]="activeTab === 2" leftIcon="fa fa-male"> 
+			<app-proforma-contact [invoiceView]="invoiceView">
+
+			</app-proforma-contact> 
+		</p-tabPanel> 
+	</ng-container>
+	
+	<ng-container *ngIf="updateInvoice">
+		<p-tabPanel header="Détails" (onInvoiceDetailsSaved)="onInvoiceDetailsSaved($event)" [selected]="activeTab === 2"
+		leftIcon="fa fa-plus">
+			<app-admin-invoice-details [invoiceView]="invoiceView"></app-admin-invoice-details>
+		</p-tabPanel>
+		
+		<p-tabPanel header="Personne ressource" [selected]="activeTab === 3" leftIcon="fa fa-male"> 
+			<app-proforma-contact [invoiceView]="invoiceView">
+
+			</app-proforma-contact> 
+		</p-tabPanel> 
+	</ng-container>
+</p-tabView>

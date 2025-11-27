@@ -1,0 +1,25 @@
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<form (ngSubmit)="search()" #searchForm="ngForm">
+  
+  <div class="ui-grid ui-grid-responsive ui-fluid" [hidden]="currentUser.role>2 && currentUser.role!=8 && currentUser.role!=9 && currentUser.role!=10">
+  <div class="ui-grid-row">
+       <div class="ui-grid-col-5">
+        <button type="button" pButton icon="fa fa-search" (click)="search()" label="Liste"
+          style="margin-top: 0px; height: 35px;"></button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<p-dataTable [value]="anyViews" selectionMode="single"  expandableRows="true"
+  [paginator]="true" [rows]="15"  [responsive]="true">
+  <p-column expander="true" styleClass="col-icon" [style]="{'width':'3%'}"></p-column>
+  <p-column *ngFor="let col of cols" [style]="col.style" [field]="col.field" [header]="col.header"
+    [sortable]="col.sortable" [filter]="col.filter">
+    <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body"> <span class="col-date">{{ data[
+	col.field ] | date:'dd/MM/yyyy HH:mm:ss' }}</span> </ng-template>
+  </p-column>
+</p-dataTable>
+

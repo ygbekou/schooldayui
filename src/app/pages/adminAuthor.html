@@ -1,0 +1,50 @@
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="author">
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@firstName" for="firstName">Prenom</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="firstName" [(ngModel)]="author.firstName"
+				required />
+		</div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@lastName" for="firstName">Nom</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="lastName" [(ngModel)]="author.lastName"
+				required />
+		</div>
+	</div>
+</div>
+<br />
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+
+<p-dataTable [value]="authors" selectionMode="single"
+	[(selection)]="selectedAuthor" (onRowSelect)="onRowSelect($event)"
+	[paginator]="true" [rows]="15" [responsive]="true"> <p-column
+	*ngFor="let col of cols" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [filter]="col.filter"> <ng-template
+	*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+	type="body"> <span class="col-date">{{ data[
+	col.field ] | date:'dd/MM/yy' }}</span> </ng-template> </p-column> <ng-template
+	pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>

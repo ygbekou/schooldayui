@@ -1,0 +1,35 @@
+
+<button *ngIf="invoiceView.invoiceId" type="button"
+	class="btn btn-primary">Numéro : {{ invoiceView.number }} |
+	Client : {{ invoiceView.customerName }}</button>
+
+<p-tabView id="tabList" (onChange)="onTabChange($event)"> <p-tabPanel
+	header="{{SEARCH}}" leftIcon="fa fa-search"
+	[selected]="activeTab === 0"> <!--
+						<ul>
+							<li> Ajouter une recherche par date facture (debut et fin).</li>
+							<li> Afficher la liste des factures l'utilisateur peut selectionner.</li>
+							<li>Lorsque l'utilisateur selectionne, afficher la tab facturation avec les details.</li>
+							<li>Cette page est similaire a la page de recherche de produit </li>
+							<li>Ajouter une option de recherche par nom de la compagnie. Similaire a la recherche des etudiants</li>
+						</ul>
+						--> <app-admin-invoice-search
+	(onInvoiceSelected)="onInvoiceSelected($event)"
+	(onNewInvoiceSelected)="onNewInvoiceSelected()">
+
+</app-admin-invoice-search> </p-tabPanel> <p-tabPanel header="{{INVOICING}}" leftIcon="fa fa-money"
+	[selected]="activeTab === 1"> <!--
+						<ul>
+							<li> Cette page a les details de la facturation (table FACTURE)</li>
+							<li> Afficher la liste des lignes de la facture dans un tableau editable</li>
+							<li> Permettre de recehercher les compagnie ou les utilisateurs. Similaire a la page emprunt</li>
+							<li> Permettre d'ajouter les cours. Similaire a la pagne d'inscription a un cours LMD</li>
+							<li> Permettre l'ajout d'une ligne qui n'est pas un cours. E.g. frais repas.</li>
+							<li> Ajouter un bouton pour imprimer la facture. Ce bouton genere un pdf imprimable</li>
+						</ul>
+						--> <app-admin-invoice></app-admin-invoice> </p-tabPanel> 
+						<p-tabPanel header="Payements">
+							<app-admin-invoice-pay></app-admin-invoice-pay>
+						</p-tabPanel>
+					
+	</p-tabView>

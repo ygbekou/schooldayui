@@ -1,0 +1,31 @@
+<file-uploader></file-uploader>
+
+<form (ngSubmit)="search()" #searchForm="ngForm">
+	 <p-selectButton  [options]="roles" [(ngModel)]="aRole" name="aRole" #aRole1="ngModel">
+    </p-selectButton>
+  <div class="ui-grid ui-grid-responsive ui-fluid" [hidden]="loggedInUser.role>2&&loggedInUser.role!=5&&loggedInUser.role!=8&&loggedInUser.role!=9&&loggedInUser.role!=10&&loggedInUser.role!=14">
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-10">
+        <input type="text" pInputText class="form-control" id="searchT" required [(ngModel)]="searchText"
+          placeholder="{{USER_SEARCH_PARTS}}" name="searchT" #searchT="ngModel">
+      </div>
+      <div class="ui-grid-col-2">
+        <button type="button" pButton icon="fa fa-search" (click)="search()" label="Go"
+          style="margin-top: 0px; height: 35px;"></button>
+      </div>
+    </div>
+  </div>
+
+</form>
+
+<p-dataTable [value]="users" selectionMode="single" [(selection)]="selectedUser" expandableRows="true"
+  (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15" [responsive]="true">
+  <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+    [filter]="col.filter"> </p-column>
+  <ng-template pTemplate="paginatorLeft">
+    <button type="button" (click)="showDialogToUploadStudentFile()" pButton icon="fa fa-file-excel-o"
+      *ngIf="PAGE_ROLE === '3'" label="{{UPLOAD_STUDENTS}}"></button>
+    <button type="button" (click)="showDialogToUploadTeacherFile()" pButton icon="fa fa-file-excel-o"
+      *ngIf="PAGE_ROLE === '2'" label="{{UPLOAD_TEACHERS}}"></button>
+  </ng-template>
+</p-dataTable>

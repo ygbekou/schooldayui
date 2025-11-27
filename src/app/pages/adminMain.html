@@ -1,0 +1,159 @@
+<div class="page-wrapper">
+  <header class="page-heading clearfix">
+    <h1 i18n="@@adminSpace" class="heading-title pull-left">
+      <img class="thumb" src="assets/images/scoolday.png" alt="" />
+    </h1>
+    <div class="breadcrumbs pull-right">
+      <ul class="breadcrumbs-list">
+        <li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+          ici:</li>
+        <li><a i18n="@@homeLink" href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+        <li><a i18n="@@admin" href="#">Admin</a><i class="fa fa-angle-right"></i></li>
+        <li i18n="@@statistics" class="current">Statistiques</li>
+      </ul>
+    </div>
+    <!--//breadcrumbs-->
+  </header>
+  <div class="page-content">
+    <div [hidden]="currentUser.role===1||currentUser.role===5" class="alert alert-danger"
+      i18n="@@youNeedToBeConnectedAsAdmin">Vous
+      devez etre connecte en tant qu'administrateur pour voir ce contenu</div>
+    <div class="row page-row" [hidden]="!(currentUser.role===1||currentUser.role===5)">
+      <app-admin-menu></app-admin-menu>
+      <!--//page-sidebar-->
+      <div class="content-wrapper col-md-10 col-sm-8">
+        <p-tabView (onChange)="onTabChange($event)">
+          <p-tabPanel header="{{VISITS}}" leftIcon="fa fa-bar-chart">
+
+            <p-chart type="line" [data]="data" (onDataSelect)="selectData()"></p-chart>
+
+          </p-tabPanel>
+
+          <p-tabPanel header="{{PAYMENTS}}" leftIcon="fa fa-bar-chart">
+            <!--
+            <form (ngSubmit)="getPaymentGraph()" #searchForm="ngForm">
+              <div class="ui-grid ui-grid-responsive ui-fluid">
+                <div class="ui-grid-row">
+                  <div class="ui-grid-col-3">
+                    <p-autoComplete [(ngModel)]="schoolYear"
+                      (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+                      [suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear"
+                      (completeMethod)="schoolYearDropdown.filter($event)" name="schoolYear" field="year" [size]="30"
+                      placeholder="{{SCHOOLYEAR}}" [minLength]="1" #sYear="ngModel"></p-autoComplete>
+                    <div [hidden]="sYear.valid || sYear.pristine" class="alert alert-danger"
+                      i18n="@@schoolYearRequired">Annee
+                      scolaire Requise</div>
+                  </div>
+                  <div class="ui-grid-col-1"></div>
+                  <div class="ui-grid-col-2">
+                    <button type="button" pButton icon="fa fa-search" (click)="getPaymentGraph()" label="GO"
+                      style="margin-top: 0px; height: 30px;"></button>
+                  </div>
+                  <div class="ui-grid-col-1"></div>
+                  <div class="ui-grid-col-2">
+                    <button type="button" pButton icon="fa fa-search" (click)="getLatePayments()"
+                      label="Retards de payement" style="margin-top: 0px; height: 30px;"></button>
+                  </div>
+                  <div class="ui-grid-col-1"></div>
+                  <div class="ui-grid-col-2">
+                    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+                  </div>
+                </div>
+
+              </div>
+
+            </form>
+            <p-chart type="bar" [data]="data" *ngIf="button===0"></p-chart>
+
+            <p-dataTable [value]="stts" selectionMode="single" *ngIf="button===1" [paginator]="true" [rows]="15"
+              [responsive]="true">
+              <p-column *ngFor="let col of cols" [field]="col.field" [style]="col.style" [header]="col.header"
+                [sortable]="col.sortable" [filter]="col.filter">
+                <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+                  <span class="col-date">{{data[col.field] | date:'dd/MM/yyyy'}}</span> </ng-template>
+              </p-column>
+            </p-dataTable>
+            -->
+
+            <app-admin-student-payment-graph></app-admin-student-payment-graph>
+
+          </p-tabPanel>
+
+          <p-tabPanel header="{{LATE_PAYMENTS}}" leftIcon="fa fa-bar-chart">
+
+            <app-admin-student-late-payment></app-admin-student-late-payment>
+
+          </p-tabPanel>
+
+          <!-- <p-tabPanel header="Corr. paiements" leftIcon="fa fa-bar-chart">
+            
+            <app-admin-student-correct-payment></app-admin-student-correct-payment>
+
+          </p-tabPanel> -->
+
+
+          <p-tabPanel header="{{PROGRESSION}}" leftIcon="fa fa-bar-chart">
+            <p-tabView (onChange)="onSubTabChange($event)">
+              <p-tabPanel header="{{SEARCH}}" leftIcon="fa fa-search" [selected]="activeTab === 0">
+                <app-admin-user-list (onUserSelected)="onUserSelected($event)" [role]="3"></app-admin-user-list>
+              </p-tabPanel>
+              <p-tabPanel header="{{PROGRESSION}}" leftIcon="fa fa-bar-chart" *ngIf="user.id > 0"
+                [selected]="activeTab === 1">
+                <app-student-chart></app-student-chart>
+              </p-tabPanel>
+            </p-tabView>
+          </p-tabPanel>
+          <p-tabPanel header="Présence Eleve" leftIcon="fa fa-bar-chart">
+
+            <p-tabView id="tabList" (onChange)="onTabChange($event)">
+              <p-tabPanel header="Présence" leftIcon="fa fa-bar-chart">
+                <app-admin-attendance></app-admin-attendance>
+              </p-tabPanel>
+              <p-tabPanel header="Recherche" leftIcon="fa fa-search">
+                <app-search-admin-attendance></app-search-admin-attendance>
+              </p-tabPanel>
+
+            </p-tabView>
+
+
+          </p-tabPanel>
+
+          <p-tabPanel header="Validation UEs" leftIcon="fa fa-check-double">
+
+            <p-tabView id="tabList" (onChange)="onTabChange($event)">
+              <p-tabPanel header="Etat Validation des UEs des Etudiants" leftIcon="fa fa-check-double">
+                <app-admin-stCourse-result></app-admin-stCourse-result>
+              </p-tabPanel>
+
+
+            </p-tabView>
+
+
+
+
+          </p-tabPanel>
+
+          <p-tabPanel header="Statistiques" leftIcon="fa fa-table">
+
+            <p-tabView id="tabList" (onChange)="onTabChange($event)">
+              <p-tabPanel header="Statistiques par filière" leftIcon="fa fa-table">
+                <app-admin-filiere-stats></app-admin-filiere-stats>
+              </p-tabPanel>
+
+               <p-tabPanel header="Statistiques par pays" leftIcon="fa fa-table">
+                <app-admin-country-stats></app-admin-country-stats>
+              </p-tabPanel>
+
+
+            </p-tabView>
+          </p-tabPanel>
+        </p-tabView>
+
+      </div>
+      <!--//content-wrapper-->
+    </div>
+    <!--//page-row-->
+  </div>
+  <!--//page-content-->
+</div>
+<!--//page-->

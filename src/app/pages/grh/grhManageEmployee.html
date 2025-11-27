@@ -1,0 +1,208 @@
+<form (ngSubmit)="save()" #teacherInfoForm="ngForm">
+
+  <div *ngIf="employee.user.role == 3" class="alert alert-warning">
+    Gestion d'un étudiant comme personnel.
+  </div>
+
+  <div class="ui-grid-row form-group">
+    <div class="ui-grid-col-2">
+      <label i18n="@@hiringDate" for="hiredDate">Date d'embauche : </label>
+    </div>
+    <div class="ui-grid-col-3">
+      <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="hiredDate" name="hiredDate"
+        [showIcon]="true" [(ngModel)]="employee.hiredDate" #hiredDate="ngModel" required></p-calendar>
+      <div [hidden]="hiredDate.valid || hiredDate.pristine" class="alert alert-danger" i18n="@@hiringDateRequired">Date
+        d'embauche Requis</div>
+    </div>
+  </div>
+
+  <div class="ui-grid-row form-group">
+    <div class="ui-grid-col-2">
+      <label><span i18n="@@matricule">Matricule : </span></label>
+    </div>
+    <div class="ui-grid-col-3">
+      <label> {{employee.matricule}} </label>
+    </div>
+  </div>
+
+  <div class="ui-grid-row form-group">
+    <div class="ui-grid-col-2">
+      <label i18n="@@salaryType" for="salaryType">Type salarié : </label>
+    </div>
+    <div class="ui-grid-col-3">
+      <p-autoComplete [(ngModel)]="employee.salaryType" (onDropdownClick)="salaryTypeDropdown.handleDropdownClick($event)"
+        [suggestions]="salaryTypeDropdown.filteredSalaryTypes" [dropdown]="true" id="salaryType"
+        (completeMethod)="salaryTypeDropdown.filter($event)" name="salaryType" field="wording" [size]="30"
+        placeholder="Choisissez le type de salarié" [minLength]="1"></p-autoComplete>
+    </div>
+  </div>
+
+  <!--
+  <div class="ui-grid-row form-group" *ngIf="employee.user.role == 15 || employee.user.role == 8 || 
+    employee.user.role == 9 || employee.user.role == 10 || employee.user.role == 11 || 
+    (employee.id != null && employee.user.role == 3 && (employee.employeeType == employeeType.PERSONNEL || employee.employeeType == employeeType.STAGIAIRE || employee.employeeType == employeeType.CONTRACTUEL)) 
+    || salaryType.key == 'PRSN'">
+    <div class="ui-grid-col-2">
+      <label i18n="@@employeeType" for="employeeType">Type de personnel : </label>
+    </div>
+    <div class="ui-grid-col-3">
+      <p-dropdown [options]="employeeTypes" optionLabel="code"
+        id="employeeType" name="employeeType" [(ngModel)]="employeeType"
+        placeholder="Choisissez le type de l'employee" required>
+      </p-dropdown>
+    </div>
+    <div class="ui-grid-col-1"></div>
+  </div>
+
+  <div class="ui-grid-row form-group" *ngIf="employee.user.role == 2 || 
+    (employee.id != null && employee.user.role == 3 && (employee.employeeType == employeeType.EXTERNE || employee.employeeType == employeeType.INTERNE)) 
+      || salaryType.key == 'ESGT'">
+    <div class="ui-grid-col-2">
+      <label i18n="@@teacherType" for="teacherType">Type d'enseignant : </label>
+    </div>
+    <div class="ui-grid-col-3">
+      <p-dropdown [options]="teacherTypes" optionLabel="code"
+        id="teacherType" name="teacherType" [(ngModel)]="teacherType"
+        placeholder="Choisissez le type de l'enseignant" required>
+      </p-dropdown>
+    </div>
+    <div class="ui-grid-col-1"></div>
+  </div>
+
+  <div class="ui-grid-row form-group" *ngIf="employee.user.role == 2  || 
+    (employee.id != null && employee.user.role == 3 && (employee.employeeType == employeeType.EXTERNE || employee.employeeType == employeeType.INTERNE)) 
+    || salaryType.key == 'ESGT'">
+    <div class="ui-grid-col-2">
+      <label i18n="@@teacherLevel" for="teacherLevel">Niveau de l'enseignant : </label>
+    </div>
+    <div class="ui-grid-col-3">
+      <p-dropdown [options]="teacherLevels" optionLabel="code"
+        id="teacherLevel" name="teacherLevel" [(ngModel)]="teacherLevel"
+        placeholder="Choisissez le niveau de l'enseignant" required>
+      </p-dropdown>
+    </div>
+    <div class="ui-grid-col-1"></div>
+  </div>
+  -->
+
+  <div class="ui-grid-row form-group" *ngIf="employee.user.role == 15 || employee.user.role == 8 || 
+    employee.user.role == 9 || employee.user.role == 10 || employee.user.role == 11 || 
+    (employee.user.role == 3 && employee.salaryType != null && employee.salaryType.key == 'PRSN') ">
+    <div class="ui-grid-col-2">
+      <label i18n="@@employeeType" for="employeeType">Type de personnel : </label>
+    </div>
+    <div class="ui-grid-col-3">
+      <p-dropdown [options]="employeeTypes" optionLabel="code"
+        id="employeeType" name="employeeType" [(ngModel)]="employeeType"
+        placeholder="Choisissez le type de l'employee" required>
+      </p-dropdown>
+    </div>
+    <div class="ui-grid-col-1"></div>
+  </div>
+
+  <div class="ui-grid-row form-group" *ngIf="employee.user.role == 2 || 
+    (employee.user.role == 3 && employee.salaryType != null && employee.salaryType.key == 'ESGT')">
+    <div class="ui-grid-col-2">
+      <label i18n="@@teacherType" for="teacherType">Type d'enseignant : </label>
+    </div>
+    <div class="ui-grid-col-3">
+      <p-dropdown [options]="teacherTypes" optionLabel="code"
+        id="teacherType" name="teacherType" [(ngModel)]="teacherType"
+        placeholder="Choisissez le type de l'enseignant" required>
+      </p-dropdown>
+    </div>
+    <div class="ui-grid-col-1"></div>
+  </div>
+
+  <div class="ui-grid-row form-group" *ngIf="employee.user.role == 2  || 
+    (employee.user.role == 3 && employee.salaryType != null && employee.salaryType.key == 'ESGT')">
+    <div class="ui-grid-col-2">
+      <label i18n="@@teacherLevel" for="teacherLevel">Niveau de l'enseignant : </label>
+    </div>
+    <div class="ui-grid-col-3">
+      <p-dropdown [options]="teacherLevels" optionLabel="code"
+        id="teacherLevel" name="teacherLevel" [(ngModel)]="teacherLevel"
+        placeholder="Choisissez le niveau de l'enseignant" required>
+      </p-dropdown>
+    </div>
+    <div class="ui-grid-col-1"></div>
+  </div>
+
+  <div class="ui-grid-row form-group">
+    <div class="ui-grid-col-2">
+      <label i18n="@@position" for="position">Position : </label>
+    </div>
+    <div class="ui-grid-col-3">
+      <p-autoComplete [(ngModel)]="employee.position" (onDropdownClick)="positionDropdown.handleDropdownClick($event)"
+        [suggestions]="positionDropdown.filteredPositions" [dropdown]="true" id="position"
+        (completeMethod)="positionDropdown.filter($event)" name="position" field="name" [size]="30"
+        placeholder="{{POSITION}}" [minLength]="1"></p-autoComplete>
+    </div>
+  </div>
+
+  <div class="ui-grid-row form-group">
+    <div class="ui-grid-col-2">
+      <label i18n="@@department" for="department">Departement : </label>
+    </div>
+    <div class="ui-grid-col-3">
+      <p-autoComplete [(ngModel)]="employee.department" (onDropdownClick)="departmentDropdown.handleDropdownClick($event)"
+        [suggestions]="departmentDropdown.filteredDepartments" [dropdown]="true" id="department"
+        (completeMethod)="departmentDropdown.filter($event)" name="department" field="name" [size]="30"
+        placeholder="{{DEPARTMENT}}" [minLength]="1"></p-autoComplete>
+    </div>
+  </div>
+
+  <div class="ui-grid-row">
+    <div class="ui-grid-col-4">
+      <label i18n="@@resume" for="resume">CV</label>
+    </div>
+  </div>
+  <div class="ui-grid-row">
+    <div class="ui-grid-col-12">
+      <p-editor id="resume" name="resume" [(ngModel)]="employee.resume" [style]="{'height':'200px'}"
+        #teacherResume="ngModel"></p-editor>
+    </div>
+  </div>
+  <div class="form-group">
+    <label i18n="@@status" for="status">Etat : </label>
+
+    <div class="ui-g-12">
+      <p-radioButton id="status" name="status" value="1" label="{{ACTIF}}" [(ngModel)]="employee.status"></p-radioButton>
+      <p-radioButton id="status" name="status" value="0" label="{{INACTIF}}" [(ngModel)]="employee.status">
+      </p-radioButton>
+    </div>
+  </div>
+
+
+  <input type="hidden" pInputText class="form-control" id="userId" required
+    [(ngModel)]="employee.user.id" name="userId" #userId="ngModel">
+
+  <button pButton type="submit" [disabled]="!teacherInfoForm.form.valid"
+   label="{{SAVE_LABEL}}"></button>
+&nbsp;&nbsp;
+  <button [disabled]="employee.id > 0" pButton type="button" (click)="delete()" label="{{DELETE_LABEL}}"></button>
+&nbsp;&nbsp;
+  <button *ngIf="employee.id > 0" pButton type="button" (click)="printCard()" label="{{PRINT_CARD}}"></button>
+&nbsp;&nbsp;
+  <!--
+  <a *ngIf="reportName" target="_blank" href="assets/reports/{{reportName}}" i18n="@@downloadReport">Telecharger la
+    carte</a>
+  -->
+	<a *ngIf="reportName" target="_blank" href="assets/reports/{{reportName}}"
+    i18n="@@downloadReport" class="btn btn-theme">
+      <i class="fa fa-download"></i>
+      Télécharger la carte
+  </a>
+
+
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+  <div *ngIf="success" class="alert alert-success">{{success}}</div>
+
+</form>
+<!-- Initialize Quill editor -->
+<script>
+  var quill = new Quill('#editor', {
+    theme: 'bubble'
+  });
+
+</script>

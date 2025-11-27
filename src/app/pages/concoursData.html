@@ -1,0 +1,281 @@
+<file-uploader></file-uploader>
+
+<p-dialog header="Detail du concours" [(visible)]="displayDialog" [responsive]="true" width="650" showEffect="fade"
+    [modal]="true" [style]="{ 'z-index': zIndexDialog }" *ngIf="concours">
+    <div class="ui-grid ui-grid-responsive ui-fluid">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4">
+                <label for="intitule">Intitulé :</label>
+            </div>
+            <div class="ui-grid-col-8">
+                <input pInputText id="intitule" name="intitule" [(ngModel)]="concours.intitule" />
+            </div>
+        </div>
+
+        <br>
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4">
+                <label i18n="@@schoolYear" for="schoolYear">Annee Scolaire :</label>
+            </div>
+            <div class="ui-grid-col-8">
+                <p-autoComplete [(ngModel)]="concours.schoolYear"
+                    (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+                    [suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear" required
+                    (completeMethod)="schoolYearDropdown.filter($event)" name="schoolYear" field="year" [size]="30"
+                    placeholder="schoolyear" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+                <div [hidden]="schoolYear.valid || schoolYear.pristine" class="alert alert-danger"
+                    i18n="@@schoolYearRequired">
+                    Annee
+                    scolaire Requise</div>
+            </div>
+            <!-- <div class="ui-grid-col-1"></div> -->
+        </div>
+
+        <br>
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4">
+                <label i18n="@@montant" for="montant">Montant :</label>
+            </div>
+            <div class="ui-grid-col-8">
+                <input type="number" pInputText id="montant" [(ngModel)]="concours.montant" />
+            </div>
+        </div>
+
+
+    </div>
+    <br>
+
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix" *ngIf="currentUser.userAccess != 2">
+
+            <button type="button" pButton icon="fa fa-close" (click)="confirmDelete()" label="Supprimer"></button>
+            <button type="button" pButton icon="fa fa-check" (click)="save()" label="Sauvegarder"></button>
+        </div>
+    </footer>
+</p-dialog>
+<p-dialog header="Ajout d'un candidat" [(visible)]="displayAddUserDialog" [responsive]="true" width="1200"
+    showEffect="fade" [modal]="true" [style]="{ 'z-index': zIndexDialog }"
+    [contentStyle]="{ 'max-height': '80vh', 'overflow': 'auto' }" [positionTop]="20">
+    <div class="ui-grid ui-grid-responsive ui-fluid" style="margin: 30px;">
+
+        <div *ngIf="errorUc" class="alert alert-danger">{{errorUc}}</div>
+
+
+        <file-uploader></file-uploader>
+
+        <form (ngSubmit)="search()" #searchForm="ngForm">
+
+            <div class="ui-grid ui-grid-responsive ui-fluid">
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-10">
+                        <input type="text" pInputText class="form-control" id="searchT" required
+                            [(ngModel)]="searchText" placeholder="Entrez le nom et/ou le prénom du candidat"
+                            name="searchT" #searchT="ngModel">
+                    </div>
+                    <div class="ui-grid-col-2">
+                        <button type="button" pButton icon="fa fa-search" (click)="search()" label="Go"
+                            style="margin-top: 0px; height: 35px;"></button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+        <p-dataTable [value]="users" selectionMode="single" [(selection)]="selectedUser" expandableRows="true"
+            [paginator]="true" [rows]="15" [responsive]="true">
+            <p-column *ngFor="let col of colsU" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+                [filter]="col.filter"> </p-column>
+            <p-column header="Actions" [style]="{ width: '10%', textAlign: 'center' }">
+                <ng-template let-rowData="rowData" pTemplate="body"  *ngIf="currentUser.userAccess != 2">
+                    <!-- <button type="button" pButton icon="pi pi-plus" class="p-button-success p-button-sm"
+                        (click)="saveUc(rowData)" label="Ajouter"></button> -->
+                    <button type="button" pButton icon="pi pi-plus" class="p-button-success p-button-sm"
+                        (click)="showCollegeDialog(rowData)" label="Ajouter"></button>
+                </ng-template>
+            </p-column>
+        </p-dataTable>
+
+    </div>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+
+            <button type="button" pButton icon="fa fa-close" (click)="close()" label="Fermer"></button>
+        </div>
+    </footer>
+</p-dialog>
+<p-dialog header="Infos du candidat" [(visible)]="displayCollegeDialog" [responsive]="true" width="650"
+    showEffect="fade" [modal]="true" [style]="{ 'z-index': zIndexCollegeDialog }">
+    <div class="ui-grid ui-grid-responsive ui-fluid">
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+                <label i18n="@@hs" for="etat">Status :</label>
+            </div>
+
+            <div class="ui-grid-col-3">
+                <p-radioButton name="etat" [value]="1" label="Depôt de dossiers" (ngModelChange)="onChange(1)"
+                    [(ngModel)]="uc.etat"></p-radioButton>
+            </div>
+
+            <div class="ui-grid-col-3">
+                <p-radioButton name="etat" [value]="2" label="Pré-inscrit" (ngModelChange)="onChange(2)"
+                    [(ngModel)]="uc.etat"></p-radioButton>
+            </div>
+
+            <div class="ui-grid-col-3">
+                <p-radioButton name="etat" [value]="3" label="Inscrit" (ngModelChange)="onChange(3)"
+                    [(ngModel)]="uc.etat"></p-radioButton>
+            </div>
+
+            <div class="ui-grid-col-1"></div>
+
+        </div>
+        <br>
+
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4">
+                <label i18n="@@college" for="college">Filiére choisie : </label>
+            </div>
+            <div class="ui-grid-col-8">
+                <p-autoComplete [(ngModel)]="uc.college" (onDropdownClick)="collegeDropdown.handleDropdownClick($event)"
+                    [suggestions]="collegeDropdown.filteredColleges" [dropdown]="true" id="college"
+                    (completeMethod)="collegeDropdown.filter($event)" name="college" field="name" [size]="30"
+                    placeholder="filiére" [minLength]="1" #college="ngModel"></p-autoComplete>
+
+            </div>
+            <!-- <div class="ui-grid-col-1"></div> -->
+        </div>
+
+    </div>
+    <br>
+
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix" *ngIf="currentUser.userAccess != 2">
+
+            <!-- <button type="button" pButton icon="fa fa-close" (click)="confirmDelete()" label="Supprimer"></button> -->
+            <button type="button" pButton icon="fa fa-check" (click)="saveCandidat(uc.college)"
+                label="Sauvegarder"></button>
+        </div>
+    </footer>
+</p-dialog>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" width="425"
+    [closable]="false"></p-confirmDialog>
+
+
+
+
+<p-dataTable [value]="concoursList" selectionMode="single" [(selection)]="selectedConcours" expandableRows="true"
+    rowExpandMode="single" [expandedRows]="expandedRow ? [expandedRow] : []" (onRowExpand)="onRowExpand($event)"
+    (onRowCollapse)="onRowCollapse($event)" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15"
+    [responsive]="true">
+
+    <p-column expander="true" styleClass="col-icon" [style]="{ width: '5%' }"></p-column>
+
+
+    <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [style]="col.style"
+        [sortable]="col.sortable" [filter]="col.filter">
+        <ng-template *ngIf="col.type === 'string' || col.type === undefined" let-col let-data="rowData"
+            pTemplate="body">
+            <span class="col-string">{{ resolveFieldData(data, col.field) }}</span>
+        </ng-template>
+
+        <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate="body">
+            <span class="col-date">{{ resolveFieldData(data, col.field) | date: 'dd/MM/yy' }}</span>
+        </ng-template>
+    </p-column>
+
+
+    <ng-template let-concours pTemplate="rowexpansion">
+        <div class="ui-grid ui-grid-responsive ui-fluid" style="margin: 30px;">
+
+            <form (ngSubmit)="searchUserConcours()" #searchUcForm="ngForm">
+
+                <div class="ui-grid ui-grid-responsive ui-fluid">
+                  
+                    <div class="ui-grid-row">
+
+                        <div class="ui-grid-col-3">
+                            <p-autoComplete [(ngModel)]="theCollege"
+                                (onDropdownClick)="collegeDropdown.handleDropdownClick($event)"
+                                [suggestions]="collegeDropdown.filteredColleges" [dropdown]="true" id="college"
+                                (completeMethod)="collegeDropdown.filter($event)" name="college" field="name"
+                                [size]="30" placeholder="Filiére" [minLength]="1" #college="ngModel"></p-autoComplete>
+                        </div>
+                         <div class="ui-grid-col-1"></div>
+                        <div class="ui-grid-col-1">
+                            <p-radioButton name="etat" [value]="0" label="Tous" (ngModelChange)="onChange(0)"
+                                [(ngModel)]="etat"></p-radioButton>
+                        </div>
+
+                        <div class="ui-grid-col-2">
+                            <p-radioButton name="etat" [value]="1" label="Depôt de dossiers"
+                                (ngModelChange)="onChange(1)" [(ngModel)]="etat"></p-radioButton>
+                        </div>
+
+                        <div class="ui-grid-col-2">
+                            <p-radioButton name="etat" [value]="2" label="Pré-inscrit" (ngModelChange)="onChange(2)"
+                                [(ngModel)]="etat"></p-radioButton>
+                        </div>
+
+                        <div class="ui-grid-col-1">
+                            <p-radioButton name="etat" [value]="3" label="Inscrit" (ngModelChange)="onChange(3)"
+                                [(ngModel)]="etat"></p-radioButton>
+                        </div>
+                       
+                        <div class="ui-grid-col-1">
+                            <button type="submit" pButton icon="fa fa-search" label="Go"
+                                style="margin-bottom: 15px; height: 25px;"></button>
+                        </div>
+                          <div class="ui-grid-col-1">
+                            <button type="button" (click)="refresh()" pButton icon="fa fa-refresh"
+                              style="margin-left: 10px;"  ></button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+
+            <p-dataTable [value]="userConcoursList" selectionMode="single" [responsive]="true" [rows]="15"
+                (onRowSelect)="onUcRowSelect($event)" [paginator]="true">
+                <p-column header="Ordre" [style]="{ width: '5%' }">
+                    <ng-template let-i="rowIndex" pTemplate="body">
+                        {{ i + 1 }}
+                    </ng-template>
+                </p-column>
+                <p-column field="user.lastName" header="Nom" [style]="{ width: '15%' }"></p-column>
+                <p-column field="user.firstName" header="Prénom" [style]="{ width: '15%' }"></p-column>
+                <p-column field="user.phone" header="Téléphone" [style]="{ width: '15%' }"></p-column>
+                <p-column header="Actions" [style]="{ width: '10%', textAlign: 'center' }">
+                    <ng-template let-rowData="rowData" pTemplate="body" *ngIf="currentUser.userAccess != 2">
+                        <button type="button" pButton icon="pi pi-times" class="p-button-danger p-button-sm"
+                            (click)="confirmUcDelete(rowData)" label="Retirer"></button>
+                    </ng-template>
+                </p-column>
+
+                <ng-template pTemplate="paginatorLeft" *ngIf="currentUser.userAccess != 2">
+                    <button type="button" pButton icon="pi pi-plus" label="Ajouter" class="p-button-success p-button-sm"
+                        (click)="showDialogToAddUser()" style="padding: 0.5rem 1rem; border-radius: 20px;"></button>
+                </ng-template>
+
+
+            </p-dataTable>
+        </div>
+    </ng-template>
+
+
+    <ng-template pTemplate="paginatorLeft" *ngIf="currentUser.userAccess != 2">
+        <button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"></button>
+    </ng-template>
+
+    <ng-template pTemplate="paginatorRight">
+        <button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+    </ng-template>
+</p-dataTable>

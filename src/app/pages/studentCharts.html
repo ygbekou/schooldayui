@@ -1,0 +1,38 @@
+<form (ngSubmit)="getMarkProgress()" #searchForm="ngForm">
+	<div class="ui-grid ui-grid-responsive ui-fluid">
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-4">
+				<p-autoComplete [(ngModel)]="schoolYear"
+					(onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+					[suggestions]="schoolYearDropdown.filteredSchoolYears"
+					[dropdown]="true" id="schoolYear"
+					(completeMethod)="schoolYearDropdown.filter($event)"
+					name="schoolYear" field="year" [size]="30"
+					placeholder="{{SCHOOLYEAR}}" [minLength]="1" #sYear="ngModel"></p-autoComplete>
+				<div [hidden]="sYear.valid || sYear.pristine"
+					class="alert alert-danger" i18n="@@schoolYearRequired">Annee
+					scolaire Requise</div>
+			</div>
+			<div class="ui-grid-col-1"></div>
+			<div class="ui-grid-col-2">
+				<button type="button" pButton icon="fa fa-search"
+					(click)="getMarkProgress()" label="{{SHOW_NOTES}}"
+					style="margin-top: 0px; height: 30px;"></button>
+			</div>
+
+			<div class="ui-grid-col-3">
+				<button type="button" pButton icon="fa fa-search"
+					(click)="getAvgProgress()" label="{{SHOW_AVERAGES}}"
+					style="margin-top: 0px; height: 30px;"></button>
+			</div>
+
+			<div class="ui-grid-col-2"></div>
+		</div>
+
+	</div>
+
+</form>
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+<p-chart type="line" [data]="data" (onDataSelect)="selectData($event)"></p-chart>

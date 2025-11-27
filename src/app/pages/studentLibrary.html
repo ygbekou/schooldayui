@@ -1,0 +1,40 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 i18n="@@espaceStudentLink" class="heading-title pull-left">
+			<img class="thumb" src="assets/images/scoolday.png" alt="" />
+		</h1>
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+					ici:</li>
+				<li><a i18n="@@homeLink" href="index.html">Home</a><i
+					class="fa fa-angle-right"></i></li>
+				<li><a i18n="@@student" href="#">Etudiant</a><i
+					class="fa fa-angle-right"></i></li>
+				<li i18n="@@library" class="current">Biblioteque</li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<div [hidden]="currentUser.role===3" class="alert alert-danger"
+			i18n="@@youNeedToBeConnectedAsStudent">Vous devez etre connecte
+			en tant qu'etudiant pour voir ce contenu</div>
+		<div class="row page-row" [hidden]="!(currentUser.role===3)">
+			<app-student-menu></app-student-menu>
+			<!--//page-sidebar-->
+			<div class="content-wrapper col-md-10 col-sm-8">
+
+				<p-tabView id="tabList" (onChange)="onTabChange($event)"
+					*ngIf="student.id>0"> <p-tabPanel header="{{RENTALS}}"
+					leftIcon="fa fa-search"> <app-admin-product-user></app-admin-product-user>
+				</p-tabPanel> </p-tabView>
+			</div>
+			<!--//content-wrapper-->
+		</div>
+		<!--//page-row-->
+	</div>
+	<!--//page-content-->
+</div>
+<!--//page-->

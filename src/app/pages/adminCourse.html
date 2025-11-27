@@ -1,0 +1,96 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 i18n="@@adminSpace" class="heading-title pull-left">
+			<img class="thumb" src="assets/images/scoolday.png" alt="" />
+		</h1>
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+					ici:</li>
+				<li><a i18n="@@homeLink" href="index.html">Home</a><i
+					class="fa fa-angle-right"></i></li>
+				<li><a i18n="@@admin" href="#">Admin</a><i
+					class="fa fa-angle-right"></i></li>
+				<li i18n="@@information" class="current">Information</li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<div [hidden]="currentUser.role===1||currentUser.role===5"
+			class="alert alert-danger" i18n="@@youNeedToBeConnectedAsAdmin">Vous
+			devez etre connecte en tant qu'administrateur pour voir ce contenu</div>
+		<div class="row page-row"
+			[hidden]="!(currentUser.role===1||currentUser.role===5)">
+			<app-admin-menu></app-admin-menu>
+			<!--//page-sidebar-->
+			<div class="content-wrapper col-md-10 col-sm-8">
+
+				<p-tabView (onChange)="onTabChange($event)">
+                    <p-tabPanel header="Cycles" leftIcon="fa fa-newspaper-o">
+                        <app-admin-cycle></app-admin-cycle>
+				    </p-tabPanel>
+
+                    <p-tabPanel header="{{DEPARTMENTS}}" leftIcon="fa fa-newspaper-o">
+				        <app-admin-college></app-admin-college>
+                    </p-tabPanel>
+
+					<p-tabPanel header="Niveau GLOB." leftIcon="fa fa-newspaper-o">
+				        <app-admin-levelGlobal></app-admin-levelGlobal>
+                    </p-tabPanel>
+
+                    <p-tabPanel header="{{LEVELS}}" leftIcon="fa fa-newspaper-o">
+						<app-admin-level></app-admin-level>
+					</p-tabPanel>
+
+					<p-tabPanel header="{{SUBJECTS}}" leftIcon="fa fa-bookmark">
+						<app-admin-subject></app-admin-subject>
+					</p-tabPanel>
+
+					<p-tabPanel header="{{LEVEL_SUBJECTS}}" leftIcon="fa fa-newspaper-o" *ngIf="lmd===1">
+						<p-tabView>
+							<p-tabPanel header="Licence Master">
+								<app-admin-levelsubject></app-admin-levelsubject>
+							</p-tabPanel>
+							<p-tabPanel header="Formation Pro">
+								<app-admin-levelsubjectpro></app-admin-levelsubjectpro>
+							</p-tabPanel>
+						</p-tabView>
+						
+					</p-tabPanel>
+					
+					<p-tabPanel header="{{CLASSES}}" leftIcon="fa fa-file-video-o">
+						<app-admin-class></app-admin-class>
+					</p-tabPanel>
+					<p-tabPanel header="{{COURSES}}" leftIcon="fa fa-bookmark">
+						<p-tabView>
+							<p-tabPanel header="Recherche" leftIcon="fa fa-search">
+								<app-manage-course></app-manage-course>
+							</p-tabPanel>
+							<p-tabPanel header="Gestion des Heures" leftIcon="fa fa-bookmark">
+								<app-manage-course-hours></app-manage-course-hours>
+							</p-tabPanel>
+						  </p-tabView>
+						
+					</p-tabPanel>
+
+					<p-tabPanel header="{{ STUDENTS_COURSES_REGISTRATION }}" leftIcon="fa fa-bookmark">
+						<p-tabView>
+						  <p-tabPanel header="{{CLASSE}}" leftIcon="fa fa-bookmark">
+							<app-admin-students-course-class></app-admin-students-course-class>
+						  </p-tabPanel>
+						  <p-tabPanel header="{{STUDENTS}}" leftIcon="fa fa-bookmark">
+							<app-admin-students-course-class-to-students-list></app-admin-students-course-class-to-students-list>
+						  </p-tabPanel>
+						</p-tabView>
+					</p-tabPanel>
+				</p-tabView>
+			</div>
+			<!--//content-wrapper-->
+		</div>
+		<!--//page-row-->
+	</div>
+	<!--//page-content-->
+</div>
+<!--//page-->

@@ -1,0 +1,682 @@
+<p-growl [(value)]="msgs"></p-growl>
+
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+  width="750" *ngIf="loggedInUser.userAccess != 2">
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="course">
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <label i18n="@@beginDate" for="beginDate">Date Debut</label>
+      </div>
+      <div class="ui-grid-col-8">
+        <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="beginDate" name="beginDate"
+          [(ngModel)]="course.beginDate" #beginDate="ngModel"></p-calendar>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <label i18n="@@endDate" for="endDate">Date Fin</label>
+      </div>
+      <div class="ui-grid-col-8">
+        <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="endDate" name="endDate"
+          [(ngModel)]="course.endDate" #endDate="ngModel"></p-calendar>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <label i18n="@@pro" for="pro">Type de session</label>
+      </div>
+      <div class="ui-grid-col-8">
+        <p-selectButton [options]="sessionTypes" [(ngModel)]="course.sessionType"></p-selectButton>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <label i18n="@@dueDate" for="dueDate">Echeance payement</label>
+      </div>
+      <div class="ui-grid-col-8">
+        <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="dueDate" name="dueDate"
+          [(ngModel)]="course.dueDate" #dueDate="ngModel"></p-calendar>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <label i18n="@@class" for="classe">Classe</label>
+      </div>
+      <div class="ui-grid-col-8">
+        <p-autoComplete [(ngModel)]="course.classe" (onSelect)="setCreditUnitPrice(); calculatePrice()"
+          (onDropdownClick)="classDropdown.handleDropdownClick($event)" [suggestions]="classDropdown.filteredClasses"
+          [dropdown]="true" id="classe" (completeMethod)="classDropdown.filter($event)" name="classe" field="name"
+          [size]="30" placeholder="{{CLASS}}" [minLength]="1" #classe="ngModel" required></p-autoComplete>
+        <div [hidden]="classe.valid || classe.pristine" class="alert alert-danger" i18n="@@classRequired">Classe
+          Requise</div>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <label i18n="@@subject" for="subject">Matiere</label>
+      </div>
+      <div class="ui-grid-col-8">
+        <p-autoComplete [(ngModel)]="course.subject" (onSelect)="setCredit(); calculatePrice()"
+          (onDropdownClick)="subjectDropdown.handleDropdownClick($event)"
+          [suggestions]="subjectDropdown.filteredSubjects" [dropdown]="true" id="subject"
+          (completeMethod)="subjectDropdown.filter($event)" name="subject" field="name" [size]="30"
+          placeholder="{{SUBJECT}}" [minLength]="1" #subject="ngModel" required></p-autoComplete>
+        <div [hidden]="subject.valid || subject.pristine" class="alert alert-danger" i18n="@@subjectRequired">Matiere
+          Requise</div>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <label i18n="@@teacher" for="teacher">Enseignant</label>
+      </div>
+      <div class="ui-grid-col-8">
+        <p-autoComplete [(ngModel)]="course.teacher" (onDropdownClick)="teacherDropdown.handleDropdownClick($event)"
+          [suggestions]="teacherDropdown.filteredTeachers" [dropdown]="true" id="teacher"
+          (completeMethod)="teacherDropdown.filter($event)" name="teacher" field="name" [size]="30"
+          placeholder="{{TEACHER}}" [minLength]="1" #teacher="ngModel" required></p-autoComplete>
+        <div [hidden]="teacher.valid || teacher.pristine" class="alert alert-danger" i18n="@@teacherRequired">Enseignant
+          Requis</div>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <label i18n="@@teacher" for="teacher">Type UE</label>
+      </div>
+      <div class="ui-grid-col-8">
+        <p-autoComplete [(ngModel)]="course.courseGroupeCode"
+          (onDropdownClick)="courseGroupeCodeDropDown.handleDropdownClick($event)"
+          [suggestions]="courseGroupeCodeDropDown.filteredcourseGroupeCodes" [dropdown]="true" id="courseGroupeCode"
+          (completeMethod)="courseGroupeCodeDropDown.filter($event)" name="courseGroupeCode" field="name" [size]="30"
+          placeholder="{{COURRSE_GROUPE_CODE}}" [minLength]="1" #courseGroupeCode="ngModel"></p-autoComplete>
+        <!-- <div [hidden]="teacher.valid || teacher.pristine" class="alert alert-danger" i18n="@@teacherRequired">Enseignant
+          Requis</div> -->
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+    <!-- <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <label i18n="@@credits" for="credit">Categorie de cours</label>
+      </div>
+      <div class="ui-grid-col-8">
+        <input pInputText id="groupCode" name="groupCode" [(ngModel)]="course.groupCode" #groupCode="ngModel" />
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div> -->
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <label i18n="@@schoolYear" for="schoolYear">Année Scolaire</label>
+      </div>
+      <div class="ui-grid-col-8">
+        <p-autoComplete [(ngModel)]="course.schoolYear"
+          (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+          [suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear"
+          (completeMethod)="schoolYearDropdown.filter($event)" name="schoolYear" field="year" [size]="30"
+          placeholder="{{SCHOOLYEAR}}" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+        <div [hidden]="schoolYear.valid || schoolYear.pristine" class="alert alert-danger" i18n="@@schoolYearRequired">
+          Annee
+          Scolaire Requis</div>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <label i18n="@@monthQuater" for="term">Semestre</label>
+      </div>
+      <div class="ui-grid-col-8">
+        <p-autoComplete [(ngModel)]="course.term" (onDropdownClick)="termDropdown.handleDropdownClick($event)"
+          [suggestions]="termDropdown.filteredTerms" [dropdown]="true" id="term"
+          (completeMethod)="termDropdown.filter($event)" name="term" field="name" [size]="30" placeholder="{{TERM}}"
+          [minLength]="1" #term="ngModel"></p-autoComplete>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <label i18n="@@credits" for="credit">Crédits</label>
+      </div>
+      <div class="ui-grid-col-8">
+        <input pInputText id="credit" name="credit" (change)="calculatePrice()" [(ngModel)]="course.credit"
+          #credit="ngModel" />
+      </div>
+      <div [hidden]="credit.valid || credit.pristine" class="alert alert-danger" i18n="@@creditsRequired">Crédits
+        Requis</div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <label i18n="@@creditUnitPrice" for="creditUnitPrice">Cout
+          par crédit</label>
+      </div>
+      <div class="ui-grid-col-8">
+        <input pInputText id="creditUnitPrice" name="creditUnitPrice" (change)="calculatePrice()"
+          [(ngModel)]="course.creditUnitPrice" #creditUnitPrice="ngModel" />
+      </div>
+      <div [hidden]="creditUnitPrice.valid || creditUnitPrice.pristine" class="alert alert-danger"
+        i18n="@@creditUnitPriceRequired">Cout
+        par credit</div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@cost" for="cost">Cout Particulier</label>
+      </div>
+      <div class="ui-grid-col-4">
+        <input pInputText id="cost" name="cost" [(ngModel)]="course.cost" #cost="ngModel" />
+      </div>
+
+      <div class="ui-grid-col-2">
+        <label i18n="@@cost" for="costEnt">Cout Entreprise</label>
+      </div>
+      <div class="ui-grid-col-4">
+        <input pInputText id="costEnt" name="costEnt" [(ngModel)]="course.costEnt" #cost="ngModel" />
+      </div>
+
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <label i18n="@@maxMark" for="maxMark">Note max</label>
+      </div>
+      <div class="ui-grid-col-8">
+        <input pInputText id="maxMark" name="maxMark" [(ngModel)]="course.maxMark" #maxMark="ngModel" />
+      </div>
+      <div [hidden]="maxMark.valid || maxMark.pristine" class="alert alert-danger" i18n="@@maxMarkRequired">Note sur
+        Requis</div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <label i18n="@@isSaisieHeuresCours" for="isSaisieHeuresCours">Saisie nb. heures ?</label>
+      </div>
+      <div class="ui-grid-col-8">
+        <p-checkbox [(ngModel)]="course.isSaisieHeuresCours" binary="true" id="isSaisieHeuresCours"
+          #isSaisieHeuresCours="ngModel"></p-checkbox>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+  </div>
+
+  <div *ngIf="msg" class="alert alert-success">{{msg}}</div>
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+  <footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="confirmDelete()" label="{{DELETE_LABEL}}"></button>
+      <button type="button" pButton icon="fa fa-check" (click)="save()" label="{{SAVE_LABEL}}"></button>
+
+      <button type="button" pButton icon="fa fa-close" (click)="closeCourse()" [disabled]="disabled"
+        label="{{closeLabel}}"></button>
+    </div>
+  </footer>
+</p-dialog>
+
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" width="425"
+  [closable]="false"></p-confirmDialog>
+
+<!-- Begin - Dialog to add time sheet entry detail -->
+<p-dialog header="{{DETAIL}} {{ getDateOfTimeSheetEntryDetail() | date:'dd/MM/yy' }}"
+  [(visible)]="displayDialogAddTimeSheetEntryDetail" [responsive]="true" showEffect="fade" [modal]="true" width="750">
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="startAndEndTime" style="height: 200px !important;">
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <label i18n="@@startHours" for="startHours">Heures/Minutes Debut</label>
+      </div>
+      <div class="ui-grid-col-4">
+        <p-dropdown [options]="hours" [(ngModel)]="startAndEndTime.startHours" autoWidth="false"
+          [style]="{'width':'100%'}"></p-dropdown>
+      </div>
+      <div class="ui-grid-col-4">
+        <p-dropdown [options]="minutes" [(ngModel)]="startAndEndTime.startMinutes" autoWidth="false"
+          [style]="{'width':'100%'}"></p-dropdown>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <label i18n="@@endTime" for="endTime">Heures/Minutes Fin</label>
+      </div>
+      <div class="ui-grid-col-4">
+        <p-dropdown [options]="hours" [(ngModel)]="startAndEndTime.endHours" autoWidth="false"
+          [style]="{'width':'100%'}"></p-dropdown>
+      </div>
+      <div class="ui-grid-col-4">
+        <p-dropdown [options]="minutes" [(ngModel)]="startAndEndTime.endMinutes" autoWidth="false"
+          [style]="{'width':'100%'}"></p-dropdown>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+  </div>
+
+  <div *ngIf="msg" class="alert alert-success">{{msg}}</div>
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+  <footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button *ngIf="isNewTimeSheetEntryDetail == true" type="button" pButton icon="fa fa-check"
+        (click)="saveTimeSheetEntryDetail()" label="{{SAVE_LABEL}}"></button>
+
+      <button *ngIf="isNewTimeSheetEntryDetail == false" type="button" pButton icon="fa fa-close"
+        (click)="deleteTimeSheetEntryDetail()" label="{{DELETE_LABEL}}"></button>
+      <button *ngIf="isNewTimeSheetEntryDetail == false" type="button" pButton icon="fa fa-check"
+        (click)="editTimeSheetEntryDetail()" label="{{EDIT_LABEL}}"></button>
+
+    </div>
+  </footer>
+</p-dialog>
+<!-- End - Dialog to add time sheet entry detail -->
+
+
+
+
+
+<!-- Begin - Dialog to list time sheet entry detail -->
+<p-dialog header="{{DETAIL}} {{ getDateOfTimeSheetEntryDetail() | date:'dd/MM/yy' }}"
+  [(visible)]="displayDialogListTimeSheetEntryDetail" [responsive]="true" showEffect="fade" [modal]="true" width="750">
+
+  <!-- (onRowSelect)="onRowSelectTimeSheetEntryDetail($event)"  -->
+  <p-dataTable [value]="timeSheetEntryDetails" selectionMode="single" [(selection)]="selectedTimeSheetEntryDetail"
+    expandableRows="true" [paginator]="true" [rows]="5" [responsive]="true"
+    (onRowSelect)="onRowSelectTimeSheetEntryDetail($event)">
+    <p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}">
+
+    </p-column>
+    <p-column *ngFor="let col of colsTimeSheetEntryDetail" [field]="col.field" [header]="col.header"
+      [sortable]="col.sortable" [style]="col.style" [filter]="col.filter">
+      <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+        <span class="col-date">{{ data[ col.field ] | date:'H' }}h {{ data[ col.field ] | date:'m' }}min</span>
+      </ng-template>
+      <ng-template *ngIf="col.type === 'Double'" let-col let-data="rowData" pTemplate type="body">
+        <span class="col-text">{{ minutesToHour(data[ col.field ]) }}</span>
+      </ng-template>
+    </p-column>
+
+    <ng-template pTemplate="paginatorLeft">
+      <!-- <button type="button"  pButton icon="fa fa-plus-circle"></button> -->
+    </ng-template>
+    <ng-template pTemplate="paginatorRight">
+      <button type="button" pButton icon="fa fa-refresh"></button>
+    </ng-template>
+  </p-dataTable>
+
+
+
+  <div *ngIf="msg" class="alert alert-success">{{msg}}</div>
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+  <footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <!-- <button type="button" pButton icon="fa fa-close" (click)="delete()" label="{{DELETE_LABEL}}"></button> -->
+
+    </div>
+  </footer>
+</p-dialog>
+<!-- End - Dialog to list time sheet entry detail -->
+
+
+
+
+
+
+
+<form (ngSubmit)="search()" #searchForm="ngForm">
+
+  <div class="ui-grid ui-grid-responsive ui-fluid"
+    [hidden]="user.role>2 && user.role!=8 && user.role!=9 && user.role!=10">
+    <div class="ui-grid-row">
+
+      <div class="ui-grid-col-6">
+        <p-autoComplete [(ngModel)]="theSchoolYear" (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+          [suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear"
+          (completeMethod)="schoolYearDropdown.filter($event)" name="schoolYear" field="year" [size]="30"
+          placeholder="{{SCHOOLYEAR}}" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+      </div>
+      <div class="ui-grid-col-6">
+        <p-autoComplete [(ngModel)]="theTerm" (onDropdownClick)="termDropdown.handleDropdownClick($event)"
+          [suggestions]="termDropdown.filteredTerms" [dropdown]="true" id="term"
+          (completeMethod)="termDropdown.filter($event)" name="term" field="name" [size]="30" placeholder="{{TERM}}"
+          [minLength]="1" #term="ngModel"></p-autoComplete>
+      </div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-10">
+        <input type="text" pInputText class="form-control" id="searchT" required [(ngModel)]="searchText"
+          placeholder="{{COURSE_SEARCH_TEXT}}" name="searchT" #searchT="ngModel">
+      </div>
+      <div class="ui-grid-col-2">
+        <button type="button" pButton icon="fa fa-search" (click)="search()" label="Go"
+          style="margin-top: 0px; height: 35px;"></button>
+      </div>
+    </div>
+
+  </div>
+</form>
+
+<p-dataTable [value]="courses" selectionMode="single" [(selection)]="selectedCourse" expandableRows="true"
+  (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15" (onRowExpand)="getExpenses($event)"
+  [responsive]="true">
+  <p-column expander="true" styleClass="col-icon" [style]="{'width':'3%'}"></p-column>
+  <p-column *ngFor="let col of cols" [style]="col.style" [field]="col.field" [header]="col.header"
+    [sortable]="col.sortable" [filter]="col.filter">
+    <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body"> <span class="col-date">{{
+        data[
+        col.field ] | date:'dd/MM/yy' }}</span> </ng-template>
+  </p-column>
+  <!--
+  <p-column field="id" header="actions" [style]="{'width':'12%'}">
+    <ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+      <button type="button" pButton icon="fa fa-edit"
+      (click)="manageTimeSheetOnCourse(data)"
+        label="Suivi du temps"></button>
+    </ng-template>
+  </p-column>
+  -->
+
+  <ng-template let-course pTemplate="rowexpansion">
+
+    <p-tabView>
+      <p-tabPanel header="Inscrits" leftIcon="fa fa-bookmark">
+
+        <p-dataTable [value]="registeredStudents" [paginator]="true" [rows]="15" expandableRows="true"
+          [responsive]="true" *ngIf="registeredStudents">
+          <p-column expander="true" styleClass="col-icon" [style]="{'width':'3%'}"></p-column>
+          <p-column *ngFor="let col of colregs" [style]="col.style" [field]="col.field" [header]="col.header"
+            [sortable]="col.sortable" [filter]="col.filter">
+
+          </p-column>
+
+          <p-column field="id" header="actions" [style]="{'width':'10%'}" *ngIf="(loggedInUser.role==1||loggedInUser.role==8) &&loggedInUser.userAccess !=2 ">
+            <ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+              <button type="button" pButton icon="fa fa-times-circle" (click)="remove(data)" label="Supprimer"></button>
+            </ng-template>
+          </p-column>
+
+          <!-- <ng-template let-cv pTemplate="rowexpansion">
+            <div class="ui-grid-row" *ngIf="loggedInUser.role==1||loggedInUser.role==5||loggedInUser.role==2">
+              <div class="ui-grid-col-4">
+                -
+              </div>
+              <div class="ui-grid-col-4">
+
+                <button type="button" pButton icon="fa fa-times-circle" (click)="confirmDelete(cv)"
+                  label="Suppression Forcée"></button>
+
+              </div>
+              <div class="ui-grid-col-4">
+                -
+              </div>
+            </div>
+
+          </ng-template> -->
+          <p-footer></p-footer>
+        </p-dataTable>
+
+      </p-tabPanel>
+      <p-tabPanel header="Gestion des Heures" leftIcon="fa fa-bookmark" *ngIf="loggedInUser.userAccess != 2">
+
+        <div class="ui-grid ui-grid-responsive ui-fluid">
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+              <button type="button" class="btn btn-primary">
+                <span class="badge badge-light">*</span>
+                Gestion des heures du cours
+              </button>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+              <!--
+          <app-manage-time-sheet></app-manage-time-sheet>
+          -->
+
+              <p-dataTable [value]="timeSheetEntryGroups" selectionMode="single" expandableRows="true"
+                rowExpandMode="single" [paginator]="true" [rows]="15" [(selection)]="timeSheetEntryGroup"
+                [responsive]="true" (onRowExpand)="getTimeSheetEntryDetails($event)"> <p-column expander="true"
+                  styleClass="col-icon" [style]="{'width':'5%'}"></p-column>
+                <p-column field="timeSheetPeriod.startDate" header="Date Debut" [style]="{'width':'25%'}"> <ng-template
+                    let-col let-data="rowData" let-ri="rowIndex" pTemplate="body">
+                    <span>{{data.timeSheetPeriod.startDate
+                      | date:'dd/MM/yy'}}</span> </ng-template> </p-column> <p-column field="timeSheetPeriod.endDate"
+                  header="Date Fin" [style]="{'width':'25%'}"> <ng-template let-col let-data="rowData" let-ri="rowIndex"
+                    pTemplate="body">
+                    <span>{{data.timeSheetPeriod.endDate | date:'dd/MM/yy'}}</span> </ng-template> </p-column> <p-column
+                  field="hours" header="Heures" [style]="{'width':'20%'}">
+                  <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="body">
+                    <span>{{minutesToHour(data.hours)}}</span> </ng-template>
+                </p-column>
+                <p-column field="timeSheetStatus.name" header="Etat DEP" [style]="{'width':'20%'}"></p-column>
+                <p-column field="approver.lastName" header="Noms Val. DEP" [style]="{'width':'20%'}"> <ng-template
+                    let-col let-data="rowData" let-ri="rowIndex" pTemplate="body"> <span
+                      *ngIf="data.approver != null">{{data.approver.lastName}}
+                      {{data.approver.firstName}} {{data.approver.middleName}}</span> </ng-template>
+                </p-column>
+                <p-column field="timeSheetStatusDCMC.name" header="Etat DCMC" [style]="{'width':'20%'}"></p-column>
+                <p-column field="approverDCMC.lastName" header="Noms Val. DCMC" [style]="{'width':'20%'}"> <ng-template
+                    let-col let-data="rowData" let-ri="rowIndex" pTemplate="body"> <span
+                      *ngIf="data.approverDCMC != null">{{data.approverDCMC.lastName}}
+                      {{data.approverDCMC.firstName}} {{data.approverDCMC.middleName}}</span> </ng-template>
+                </p-column>
+                <p-column field="timeSheetStatusSG.name" header="Etat SG" [style]="{'width':'20%'}"></p-column>
+                <p-column field="approverSG.lastName" header="Noms Val. SG" [style]="{'width':'20%'}"> <ng-template
+                    let-col let-data="rowData" let-ri="rowIndex" pTemplate="body"> <span
+                      *ngIf="data.approverSG != null">{{data.approverSG.lastName}}
+                      {{data.approverSG.firstName}} {{data.approverSG.middleName}}</span> </ng-template>
+                </p-column>
+
+                <ng-template let-timeSheetEntryGroup pTemplate="rowexpansion"> <p-dataTable
+                    [value]="timeSheetEntryGroup.timeSheetEntries" rowGroupMode="subheader"
+                    groupField="timeSheetEntryType.name" [responsive]="true">
+                    <ng-template pTemplate="rowgroupheader"
+                      let-rowData>{{rowData.timeSheetEntryType.name}}</ng-template>
+                    <p-column styleClass="col-icon" [style]="{'width':'10%'}"> <ng-template let-col let-data="rowData"
+                        pTemplate type="body">
+                        {{data.timeSheetHourType.name}} </ng-template> </p-column> <p-column
+                      *ngFor="let col of timeSheetEntryGroup.cols" [field]="col.field "
+                      [header]="col.header | date:'dd/MM/yy'" [style]="col.style" [sortable]="col.sortable"
+                      [filter]="col.filter"> <ng-template let-col let-data="rowData" pTemplate type="body">
+
+                        <!-- les dates de la semaine juste en haut-->
+
+                        <!--p-inputMask
+          	size="10" mask="9"
+          	(change)="calculateTotalHours(data); calculateAllTotalHours()"
+          	[style]="{'align':'right'}"
+          	[disabled]="timeSheetEntryGroup.timeSheetStatus.id == 2"
+            [(ngModel)]="data[ col.field ].hours"> </p-inputMask-->
+                        <!--<input type="number" pInputText id="hours" name="hours" class="form-control"
+              #hours="ngModel" (change)="calculateTotalHours(data); calculateAllTotalHours()" 
+              [style]="{'align':'right'}"
+              [disabled]="2 == 2" value="{{minutesToHour(data[ col.field ].hours)}}"
+              [(ngModel)]="data[ col.field ].hours" />-->
+
+                        <input
+                          *ngIf="data[col.field].hours <= 0 && data[col.field].timeSheetEntryType.name != 'Heures normales' "
+                          type="text" pInputText id="hours" name="hours" class="form-control"
+                          [style]="{'align':'right'}" [disabled]="2 == 2"
+                          value="{{minutesToHour(data[col.field].hours)}}" />
+
+                        <span
+                          *ngIf="data[col.field].hours <= 0 && data[col.field].timeSheetEntryType.name == 'Heures normales' ">
+                          <span>{{minutesToHour(data[col.field].hours)}}</span>
+                          <span style="width: 15px !important; position: relative; float: right;">
+                            <button style="width: 15px !important;display: inline-block;"
+                              (click)="showDialogAddTimeSheetEntryDetail(data[col.field], col.header)" type="button"
+                              pButton icon="fa fa-plus-circle"></button>
+                          </span>
+                        </span>
+                        <span *ngIf="data[col.field].hours > 0">
+                          <button (click)="showDialogListTimeSheetEntryDetail(data[col.field], col.header)"
+                            type="button" pButton label="{{minutesToHour(data[col.field].hours)}}"></button>
+                        </span>
+                        <div style="clear: both;"></div>
+                        <!-- </div> -->
+
+                      </ng-template> </p-column> <p-column styleClass="col-icon" [style]="{'width':'10%'}"
+                      header="Total">
+                      <ng-template let-col let-data="rowData" pTemplate type="body">
+                        {{minutesToHour(data.totalHours)}} </ng-template> </p-column> </p-dataTable> <br />
+                  <div class="ui-grid-row">
+                    <div class="ui-grid-col-2">
+                      <label i18n="@@comments" for="comments">Commentaire</label>
+                    </div>
+                    <div class="ui-grid-col-8">
+                      <textarea pInputTextarea id="comments" [rows]="15" [cols]="60"
+                        [(ngModel)]="timeSheetEntryGroup.comments"> </textarea>
+                    </div>
+                  </div>
+
+                  <br />
+                  <br />
+                  <div class="ui-grid-row">
+                    <div class="ui-grid-col-2">
+                      <button pButton type="button" icon="fa fa-save"
+                        [disabled]="timeSheetEntryGroup.timeSheetStatus.id == 2 || saving"
+                        (click)="saveTimeSheetEntryGroup(timeSheetEntryGroup)" label="{{SAVE_LABEL}}">
+                      </button>
+                    </div>
+
+                    <div class="ui-grid-col-2">
+                      <button pButton type="button" icon="fa fa-check"
+                        *ngIf="user.role == 1 || user.role == 8 || user.role == 9 || user.role == 10"
+                        (click)="approveTimeSheetEntryGroup(timeSheetEntryGroup)" label="{{APPROVE_LABEL}}"
+                        style="background: green; color: white;">
+                      </button>
+                    </div>
+                    <div class="ui-grid-col-2">
+                      <button pButton type="button" icon="fa fa-close"
+                        *ngIf="user.role == 1 || user.role == 8 || user.role == 9 || user.role == 10"
+                        (click)="rejectTimeSheetEntryGroup(timeSheetEntryGroup)" label="{{REJECT_LABEL}}"
+                        style="background: red; color: white;">
+                      </button>
+                    </div>
+                  </div>
+                </ng-template> </p-dataTable>
+
+            </div>
+          </div>
+
+          <br />
+          <br />
+
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-5">
+              <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+              <div *ngIf="msg" class="alert alert-success">{{msg}}</div>
+
+            </div>
+            <div class="ui-grid-col-2">
+              <span i18n="@@thePayments">Les Depenses</span>
+            </div>
+            <div class="ui-grid-col-2">
+              <button type="button" pButton icon="fa fa-print" style="float: left" (click)="printCourseFinance()"
+                label="{{PRINT}}"></button>
+            </div>
+            <div class="ui-grid-col-3">
+              <a *ngIf="reportName" target="_blank" href="assets/reports/{{reportName}}"
+                i18n="@@downloadReport">Telecharger
+                l'etat</a>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-3">
+              <div class="ui-grid-row">
+                <label i18n="@@requirements" for="prereq">Prérequis: </label> <br />
+              </div>
+              <div class="ui-grid-row">
+                <strong> {{course.prereq}}</strong>
+              </div>
+            </div>
+            <div class="ui-grid-col-9">
+              <p-dataTable [value]="expenses" [editable]="true">
+                <p-column field="amount" header="Montant" [editable]="true" [style]="{'width':'25%'}"></p-column>
+                <p-column field="expenseType" header="Libelle" [style]="{'width':'25%', 'overflow':'visible'}">
+                  <ng-template let-col let-expense="rowData" pTemplate="body">
+                    <p-autoComplete [(ngModel)]="expense.expenseType"
+                      (onDropdownClick)="expenseTypeDropdown.handleDropdownClick($event)"
+                      [suggestions]="expenseTypeDropdown.filteredExpenseTypes" [dropdown]="true" id="expense"
+                      [style]="{'width':'90%'}" (completeMethod)="expenseTypeDropdown.filter($event)" name="expenseType"
+                      field="name" [size]="5" placeholder="{{LIBELLE}}" [minLength]="1" #expenseType="ngModel">
+                    </p-autoComplete>
+                  </ng-template>
+                </p-column>
+                <p-column field="comment" header="Commentaires" [editable]="true" [style]="{'width':'25%'}"></p-column>
+                <p-column [style]="{'width':'25%'}" header="Action">
+                  <ng-template let-col let-expense="rowData" pTemplate="body">
+
+                    <button (click)="deleteExpense(expense)" pButton type="submit"
+                      icon="fa fa fa-trash fa-2x text-danger"
+                      style="margin-top: 0px; width: 40%; height: 30px; float: left"></button>
+
+                    <button (click)="saveExpense(expense)" pButton type="submit"
+                      icon="fa fa fa-floppy-o fa-2x text-success"
+                      style="margin-top: 0px; width: 40%; height: 30px; float: right"></button>
+                  </ng-template>
+                </p-column>
+                <p-footer>
+                  <div class="ui-helper-clearfix" style="width: 20%">
+                    <button type="button" pButton icon="fa fa-plus fa-2x text-success"
+                      style="margin-top: 0px; width: 25px; height: 25px; float: left"
+                      (click)="addNewExpense()"></button>
+                  </div>
+                </p-footer>
+              </p-dataTable>
+            </div>
+          </div>
+        </div>
+
+      </p-tabPanel>
+    </p-tabView>
+
+
+    <br />
+    <br />
+  </ng-template>
+  <ng-template pTemplate="paginatorLeft">
+    <button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"></button>
+  </ng-template>
+  <ng-template pTemplate="paginatorRight">
+    <button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+  </ng-template>
+</p-dataTable>
+
+<!--
+<app-manage-time-sheet></app-manage-time-sheet>
+-->
+
+<!--
+<app-admin-cycle></app-admin-cycle>
+-->
+
+<p-dialog header="{{DETAIL}}" [(visible)]="manageTimeSheetBoolean" [responsive]="true" showEffect="fade" [modal]="true"
+  width="750">
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="manageTimeSheetBoolean">
+    <app-manage-time-sheet></app-manage-time-sheet>
+  </div>
+
+  <footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="delete()" label="{{DELETE_LABEL}}"></button>
+      <button type="button" pButton icon="fa fa-check" (click)="save()" label="{{SAVE_LABEL}}"></button>
+
+      <button type="button" pButton icon="fa fa-close" (click)="closeCourse()" [disabled]="disabled"
+        label="{{closeLabel}}"></button>
+    </div>
+  </footer>
+</p-dialog>

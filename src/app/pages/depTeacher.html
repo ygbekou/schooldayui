@@ -1,0 +1,74 @@
+<div class="page-wrapper">
+  <header class="page-heading clearfix">
+    <h1 i18n="@@adminSpace" class="heading-title pull-left">
+      <img class="thumb" src="assets/images/scoolday.png" alt="" />
+    </h1>
+    <div class="breadcrumbs pull-right">
+      <ul class="breadcrumbs-list">
+        <li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+          ici:</li>
+        <li><a i18n="@@homeLink" href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+        <li><a i18n="@@admin" href="#">DEP</a><i class="fa fa-angle-right"></i></li>
+        <li i18n="@@information" class="current">Enseignant</li>
+      </ul>
+    </div>
+    <!--//breadcrumbs-->
+  </header>
+  <div class="page-content">
+    <div [hidden]="currentUser.role===1||currentUser.role===8" class="alert alert-danger"
+      i18n="@@youNeedToBeConnectedAsAdmin">Vous
+      devez etre connecte en tant que DEP pour voir ce contenu</div>
+    <div class="row page-row" [hidden]="!(currentUser.role===1||currentUser.role===8)">
+      <app-dep-menu></app-dep-menu>
+      <!--//page-sidebar-->
+      <div class="content-wrapper col-md-10 col-sm-8">
+        <button *ngIf="user.id>0" type="button" class="btn btn-primary">
+          <span><img width="25" src="assets/images/user/{{user.pic}}" alt="" /> </span>{{user.firstName +' '+
+          user.lastName
+          +(user.phone==null?'':' | Contact: '+user.phone
+          )+(user.email==null?'':' | E-mail: '+user.email)}}
+        </button>
+        <p-tabView id="tabList" (onChange)="onTabChange($event)">
+
+          <p-tabPanel header="{{SEARCH}}" leftIcon="fa fa-male" [selected]="activeTab === 0">
+            <app-admin-user-list (onUserSelected)="onUserSelected($event)" [role]="(2 || 8)"></app-admin-user-list>
+          </p-tabPanel>
+          <p-tabPanel header="{{PROFILE}}" leftIcon="fa fa-search" [selected]="activeTab === 1" *ngIf="user.id > 0">
+            <p-tabView>
+              <p-tabPanel header="{{PERSONAL}}" leftIcon="fa fa-male">
+                <app-user-personalInfo [user]="user"></app-user-personalInfo>
+              </p-tabPanel>
+              <p-tabPanel header="{{CONTACT}}" leftIcon="fa fa-male">
+                <app-user-contactInfo [user]="user"></app-user-contactInfo>
+              </p-tabPanel>
+              <p-tabPanel header="{{PROFESSIONAL}}" leftIcon="fa fa-male" *ngIf="currentUser.userAccess != 2">
+                <app-manage-teacher [user]="user"></app-manage-teacher>
+              </p-tabPanel>
+            </p-tabView>
+          </p-tabPanel>
+
+          <p-tabPanel header="{{COURSES}}" leftIcon="fa fa-bookmark"
+            *ngIf="user.id > 0 && (user.role==2 || user.role==2)">
+            <app-manage-course></app-manage-course>
+          </p-tabPanel>
+
+          <p-tabPanel header="{{FEEDBACKS}}" leftIcon="fa fa-microphone" *ngIf="user.id > 0 && currentUser.userAccess != 2">
+            <app-admin-testimony (user)="user"></app-admin-testimony>
+          </p-tabPanel>
+          <p-tabPanel header="{{TIME_TRACKING}}" leftIcon="fa fa-calculator"
+            *ngIf="user.id > 0 && (user.role==2 || user.role==2) && currentUser.userAccess != 2">
+            <app-manage-time-sheet></app-manage-time-sheet>
+          </p-tabPanel>
+          <p-tabPanel header="{{PRESENCE}}" leftIcon="fa fa-bolt" *ngIf="user.id > 0">
+            <app-admin-presence [user]="user"></app-admin-presence>
+          </p-tabPanel>
+
+        </p-tabView>
+      </div>
+      <!--//content-wrapper-->
+    </div>
+    <!--//page-row-->
+  </div>
+  <!--//page-content-->
+</div>
+<!--//page-->

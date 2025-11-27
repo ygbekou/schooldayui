@@ -1,0 +1,52 @@
+<form (ngSubmit)="save()" #teacherInfoForm="ngForm">
+
+  <div class="ui-grid-row form-group">
+    <div class="ui-grid-col-2">
+      <label i18n="@@type" for="type">Type : </label>
+    </div>
+    <div class="ui-grid-col-3">
+      <select class="" name="teacherType" placeholder="Interne / Externe"
+        [(ngModel)]="teacher.teacherType" class="form-control">
+        <option [value]="teacherTypes[0]">Interne</option>
+        <option [value]="teacherTypes[1]">Externe</option>
+      </select>
+    </div>
+    <div class="ui-grid-col-1"></div>
+  </div>
+
+  <div class="ui-grid-row form-group">
+    <div class="ui-grid-col-2">
+      <label i18n="@@level" for="level">Grade : </label>
+    </div>
+    <div class="ui-grid-col-3">
+      <select class="" name="level"
+        [(ngModel)]="teacher.level" class="form-control">
+        <option [value]="teacherLevels[0]">Ingénieur</option>
+        <option [value]="teacherLevels[1]">Docteur</option>
+      </select>
+    </div>
+    <div class="ui-grid-col-1"></div>
+  </div>
+
+
+  <input type="hidden" pInputText class="form-control" id="userId" required
+    [(ngModel)]="teacher.user.id" name="userId"
+    #userId="ngModel">
+
+  <button pButton type="submit" label="{{SAVE_LABEL}}"></button>
+&nbsp;&nbsp;
+  <button [disabled]="teacher.id > 0" pButton type="button" (click)="delete()" label="{{DELETE_LABEL}}"></button>
+&nbsp;&nbsp;
+
+
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+  <div *ngIf="success" class="alert alert-success">{{success}}</div>
+
+</form>
+<!-- Initialize Quill editor -->
+<script>
+  var quill = new Quill('#editor', {
+    theme: 'bubble'
+  });
+
+</script>

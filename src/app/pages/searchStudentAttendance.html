@@ -1,0 +1,81 @@
+<form (ngSubmit)="search()">
+
+    <div class="ui-grid ui-grid-responsive ui-fluid">
+    
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+                <label i18n="@@beginDate" for="beginDate">Date de début</label>
+            </div>
+            <div class="ui-grid-col-3">
+                <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="beginDate" name="beginDate"
+                    [(ngModel)]="searchAttendance.beginDate" #beginDate="ngModel"
+                    placeholder="dd/mm/yyyy"></p-calendar>
+            </div>
+            <div class="ui-grid-col-1"></div>
+            <div class="ui-grid-col-2">
+                <label i18n="@@endDate" for="endDate">Date de fin</label>
+            </div>
+            <div class="ui-grid-col-3">
+                <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="endDate" name="endDate"
+                    [(ngModel)]="searchAttendance.endDate" #endDate="ngModel"
+                    placeholder="dd/mm/yyyy"></p-calendar>
+            </div>
+            <div class="ui-grid-col-1"></div>
+        </div>
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-3"></div>
+            <div class="ui-grid-col-3" style="margin: 10px;">
+                <p-dropdown [options]="etats" [(ngModel)]="searchAttendance.status" name="etat" id="etat" #etat="ngModel" placeholder="Sélectionner un état"></p-dropdown>
+        
+            </div>
+            <div class="ui-grid-col-3" style="margin: 10px;">
+                <button type="submit" pButton icon="fa fa-search" (click)="search()" label="Go"
+                style="margin-top: 0px; height: 30px;"></button>
+        
+            </div>
+            <div class="ui-grid-col-3"></div>
+           
+        </div>
+       
+    </div>
+</form>
+
+<div>
+  
+    <p-dataTable [value]="attendanceDetails" [responsive]="true" [rows]="15"  [paginator]="true">
+        <p-column header="Ordre" [style]="{'width':'3%'}">	
+            <ng-template let-i="rowIndex" pTemplate="body">
+                {{i+1}}
+            </ng-template>
+        </p-column>  
+        <p-column field="attendance.createDate" header="Date" [style]="{'width':'10%'}">
+            <ng-template let-attendance="rowData" pTemplate="body">
+                {{ attendance.createDate | date:'dd/MM/yyyy' }}
+            </ng-template>
+        </p-column>
+        
+        <p-column
+            field="descHour" header="Heure" [style]="{'width':'8%'}">
+        </p-column>
+        <p-column
+            field="attendance.subjectCode" header="Code" [style]="{'width':'7%'}">
+        </p-column>
+        <p-column
+            field="attendance.subjectName" header="Cours" [style]="{'width':'30%'}">
+        </p-column>
+        
+        <p-column field="estPresent" header="Etat" [style]="{'width':'5%'}" >
+            <ng-template   pTemplate type="body" let-data="rowData">
+            
+                <div class="label-main" *ngIf="data.estPresent == 1">
+                <label class="label label-success" style="padding: 5px; border-radius: 5px;">Présent</label>
+                </div>
+                <div class="label-main" *ngIf="data.estPresent == 0">
+                <label class="label label-danger" style="padding: 5px; border-radius: 5px;">Absent</label>
+                </div>
+            </ng-template>
+        </p-column>
+    </p-dataTable>
+
+</div>

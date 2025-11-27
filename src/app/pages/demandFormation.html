@@ -1,0 +1,80 @@
+<p-dialog header="Detail d'un cour" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="450">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="selectedCourse">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@course" for="beginDate">Cours</label>
+		</div>
+		<div class="ui-grid-col-9">{{selectedCourse.name}}</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@date" for="beginDate">Date</label>
+		</div>
+		<div class="ui-grid-col-9">{{selectedCourse.beginDate|date:'dd/MM/yy'}}
+			- {{selectedCourse.endDate|date:'dd/MM/yy'}}</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@cost" for="beginDate">Cout</label>
+		</div>
+		<div class="ui-grid-col-9">{{selectedCourse.cost|currency:'CFA':true:'.0-0'}}</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@student" for="endDate">Etudiant</label>
+		</div>
+		<div class="ui-grid-col-6">{{selectedCourse.studentName}}</div>
+		<div class="ui-grid-col-3">{{selectedCourse.studentPhone}}</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@email" for="beginDate">Email</label>
+		</div>
+		<div class="ui-grid-col-9">{{selectedCourse.studentMail}}</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@comments" for="message">Commentaire</label>
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-12">
+			<textarea pInputTextarea [(ngModel)]="selectedCourse.description"> </textarea>
+		</div>
+	</div>
+
+</div>
+
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix"
+		*ngIf="user.role===1||user.role===5">
+		<button type="button" pButton icon="fa fa-check" (click)="approve()"
+			label="{{APPROVE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="reject()"
+			label="{{REJECT_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check"
+			(click)="deleteRegistration()" label="{{DELETE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+
+<p-dataTable [value]="courses" selectionMode="single"
+	[(selection)]="selectedCourse" (onRowSelect)="onRowSelect($event)"
+	[paginator]="true" [rows]="15" [responsive]="true"> <p-column
+	*ngFor="let col of cols" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [filter]="col.filter"> <ng-template
+	*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+	type="body"> <span class="col-date">{{ data[
+	col.field ] | date:'dd/MM/yy' }}</span> </ng-template> <ng-template
+	*ngIf="col.type === 'money'" let-col let-data="rowData" pTemplate
+	type="body"> <span class="col-currency">{{ data[
+	col.field ] |currency:'CFA':true:'.0-0' }}</span> </ng-template> </p-column> </p-dataTable>

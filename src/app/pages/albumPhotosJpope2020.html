@@ -1,0 +1,104 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 class="heading-title pull-left">
+			Album photos JPOPE <span style="position: relative; left: 4%; top: 10px;">
+				<iframe
+					src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2FvisiteGuide&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId"
+					width="450" height="35" style="border: none; overflow: hidden"
+					scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+			</span>
+		</h1>
+
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li class="breadcrumbs-label">Vous etes ici:</li>
+				<li><a href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+				<li class="current">Album photos JPOPE</li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+
+		<div class="tabbed-info page-row">
+			<ul class="nav nav-tabs">
+				<li class="active" style="width: 33.13%; text-align: center;" (click)="getBySchoolYear('2021')">
+					<a href="#tab3" data-toggle="tab">JPOPE 2022</a>
+				</li>
+				<li style="width: 33.13%; text-align: center;" (click)="getBySchoolYear('2020')">
+					<a href="#tab1" data-toggle="tab">JPOPE 2021</a>
+				</li>
+				<li style="width: 33.13%; text-align: center;" (click)="getBySchoolYear('2019')">
+					<a href="#tab2" data-toggle="tab">JPOPE 2020</a>
+				</li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane" id="tab1">
+					<div class="row page-row">
+						<div class="col-md-4 col-sm-6 col-xs-12 text-center"
+							*ngFor="let anImage of images">
+							<div class="album-cover" style="min-height: 342px;">
+								<img class="img-responsive"
+									src="assets/images/jpope/{{anImage.pic}}" alt="" />
+								<div class="desc">
+									<h4>
+										<strong> {{anImage.title}} </strong>
+									</h4>
+									<div [innerHTML]="anImage.description"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+					
+
+				<div class="tab-pane" id="tab2">
+					<div class="row page-row">
+						<div class="col-md-4 col-sm-6 col-xs-12 text-center"
+							*ngFor="let anImage of images">
+							<div class="album-cover" style="min-height: 342px;">
+								<img class="img-responsive"
+									src="assets/images/jpope/{{anImage.pic}}" alt="" />
+								<div class="desc">
+									<h4>
+										<strong> {{anImage.title}} </strong>
+									</h4>
+									<div [innerHTML]="anImage.description"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="tab-pane active" id="tab3"> 
+					<div class="row page-row">
+						<div class="col-md-4 col-sm-6 col-xs-12 text-center"
+							*ngFor="let anImage of images">
+							<div class="album-cover" style="min-height: 342px;">
+								<img class="img-responsive"
+									src="assets/images/jpope/{{anImage.pic}}" alt="" />
+								<div class="desc">
+									<h4>
+										<strong> {{anImage.title}} </strong>
+									</h4>
+									<div [innerHTML]="anImage.description"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+
+		<iframe
+			src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2FvisiteGuide&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId"
+			width="450" height="80" style="border: none; overflow: hidden"
+			scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+	</div>
+	<!--//page-content-->
+</div>
+<!--//page-->
+

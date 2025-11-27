@@ -1,0 +1,105 @@
+<div class="run-report-container">
+
+	<aside class="sidebar">
+		<h5 class="sidebar-title"><i class="fa-solid fa-folder-open" style="font-size: 24px; margin-right: 3px;"></i>
+			Catégories de rapports</h5>
+
+		<p-accordion [multiple]="true" class="category-accordion">
+			<p-accordionTab *ngFor="let category of reportCategories" [header]="category.label">
+				<ul class="report-list">
+					<li *ngFor="let report of category.children" (click)="selectReport(report)"
+						[class.selected]="selectedReport?.key === report.key">
+						<i class="fa-solid fa-file-pdf"></i> {{ report.label }}
+					</li>
+				</ul>
+			</p-accordionTab>
+		</p-accordion>
+	</aside>
+
+
+
+	<main class="content">
+
+		<h5 class="content-title">Paramètres du rapport</h5>
+
+		<div class="parameter-form">
+			<div *ngFor="let parameter of parameters; let i = index" class="form-row mb-3">
+				<label class="form-label">{{ parameter.displayName }}</label>
+
+				<!-- Date -->
+				<p-calendar *ngIf="parameter.inputType === 'Input' && parameter.dataType === 'Date'"
+					[(ngModel)]="parameters[i].value" name="parameter-{{parameter.name}}" monthNavigator="true"
+					yearNavigator="true" yearRange="1940:2050" placeholder="dd/mm/yyyy"
+					inputStyleClass="text-input"></p-calendar>
+
+				<!-- Texte -->
+				<input *ngIf="parameter.inputType === 'Input' && parameter.dataType !== 'Date'"
+					[(ngModel)]="parameters[i].value" name="parameter-{{parameter.name}}" class="text-input" />
+
+				<!-- Liste déroulante -->
+				<select *ngIf="parameter.inputType === 'List'" [(ngModel)]="parameters[i].value"
+					name="parameter-{{parameter.name}}" class="select-input">
+					<option *ngFor="let val of parameter.values" [value]="val.code">
+						{{ val.value }}
+					</option>
+				</select>
+			</div>
+		</div>
+
+		<div style="margin-top: 20px;">
+
+			<div class="row">
+
+				<div class="ui-grid-col-6">
+
+					<div *ngIf="selectedReport && !running">
+						<button type="button" pButton icon="pi pi-check" (click)="runReport()" [label]="printLabel"
+							class="p-button-info"></button>
+					</div>
+				</div>
+
+				<div class="ui-grid-col-6">
+					<div *ngIf="reportName">
+						<a class="btn-download p-button p-button-info" href="assets/reports/{{ reportName }}"
+							target="_blank">
+							<i class="pi pi-download"></i>
+							Télécharger l'état
+						</a>
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="loading-overlay" *ngIf="running" style="text-align: center;">
+				<p-progressSpinner ariaLabel="Chargement en cours"></p-progressSpinner>
+				<h6><strong>Patientez...</strong></h6>
+			</div>
+
+
+
+
+			<div style="margin-top: 25px;">
+
+				<div *ngIf="message" class="alert alert-danger">{{message}}</div>
+
+
+			</div>
+
+
+
+
+		</div>
+
+
+
+
+
+
+
+
+
+
+	</main>
+
+</div>

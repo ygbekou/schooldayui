@@ -1,0 +1,119 @@
+<p-dialog header="Ajout - Affectation" [(visible)]="displayDialog" [responsive]="true" showEffect="fade"
+    [modal]="true" width="700">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="assignment">
+        <div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@materialAcquired" for="materialAcquired">Matériel (Code identifiant) : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-autoComplete [(ngModel)]="assignment.materialAcquired" (onDropdownClick)="materialAcquiredDropdown.handleDropdownClick($event)"
+                        [suggestions]="materialAcquiredDropdown.filteredMaterialAcquireds" [dropdown]="true" id="materialAcquired"
+                        (completeMethod)="materialAcquiredDropdown.filter($event)" name="materialAcquired" [field]="myCustomDisplay"
+                        placeholder="Code identifiant" [minLength]="1"></p-autoComplete>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@place" for="place">Lieu : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-autoComplete [(ngModel)]="assignment.place"
+                        (onDropdownClick)="placeDropdown.handleDropdownClick($event)"
+                        [suggestions]="placeDropdown.filteredPlaces" [dropdown]="true" id="place"
+                        (completeMethod)="placeDropdown.filter($event)" name="place" field="name"
+                        placeholder="Lieu d' affectation" [minLength]="1"></p-autoComplete>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@employee" for="employee">Employe : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-autoComplete [(ngModel)]="assignment.employee"
+                        (onDropdownClick)="employeeDropdown.handleDropdownClick($event)"
+                        [suggestions]="employeeDropdown.filteredEmployees" [dropdown]="true" id="folder"
+                        (completeMethod)="employeeDropdown.filter($event)" name="employee" field="name" placeholder="Detenteur"
+                        [minLength]="1"></p-autoComplete>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+            
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@assignmentDate" for="assignmentDate">Date d'affectation :</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="assignmentDate" [showIcon]="false"
+                        [(ngModel)]="assignment.assignmentDate" ></p-calendar>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            
+            </div>
+
+            <div class="ui-grid-row form-group" *ngIf="newAssignment === false">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@unassignmentDate" for="unassignmentDate">Date de désaffectation :</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="unassignmentDate" [showIcon]="false"
+                        [(ngModel)]="assignment.unassignmentDate" ></p-calendar>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@reason" for="reason">Raison : </label>
+                </div>
+
+                <div class="ui-grid-col-9">
+                    <p-editor [(ngModel)]="assignment.reason" [style]="{'height':'120px'}" id="reason"></p-editor>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-close" (click)="delete()" label="{{DELETE_LABEL}}"></button>
+            <button type="button" pButton icon="fa fa-check" (click)="save()" label="{{SAVE_LABEL}}"></button>
+        </div>
+    </footer>
+</p-dialog>
+
+
+<p-dataTable [value]="assignments" selectionMode="single" [(selection)]="selectedAssignment" expandableRows="true"
+    [paginator]="true" [rows]="5" (onRowSelect)="onRowSelect($event)" [responsive]="true">
+    <p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}">
+
+    </p-column>
+    <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+        [style]="col.style" [filter]="col.filter">
+        <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+            <span class="col-date">{{ data[ col.field ] | date:'dd/MM/yy' }}</span>
+        </ng-template>
+    </p-column>
+
+    <ng-template pTemplate="paginatorLeft">
+        <button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"></button>
+    </ng-template>
+    <!-- <ng-template pTemplate="paginatorRight">
+        <button type="button" (click)="getAllByiSUnassign(true)" pButton icon="fa fa-refresh"></button>
+    </ng-template> -->
+    <ng-template pTemplate="paginatorRight">
+        <button type="button" (click)="getAllByiSUnassign(false)" pButton icon="fa fa-refresh"></button>
+    </ng-template>
+    
+</p-dataTable>

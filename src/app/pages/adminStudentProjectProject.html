@@ -1,0 +1,415 @@
+<file-uploader></file-uploader>
+<p-growl [(value)]="msgs"></p-growl>
+
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="850">
+	<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="studentProjectCollege">
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@openDate" for="openDate">Date de début</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="openDate" [showIcon]="false"
+						[(ngModel)]="studentProjectCollege.startDate"></p-calendar>
+		</div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@endDate" for="endDate">Date de fin</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="endDate" [showIcon]="false"
+						[(ngModel)]="studentProjectCollege.endDate"></p-calendar>
+		</div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@name" for="name">Nom</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<input pInputText id="name" [(ngModel)]="studentProjectCollege.name" />
+		</div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@description" for="description">Description</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<p-editor [(ngModel)]="studentProjectCollege.description" [style]="{'height':'100px'}"
+				id="description"></p-editor>
+		</div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@levelLink" for="college">Filiere</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<p-autoComplete [(ngModel)]="studentProjectCollege.college"
+							(onDropdownClick)="collegeDropdown.handleDropdownClick($event)"
+							[suggestions]="collegeDropdown.filteredColleges" [dropdown]="true"
+							id="college" (completeMethod)="collegeDropdown.filter($event)"
+							name="college" field="name" [size]="30" placeholder="{{FILIERE}}"
+							[minLength]="1" #college="ngModel"></p-autoComplete>
+			<div [hidden]="college.valid || college.pristine"
+				 class="alert alert-danger" i18n="@@levelRequired">Filiere
+				Requise</div>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@studentProjectTopic" for="studentProjectTopic">Projet</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<p-autoComplete [(ngModel)]="studentProjectCollege.studentProject"
+							(onDropdownClick)="studentProjectTopicDropdown.handleDropdownClick($event)"
+							[suggestions]="studentProjectTopicDropdown.filteredStudentProjectTopics" [dropdown]="true"
+							id="studentProjectTopic" (completeMethod)="studentProjectTopicDropdown.filter($event)"
+							name="college" field="name" [size]="30" placeholder="Projet"
+							[minLength]="1" #college="ngModel"></p-autoComplete>
+			<div [hidden]="college.valid || college.pristine"
+				 class="alert alert-danger" i18n="@@levelRequired">Filiere
+				Requise</div>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@studentProjectTopic" for="studentProjectPromotion">Promotion</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<p-autoComplete [(ngModel)]="studentProjectCollege.studentProjectPromotion"
+							(onDropdownClick)="studentProjectPromotionDropdown.handleDropdownClick($event)"
+							[suggestions]="studentProjectPromotionDropdown.filteredstudentProjectPromotions" [dropdown]="true"
+							id="studentProjectPromotion" (completeMethod)="studentProjectPromotionDropdown.filter($event)"
+							name="studentProjectPromotion" field="name" [size]="30" placeholder="{{PROMOTION}}"
+							[minLength]="1" #college="ngModel"></p-autoComplete>
+			<div [hidden]="college.valid || college.pristine"
+				 class="alert alert-danger" i18n="@@levelRequired">Promotion
+				Requise</div>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@fullProfessor" for="teacher">Prof. Responsable</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<p-autoComplete [(ngModel)]="studentProjectCollege.responsable"
+							(onDropdownClick)="teacherDropdown.handleDropdownClick($event)"
+							[suggestions]="teacherDropdown.filteredTeachers" [dropdown]="true"
+							id="teacher" (completeMethod)="teacherDropdown.filter($event)"
+							name="teacher" field="name" [size]="30" placeholder="{{PROF_RESPONSABLE}}"
+							[minLength]="1" #teacher="ngModel"></p-autoComplete>
+			<div [hidden]="teacher.valid || teacher.pristine"
+				 class="alert alert-danger" i18n="@@teacherRequired">Teacher
+				Requis</div>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@fullProfessor" for="teacherBackup1">Prof. Backup 1</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<p-autoComplete [(ngModel)]="studentProjectCollege.backup1"
+							(onDropdownClick)="teacherDropdown.handleDropdownClick($event)"
+							[suggestions]="teacherDropdown.filteredTeachers" [dropdown]="true"
+							id="teacherBackup1" (completeMethod)="teacherDropdown.filter($event)"
+							name="teacherBackup1" field="name" [size]="30" placeholder="{{PROF_BACKUP1}}"
+							[minLength]="1" #teacher="ngModel"></p-autoComplete>
+			<div [hidden]="teacher.valid || teacher.pristine"
+				 class="alert alert-danger" i18n="@@teacherRequired">Teacher
+				Requis</div>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@fullProfessor" for="teacherBackup2">Prof. Backup 2</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<p-autoComplete [(ngModel)]="studentProjectCollege.backup2"
+							(onDropdownClick)="teacherDropdown.handleDropdownClick($event)"
+							[suggestions]="teacherDropdown.filteredTeachers" [dropdown]="true"
+							id="teacherBackup2" (completeMethod)="teacherDropdown.filter($event)"
+							name="teacherBackup2" field="name" [size]="30" placeholder="{{PROF_BACKUP2}}"
+							[minLength]="1" #teacher="ngModel"></p-autoComplete>
+			<div [hidden]="teacher.valid || teacher.pristine"
+				 class="alert alert-danger" i18n="@@teacherRequired">Teacher
+				Requis</div>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@status" for="status">Activé ?</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<p-checkbox [(ngModel)]="studentProjectCollege.status" binary="true" id="status" selected></p-checkbox>
+		</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+</div>
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+<form (ngSubmit)="searchStudentProject()" #searchStudentProjectForm="ngForm">
+<!--div class=""-->
+  <div class="ui-grid ui-grid-responsive ui-fluid" [hidden]="loggedUser.role>2 && loggedUser.role!=8 && loggedUser.role!=9 && loggedUser.role!=10 && loggedUser.role!=11">
+    <div class="ui-grid-row">
+
+      <div class="ui-grid-col-6">
+				<p-autoComplete [(ngModel)]="theCollege"
+								(onDropdownClick)="collegeDropdown.handleDropdownClick($event)"
+								[suggestions]="collegeDropdown.filteredColleges" [dropdown]="true"
+								id="college" (completeMethod)="collegeDropdown.filter($event)"
+								name="college" field="name" [size]="30" placeholder="{{FILIERE}}"
+								[minLength]="1" #college="ngModel"></p-autoComplete>
+      </div>
+
+      <div class="ui-grid-col-6">
+				<p-autoComplete [(ngModel)]="theStudentProject"
+								(onDropdownClick)="studentProjectTopicDropdown.handleDropdownClick($event)"
+								[suggestions]="studentProjectTopicDropdown.filteredStudentProjectTopics" [dropdown]="true"
+								id="studentProjectTopic" (completeMethod)="studentProjectTopicDropdown.filter($event)"
+								name="college" field="name" [size]="30" placeholder="Projet"
+								[minLength]="1" #college="ngModel"></p-autoComplete>
+      </div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-10">
+        <input type="text" pInputText class="form-control" id="searchTextStudentProject" [(ngModel)]="searchTextStudentProject"
+          placeholder="Nom des sous-projet,/ Noms de l'encadreur" name="searchTextStudentProject">
+      </div>
+
+      <div class="ui-grid-col-2">
+        <button type="button" pButton icon="fa fa-search" (click)="searchStudentProject()" label="Go"
+          style="margin-top: 0px; height: 35px;"></button>
+      </div>
+    </div>
+
+  </div>
+<!--/div-->
+</form>
+
+<p-dataTable [value]="studentsProjectsColleges" selectionMode="single"
+	[(selection)]="selectedStudentProjectCollege" expandableRows="true"
+	(onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10"
+	(onRowExpand)="onRowExpand($event)"
+	[responsive]="true"> <p-column expander="true"
+	styleClass="col-icon" [style]="{'width':'5%'}"></p-column> <p-column
+	*ngFor="let col of cols" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [filter]="col.filter" [style]="col.style">
+
+<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData"
+	pTemplate type="body"> <span class="col-date">{{
+	data[col.field ] | date:'dd/MM/yy' }} </span> </ng-template> <ng-template
+	*ngIf="col.type === 'text'" let-col let-data="rowData" pTemplate
+	type="body">
+<div [innerHTML]="data[ col.field ]"></div>
+</ng-template> </p-column>
+<p-column field="status" header="Etat" [style]="{'width':'9%'}" [sortable]="true">
+	<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+		<div class="label-main" *ngIf="data.status">
+	    <label class="label label-success" style="padding: 5px; border-radius: 5px;">Activé</label>
+    </div>
+		<div class="label-main" *ngIf="!data.status">
+	    <label class="label label-danger" style="padding: 5px; border-radius: 5px;">Désactivé</label>
+    </div>
+	</ng-template>
+</p-column>
+<p-column field="id" header="actions" [style]="{'width':'7%'}">
+<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate
+	type="body">
+<button type="button" pButton icon="fa fa-picture-o" style="float: left"
+	(click)="showDialogToUploadImage(data)"></button>
+</ng-template> </p-column>
+
+<ng-template let-studentProjectCollege pTemplate="rowexpansion">
+<div class="ui-grid ui-grid-responsive ui-fluid" style="font-size: 16px; padding: 20px">
+	<div class="ui-grid-row">
+
+		<div class="ui-grid-col-12">
+
+			<div *ngIf="errorStudentProject" class="alert alert-danger">{{errorStudentProject}}</div>
+
+			<button type="button" class="btn btn-primary">
+				<span class="badge badge-light">1</span> Ajouter un étudiant
+			</button>
+			<form (ngSubmit)="searchUser()" #searchForm="ngForm">
+				<div class="ui-grid ui-grid-responsive ui-fluid">
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-10">
+							<input type="text" pInputText class="form-control"
+								   id="searchTextUser" required [(ngModel)]="searchTextUser"
+								   placeholder="{{USER_SEARCH_PARTS}}" name="searchT"
+								   #searchT="ngModel">
+						</div>
+						<div class="ui-grid-col-2">
+							<button type="button" pButton icon="fa fa-search"
+									(click)="searchUser()" label="Go"
+									style="margin-top: 0px; height: 35px;"></button>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<p-dataTable [value]="users" *ngIf="users"
+						 expandableRows="true"
+						 [paginator]="true" [rows]="15"
+						 [responsive]="true">
+				<p-column *ngFor="let col of userCols" [field]="col.field"
+					[header]="col.header" [sortable]="col.sortable"
+					[filter]="col.filter">
+				</p-column>
+
+				<p-column field="id" header="actions" [style]="{'width':'15%'}">
+					<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+						<button type="button" pButton icon="fa fa-check" style="float: left"
+								(click)="addStudentToProject(data)" label="Ajouter">
+						</button>
+					</ng-template>
+				</p-column>
+			</p-dataTable>
+
+			<br />
+
+			<button type="button" class="btn btn-primary">
+				<span class="badge badge-light">2</span> Les étudiants qui travaillent sur le projet
+			</button>
+
+			<p-dataTable [value]="usersProject" *ngIf="usersProject"
+						 [paginator]="true" [rows]="15" [responsive]="true">
+				<p-column *ngFor="let col of userCols" [field]="col.field"
+					[header]="col.header" [sortable]="col.sortable"
+					[filter]="col.filter">
+				</p-column>
+
+				<p-column field="id" header="actions" [style]="{'width':'15%'}">
+					<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+						<button type="button" pButton icon="fa fa-minus" style="float: left"
+								(click)="removeStudentOnProjectByIds(data)" label="Retirer">
+						</button>
+					</ng-template>
+				</p-column>
+			</p-dataTable>
+
+			<div class="alert alert-danger" *ngIf="!usersProject" style="margin-top: 20px;">Aucun étudiant ajouté !</div>
+
+
+			<br />
+
+			<button type="button" class="btn btn-primary">
+				<span class="badge badge-light">3</span> Evolution du projet
+			</button>
+
+			<p-dataTable [value]="studentsProjectsPhasesView" *ngIf="studentsProjectsPhasesView"
+						 [paginator]="true" [rows]="15" [responsive]="true">
+				<p-column *ngFor="let col of phaseCols" [field]="col.field"
+						  [header]="col.header" [sortable]="col.sortable"
+						  [filter]="col.filter" [style]="col.style">
+				</p-column>
+
+				<!--p-column field="id" header="Etat" [style]="{'width':'10%'}">
+					<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+						<p-checkbox [(ngModel)]="data.studentProjectCollegePhaseStatus" binary="true"></p-checkbox>
+					</ng-template>
+				</p-column-->
+
+				<p-column field="studentProjectCollegePhaseStatus" header="Etat" [style]="{'width':'14%'}" [sortable]="true">
+					<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+						<div class="label-main" *ngIf="data.studentProjectCollegePhaseStatus">
+							<label class="label label-success" style="padding: 5px; border-radius: 5px;">Achevée</label>
+						</div>
+							<div class="label-main" *ngIf="!data.studentProjectCollegePhaseStatus">
+							<label class="label label-danger" style="padding: 5px; border-radius: 5px;">Non achevée</label>
+						</div>
+					</ng-template>
+				</p-column>
+
+				<!--p-column field="id" header="actions" [style]="{'width':'25'}">
+					<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+						<button type="button" pButton icon="fa fa-save" style="float: left"
+								(click)="addStudentProjectCollegePhase(data)" label="Enregistrer">
+						</button>
+					</ng-template>
+				</p-column-->
+
+				<p-column field="studentProjectCollegePhaseStatus" header="actions" [style]="{'width':'20'}">
+					<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body" 
+						>
+						<button type="button" pButton icon="fa fa-check" style="float: left"
+								(click)="addStudentProjectCollegePhase(data)" label="Achevée" 
+								*ngIf="!data.studentProjectCollegePhaseStatus">
+						</button>
+					
+						<button type="button" pButton icon="fa fa-close" style="float: left"
+								(click)="deleteCollegePhaseByStudentProjectPhaseVO(data)" label="Non achevée"
+								*ngIf="data.studentProjectCollegePhaseStatus">
+						</button>
+					</ng-template>
+				</p-column>
+			</p-dataTable>
+
+		</div>
+
+	</div>
+
+</div>
+</ng-template>
+
+<ng-template pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>
+
+<!-- Initialize Quill editor -->
+<script>
+	var quill = new Quill('#editor', {
+		theme : 'bubble'
+	});
+</script>

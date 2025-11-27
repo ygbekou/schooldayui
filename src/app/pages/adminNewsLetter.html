@@ -1,0 +1,27 @@
+
+
+
+<div class="page-wrapper">
+
+	<div class="page-content">
+		<div class="row page-row">
+
+			<div class="content-wrapper col-md-12 col-sm-12">
+
+				<p-dataTable [value]="newsLetters" selectionMode="single"
+        
+        [paginator]="true" [rows]="15" [responsive]="true"> <p-column
+        *ngFor="let col of cols" [field]="col.field" [style]="col.style"
+        [header]="col.header" [sortable]="col.sortable" [filter]="col.filter"><ng-template
+		*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+		type="body"> <span class="col-date">{{ data[
+		col.field ] | date:'dd/MM/yy' }}</span> </ng-template></p-column>
+      </p-dataTable>
+			</div>
+			
+		</div>
+		<!--//page-row-->
+	</div>
+	<!--//page-content-->
+</div>
+<!--//page-->

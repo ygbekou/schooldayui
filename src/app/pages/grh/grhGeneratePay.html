@@ -1,0 +1,416 @@
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<p-dialog header="Payement" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+	width="700">
+	<div class="ui-grid ui-grid-responsive ui-fluid">
+		<div>
+
+			<div class="ui-grid-row form-group">
+					<div class="ui-grid-col-11">
+							<div class="alert alert-success">
+									Paie d'une période + Génération des différents états
+							</div>
+
+					</div>
+			</div>
+
+			<div class="ui-grid-row form-group">
+				<div class="ui-grid-col-4">
+					<label i18n="@@startDate" for="startDate">Date de début : </label>
+				</div>
+				<div class="ui-grid-col-7">
+					<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="startDate" name="startDate"
+					[showIcon]="true" [(ngModel)]="paySlipHistory.periode.startDate" #startDate="ngModel" required></p-calendar>
+				</div>
+				<div class="ui-grid-col-1"></div>
+			</div>
+
+			<br />
+
+			<div class="ui-grid-row form-group">
+				<div class="ui-grid-col-4">
+					<label i18n="@@endDate" for="endDate">Date de fin : </label>
+				</div>
+				<div class="ui-grid-col-7">
+					<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="endDate" name="endDate"
+						[showIcon]="true" [(ngModel)]="paySlipHistory.periode.endDate" #endDate="ngModel" required></p-calendar>
+				</div>
+				<div class="ui-grid-col-1"></div>
+			</div>
+
+			<br />
+
+			<div class="ui-grid-row form-group">
+				<div class="ui-grid-col-4">
+					<label i18n="@@paiementMode" for="paiementMode">Mode de paiement : </label>
+				</div>
+				<div class="ui-grid-col-7">
+					<p-autoComplete [(ngModel)]="paySlipHistory.paiementMode" (onDropdownClick)="paiementModeDropdown.handleDropdownClick($event)"
+					[suggestions]="paiementModeDropdown.filteredPaiementModes" [dropdown]="true" id="paiementMode"
+					(completeMethod)="paiementModeDropdown.filter($event)" name="paiementMode" field="wording"
+						placeholder="Choisissez le mode de paiement" [minLength]="1" [size]="30"></p-autoComplete>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<br />
+
+	<div class="ui-grid-row form-group">
+			<div class="ui-grid-col-12">
+					<button type="button" pButton icon="fa fa-check" 
+						(click)="calculateActiveEmpPeriodPaySlipAndReturnPaySlipHistory()"
+						[disabled]="paySlipHistory.status" label="{{printLabel}}"></button>
+			</div>
+	</div>
+
+
+	<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+</p-dialog>
+
+
+<p-dataTable [value]="paySlipHistories" selectionMode="single" [(selection)]="selectedPaySlipHistory"
+	expandableRows="true" [paginator]="true" [rows]="12" (onRowSelect)="onPaySlipHistoryRowSelect($event)"
+	(onRowExpand)="getPaySlipHistory($event)" [responsive]="true">
+	<p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}">
+
+	</p-column>
+	<!--p-column *ngFor="let col of colsHistories" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+		[style]="col.style" [filter]="col.filter">
+		<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+			<span class="col-date">{{ data[ col.field ] | date:'dd/MM/yyyy' }}</span>
+		</ng-template>
+	</p-column-->
+	<p-column field="periode.startDate" header="Date de début" sortable="true"
+		 filter="true">
+		<ng-template let-col let-data="rowData" pTemplate type="body">
+			<span class="col-date">{{ data.periode.startDate | date:'dd/MM/yyyy' }}</span>
+		</ng-template>
+	</p-column>
+	<p-column field="periode.endDate" header="Date de fin" sortable="true"
+		 filter="true">
+		<ng-template let-col let-data="rowData" pTemplate type="body">
+			<span class="col-date">{{ data.periode.endDate | date:'dd/MM/yyyy' }}</span>
+		</ng-template>
+	</p-column>
+	<p-column field="paiementMode.wording" header="Mode de paiement" sortable="true" filter="true">
+
+	</p-column>
+	<p-column field="payDate" header="Date de paiement" sortable="true"
+		 filter="true">
+		<ng-template let-col let-data="rowData" pTemplate type="body">
+			<span class="col-date">{{ data.payDate | date:'dd/MM/yyyy' }}</span>
+		</ng-template>
+	</p-column>
+	<p-column field="status" header="Etat" sortable=true filter=true [style]="{'width':'8%'}">
+		<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+		  <div class="label-main" *ngIf="data.status">
+			<label class="label label-success" style="padding: 5px; border-radius: 5px;">Payé</label>
+		  </div>
+		  <div class="label-main" *ngIf="!data.status">
+			<label class="label label-primary" style="padding: 5px; border-radius: 5px;">Non payé</label>
+		  </div>
+		</ng-template>
+	</p-column>
+	
+
+	<ng-template let-paySlipHistory let-rowIndex="rowIndex" pTemplate="rowexpansion">
+
+		<button type="button" class="btn btn-primary">
+			<span class="badge badge-light">1</span> Opération
+		</button>
+
+		<br /> <br />
+
+		<button pButton type="button" icon="fa fa-check" label="Payer" [disabled]="paySlipHistory.status"
+				title="Payer" (click)="updatePaySlipHistory(paySlipHistory, rowIndex)">
+		</button>
+			
+		<br /> <br />
+
+		<button type="button" class="btn btn-primary">
+			<span class="badge badge-light">2</span> Documents disponibles
+		</button>
+
+		<br /><br />
+
+		<!-- Boutons de téléchargements des documents -->
+		<div class="ui-grid-row form-group">
+			<div class="ui-grid-col-3">
+				<button pButton type="button" icon="fa fa-print" label="Tous les documents"
+					title="Générer tous les documents" (click)="printAllDocuments()">
+				</button>
+			</div>
+		</div>
+
+		<hr />
+
+		<div class="ui-grid-row form-group">
+			<div class="ui-grid-col-4">
+				<button pButton type="button" icon="fa fa-print" label="Réc. Global par banque"
+					title="Générer l'état global de virement de salaire par banque" 
+					(click)="printRecapitulatifGlobalVirementSalaireParBanque()">
+				</button>
+			</div>
+			<div class="ui-grid-col-4">
+				<button pButton type="button" icon="fa fa-print" label="Réc. par banque"
+						title="Générer l'état de virement de salaire par banque" 
+						(click)="printRecapitulatifVirementSalaireParBanque()">
+				</button>
+			</div>
+			<div class="ui-grid-col-4">
+				<button pButton type="button" icon="fa fa-print" label="Réc. par personnel"
+						title="Générer l'état de virement de salaire par personnel" 
+						(click)="printRecapitulatifVirementSalaireParPersonnel()">
+				</button>
+			</div>
+		</div>
+		<div class="ui-grid-row form-group">
+			<div class="ui-grid-col-4">
+				<button pButton type="button" icon="fa fa-print" label="Bulletins de paie"
+						title="Générer l'état des bulletins de paie de tous les employés" 
+						(click)="printPaySlipsAllEmployees()">
+				</button>
+			</div>
+			<div class="ui-grid-col-4">
+				<button pButton type="button" icon="fa fa-print" label="Réc. des stagiaires et consultants"
+						title="Générer l'état de virement des stagiaires et consultants" 
+						(click)="printRecapitulatifStagiaireEtConsultant()">
+				</button>
+			</div>
+			<div class="ui-grid-col-4">
+				<button pButton type="button" icon="fa fa-print" label="Fiche de paie"
+						title="Générer la fiche de paie" 
+						(click)="printRecapitulatifFicheDePaie()">
+				</button>
+			</div>
+		</div>
+		<div class="ui-grid-row form-group">
+			<div class="ui-grid-col-4">
+				<a target="_blank" *ngIf="reportRecapitulatifGlobalVirementSalaireParBanque"
+					href="assets/reports/{{reportRecapitulatifGlobalVirementSalaireParBanque}}" 
+					i18n="@@downloadReport" class="btn btn-theme">
+					<i class="fa fa-download"></i>
+					{{ downloadButtonLabelRecapitulatifGlobalVirementSalaireParBanque }}
+				</a>
+			</div>
+			<div class="ui-grid-col-4">
+				<a target="_blank" *ngIf="reportRecapitulatifVirementSalaireParBanque"
+					href="assets/reports/{{reportRecapitulatifVirementSalaireParBanque}}"  
+					i18n="@@downloadReport" class="btn btn-theme">
+					<i class="fa fa-download"></i>
+					{{ downloadButtonLabelRecapitulatifVirementSalaireParBanque }}
+				</a>
+			</div>
+		
+			<div class="ui-grid-col-4">
+				<a target="_blank" *ngIf="reportRecapitulatifVirementSalaireParPersonnel"
+					href="assets/reports/{{reportRecapitulatifVirementSalaireParPersonnel}}" 
+					i18n="@@downloadReport" class="btn btn-theme">
+					<i class="fa fa-download"></i>
+					{{ downloadButtonLabelRecapitulatifVirementSalaireParPersonnel }}
+				</a>
+			</div>
+		</div>
+		<div class="ui-grid-row form-group">
+			<div class="ui-grid-col-4">
+				<a target="_blank" *ngIf="reportBulletinPaie"
+					href="assets/reports/{{reportBulletinPaie}}" 
+					i18n="@@downloadReport" class="btn btn-theme">
+					<i class="fa fa-download"></i>
+					{{ downloadButtonLabelBulletinPaie }}
+				</a>
+			</div>
+		
+			<div class="ui-grid-col-4">
+				<a target="_blank" *ngIf="reportRecapitulatifStagiaireEtConsultant"
+					href="assets/reports/{{reportRecapitulatifStagiaireEtConsultant}}" 
+					i18n="@@downloadReport" class="btn btn-theme">
+					<i class="fa fa-download"></i>
+					{{ downloadButtonLabelRecapitulatifStagiaireEtConsultant }}
+				</a>
+			</div>
+		
+			<div class="ui-grid-col-4">
+				<a target="_blank" *ngIf="reportRecapitulatifFicheDePaie"
+					href="assets/reports/{{reportRecapitulatifFicheDePaie}}" 
+					i18n="@@downloadReport" class="btn btn-theme">
+					<i class="fa fa-download"></i>
+					{{ downloadButtonLabelRecapitulatifFicheDePaie }}
+				</a>
+			</div>
+		</div>
+		<!-- FIN - Boutons de téléchargements des documents -->
+
+		<button type="button" class="btn btn-primary">
+			<span class="badge badge-light">3</span> Liste des employés concernés
+		</button>
+
+		<p-dataTable [value]="paySlips" selectionMode="single"
+			expandableRows="true" [paginator]="true" [rows]="10" (onEditComplete)="columnFeeModify($event)"
+			(onRowExpand)="getPaySlip($event)" [responsive]="true" [editable]="true">
+			<p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}">
+
+			</p-column>
+			
+			<p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+				[style]="col.style" [filter]="col.filter">
+				<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+					<span class="col-date">{{ data[ col.field ] | date:'dd/MM/yy' }}</span>
+				</ng-template>
+				<ng-template *ngIf="col.type === 'Currency'" let-col let-data="rowData" pTemplate type="body">
+					<span class="col-currency">{{ data[col.field ] |number : '1.2-2' }}</span>
+				</ng-template>
+			</p-column>
+
+			<p-column field="paiementMode.wording" header="MODE PAYEMENT" [style]="{'overflow':'visible', 'width': '15%'}">
+				<ng-template let-col let-paySlip="rowData" pTemplate="body">
+					<p-autoComplete [(ngModel)]="paySlip.paiementMode" (onDropdownClick)="paiementModeDropdown.handleDropdownClick($event)"
+						[suggestions]="paiementModeDropdown.filteredPaiementModes" [dropdown]="true" id="paiementMode"
+						(completeMethod)="paiementModeDropdown.filter($event)" name="paiementMode" field="wording" 
+						placeholder="Choisissez le mode de paiement"
+						[minLength]="1" #paiementMode="ngModel" 
+						[disabled]="paySlipHistory.status">
+					</p-autoComplete>
+				</ng-template>
+			</p-column>
+
+			<!--p-column field="status" header="Etat" sortable=true filter=true [style]="{'width':'8%'}">
+				<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+				  <div class="label-main" *ngIf="data.status">
+					<label class="label label-success" style="padding: 5px; border-radius: 5px;">Payé</label>
+				  </div>
+				  <div class="label-main" *ngIf="!data.status">
+					<label class="label label-danger" style="padding: 5px; border-radius: 5px;">Non payé</label>
+				  </div>
+				</ng-template>
+			</p-column-->
+
+			<p-column field="status" header="Payé ?" [style]="{'width':'3%'}">
+				<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+					<p-checkbox name="status" [(ngModel)]="data.status" binary="true" 
+					[disabled]="paySlipHistory.status"></p-checkbox>
+					<!--p-radioButton name="status" selected [(ngModel)]="data.status" binary="true" ></p-radioButton-->
+				</ng-template>
+			</p-column>
+
+			<p-column *ngIf="user.role==10" field="id" header="#" [style]="{'width':'3%'}">
+				<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+					<button type="button" pButton icon="fa fa-save" (click)="updatePaySlip(data, rowIndex)"
+					[disabled]="paySlipHistory.status"></button>
+				</ng-template>
+			</p-column>
+			
+			<ng-template let-LetterConten pTemplate="rowexpansion">
+					<div class="ui-grid-row form-group">
+						
+					</div>
+			</ng-template>
+
+			<ng-template pTemplate="paginatorLeft">
+				<button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"></button>
+			</ng-template>
+			<ng-template pTemplate="paginatorRight">
+				<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+			</ng-template>
+		</p-dataTable>
+
+		<br />
+	</ng-template>
+
+	<ng-template pTemplate="paginatorLeft">
+		<button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"></button>
+	</ng-template>
+	<ng-template pTemplate="paginatorRight">
+		<button type="button" (click)="getAllOrderByPeriodeStartDateDesc()" pButton icon="fa fa-refresh"></button>
+	</ng-template>
+</p-dataTable>
+
+<!--p-dataTable [value]="paySlips" selectionMode="single" [(selection)]="selectedPaySlip"
+	expandableRows="true" [paginator]="true" [rows]="5" (onRowSelect)="onRowSelect($event)"
+	(onRowExpand)="getPaySlip($event)" [responsive]="true">
+	<p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}">
+
+	</p-column>
+	<p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+		[style]="col.style" [filter]="col.filter">
+		<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+			<span class="col-date">{{ data[ col.field ] | date:'dd/MM/yy' }}</span>
+		</ng-template>
+	</p-column>
+	<ng-template let-LetterConten pTemplate="rowexpansion">
+			<div class="ui-grid-row form-group" *ngIf="codeAndReportsName">
+				<div class="ui-grid-row form-group" *ngIf="codeAndReportsName['RGB']">
+			
+					<br />
+			
+					<div class="ui-grid-col-5">
+						<a target="_blank" href="assets/reports/{{codeAndReportsName['RGB']}}" i18n="@@downloadReport"
+							class="btn btn-theme">
+							<i class="fa fa-download"></i>
+							Télécharger le récapitulatif Global par banque
+						</a>
+					</div>
+				</div>
+				<div class="ui-grid-row form-group" *ngIf="codeAndReportsName['RB']">
+			
+					<br />
+			
+					<div class="ui-grid-col-5">
+						<a target="_blank" href="assets/reports/{{codeAndReportsName['RB']}}" i18n="@@downloadReport"
+							class="btn btn-theme">
+							<i class="fa fa-download"></i>
+							Télécharger le récapitulatif de virement de salaire par banque
+						</a>
+					</div>
+				</div>
+				<div class="ui-grid-row form-group" *ngIf="codeAndReportsName['RE']">
+			
+					<br />
+			
+					<div class="ui-grid-col-5">
+						<a target="_blank" href="assets/reports/{{codeAndReportsName['RE']}}" i18n="@@downloadReport"
+							class="btn btn-theme">
+							<i class="fa fa-download"></i>
+							Télécharger le récapitulatif de virement de salaire par personnel
+						</a>
+					</div>
+				</div>
+				<div class="ui-grid-row form-group" *ngIf="codeAndReportsName['RPS']">
+			
+					<br />
+			
+					<div class="ui-grid-col-5">
+						<a target="_blank" href="assets/reports/{{codeAndReportsName['RPS']}}" i18n="@@downloadReport"
+							class="btn btn-theme">
+							<i class="fa fa-download"></i>
+							Télécharger les bulletins de paie des personnels
+						</a>
+					</div>
+				</div>
+			
+				<div class="ui-grid-row form-group" *ngIf="codeAndReportsName['SPPS']">
+			
+					<br />
+			
+					<div class="ui-grid-col-5">
+						<a target="_blank" href="assets/reports/{{codeAndReportsName['SPPS']}}" i18n="@@downloadReport"
+							class="btn btn-theme">
+							<i class="fa fa-download"></i>
+							Télécharger le document de paie des stagiaires et consultants
+						</a>
+					</div>
+				</div>
+			</div>
+	</ng-template>
+
+	<ng-template pTemplate="paginatorLeft">
+		<button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"></button>
+	</ng-template>
+	<ng-template pTemplate="paginatorRight">
+		<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+	</ng-template>
+</p-dataTable-->

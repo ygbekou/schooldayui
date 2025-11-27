@@ -1,0 +1,66 @@
+<p-dialog header="Valeurs des avantages" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="700">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="avantageValue">
+	<div>
+
+		<div class="ui-grid-row form-group">
+			<div class="ui-grid-col-2">
+				<label i18n="@@avantage" for="avantage">Avantage : </label>
+			</div>
+			<div class="ui-grid-col-9">
+					<p-autoComplete [(ngModel)]="avantageValue.avantage" (onDropdownClick)="avantageDropdown.handleDropdownClick($event)"
+			      [suggestions]="avantageDropdown.filteredAvantages" [dropdown]="true" id="avantage"
+			      (completeMethod)="avantageDropdown.filter($event)" name="avantage" field="wording"
+			        placeholder="Prime / Indemnité" [minLength]="1"></p-autoComplete>
+			</div>
+			<div class="ui-grid-col-1"></div>
+		</div>
+
+    <div class="ui-grid-row form-group">
+      <div class="ui-grid-col-2">
+        <label i18n="@@amount" for="amount">Montant : </label>
+      </div>
+      <div class="ui-grid-col-9">
+        <input pInputText id="amount" class="form-control"
+          [(ngModel)]="avantageValue.amount" />
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+	</div>
+</div>
+
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+
+<p-dataTable [value]="avantageValues" selectionMode="single"
+	[(selection)]="selectedAvantageValue" expandableRows="true"
+	[paginator]="true" [rows]="10"
+	(onRowSelect)="onRowSelect($event)"
+	[responsive]="true">
+	<p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}">
+
+	</p-column>
+	<p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [style]="col.style" [filter]="col.filter">
+		<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+			<span class="col-date">{{ data[ col.field ] | date:'dd/MM/yy' }}</span>
+		</ng-template>
+	</p-column>
+
+  <ng-template pTemplate="paginatorLeft">
+    <button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"></button>
+  </ng-template>
+  <ng-template pTemplate="paginatorRight">
+    <button type="button" (click)="getAvantagesValueByEmployee()" pButton icon="fa fa-refresh"></button>
+  </ng-template>
+</p-dataTable>

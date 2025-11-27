@@ -1,0 +1,83 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 class="heading-title pull-left">
+			Evènements <span style="position: relative; left: 4%; top: 10px;">
+				<iframe
+					src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2Fevents&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId"
+					width="450" height="35" style="border: none; overflow: hidden"
+					scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+			</span>
+		</h1>
+
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li class="breadcrumbs-label">Vous etes ici:</li>
+				<li><a href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+				<li class="current">Evènements</li>
+
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<div class="row page-row">
+			<div class="events-wrapper col-md-8 col-sm-7">
+				<p-dataList [value]="events" [paginator]="true" [rows]="15"
+					styleClass="blankDataList"> <ng-template let-event
+					pTemplate="item">
+				<div class="ui-grid ui-grid-responsive ui-fluid"
+					style="font-size: 16px; padding: 0px;">
+
+					<article class="events-item page-row has-divider clearfix">
+						<div class="date-label-wrapper col-md-1 col-sm-2">
+							<p class="date-label">
+								<span class="month">{{event.startsAt|date:'MMM'}}</span> <span
+									class="date-number">{{event.startsAt|date:'dd'}}</span>
+							</p>
+						</div>
+						<!--//date-label-wrapper-->
+						<div class="details col-md-11 col-sm-10">
+							<h3 class="title">{{event.title}}</h3>
+							<p class="meta">
+								<span class="time"><i class="fa fa-clock-o"></i>{{event.startsAt|date:'HH:mm'}}
+									- {{event.endsAt|date:'HH:mm'}}</span><span class="location"><i
+									class="fa fa-map-marker"></i>{{event.address}}, {{event.city}}</span>
+							</p>
+							<p class="desc">{{event.description}}</p>
+						</div>
+						<!--//details-->
+					</article>
+					<!--//events-item-->
+
+
+				</div>
+				</ng-template> </p-dataList>
+
+			</div>
+			<!--//events-wrapper-->
+			<aside
+				class="page-sidebar  col-md-3 col-md-offset-1 col-sm-4 col-sm-offset-1">
+				<section class="widget has-divider">
+					<app-prospectus></app-prospectus>
+				</section>
+				<section class="widget has-divider">
+					<app-one-video></app-one-video>
+				</section>
+				<!--//widget-->
+				<section class="widget has-divider">
+
+					<app-news-short-vert></app-news-short-vert>
+				</section>
+				<!--//widget-->
+			</aside>
+		</div>
+		<iframe
+			src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2Fevents&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId"
+			width="450" height="80" style="border: none; overflow: hidden"
+			scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+		<!--//page-row-->
+	</div>
+	<!--//page-content-->
+</div>
+<!--//page-->

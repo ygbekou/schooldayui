@@ -1,0 +1,26 @@
+<p-growl [(value)]="msgs"></p-growl>
+
+
+<p-dataTable [value]="courseViews" selectionMode="single" expandableRows="true" [paginator]="true" [rows]="15"
+  [responsive]="true" >
+  <p-column expander="true" styleClass="col-icon" [style]="{'width':'3%'}"></p-column>
+  <p-column *ngFor="let col of cols" [style]="col.style" [field]="col.field" [header]="col.header"
+    [sortable]="col.sortable" [filter]="col.filter">
+   
+       
+  </p-column>
+  <p-column field="status" header="Etat" [style]="{'width':'8%'}" [sortable]="true">
+    <ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+      <div class="label-main" *ngIf="data.status === 0">
+        <label class="label label-warning" style="padding: 5px; border-radius: 5px;">Pas encore commencé</label>
+      </div>
+      <div class="label-main" *ngIf="data.status === 1">
+        <label class="label label-success" style="padding: 5px; border-radius: 5px;">Présent</label>
+      </div>
+      <div class="label-main" *ngIf="data.status === 2">
+        <label class="label label-danger" style="padding: 5px; border-radius: 5px;">Absent</label>
+      </div>
+    </ng-template>
+  </p-column>
+
+</p-dataTable>

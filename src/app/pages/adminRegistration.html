@@ -1,0 +1,1025 @@
+<file-uploader></file-uploader>
+
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+  width="750" *ngIf="currentUser.userAccess != 2">
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="enrollment">
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@date" for="enrollmentDate">Date</label>
+      </div>
+      <div class="ui-grid-col-9">
+        <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="enrollmentDate" 
+        [showIcon]="false" required [(ngModel)]="enrollment.enrollmentDate" [disabled]="tranchePaymentExist || courseInscritExist">
+        </p-calendar>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@class" for="classe">Classe</label>
+      </div>
+      <div class="ui-grid-col-9">
+        <p-autoComplete [(ngModel)]="enrollment.levelClass" [disabled]="tranchePaymentExist || courseInscritExist"
+          (onDropdownClick)="classDropdown.handleDropdownClick($event)" [suggestions]="classDropdown.filteredClasses"
+          [dropdown]="true" id="classe" (completeMethod)="classDropdown.filter($event)" required name="classe"
+          field="name" [size]="30" placeholder="{{CLASSE}}" [minLength]="1" #classe="ngModel"></p-autoComplete>
+        <div [hidden]="classe.valid || classe.pristine" class="alert alert-danger" i18n="@@classRequired">Classe
+          Requise</div>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@schoolYear" for="schoolYear">Annee Scolaire</label>
+      </div>
+      <div class="ui-grid-col-9">
+        <p-autoComplete [(ngModel)]="enrollment.schoolYear" [disabled]="tranchePaymentExist || courseInscritExist"
+          (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+          [suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear" required
+          (completeMethod)="schoolYearDropdown.filter($event)" name="schoolYear" field="year" [size]="30"
+          placeholder="{{SCHOOLYEAR}}" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+        <div [hidden]="schoolYear.valid || schoolYear.pristine" class="alert alert-danger" i18n="@@schoolYearRequired">
+          Annee
+          scolaire Requise</div>
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@term" for="term">Semestre</label>
+      </div>
+      <div class="ui-grid-col-9">
+        <p-autoComplete [(ngModel)]="enrollment.term" [disabled]="tranchePaymentExist || courseInscritExist" (onDropdownClick)="termDropdown.handleDropdownClick($event)"
+          [suggestions]="termDropdown.filteredTerms" [dropdown]="true" id="term"
+          (completeMethod)="termDropdown.filter($event)" name="term" field="name" [size]="30" placeholder="{{TERM}}"
+          [minLength]="1" #term="ngModel"></p-autoComplete>
+
+      </div>
+      <div class="ui-grid-col-1"></div>
+    </div>
+
+    <br>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <label i18n="@@hs" for="hasScholarship">Bénéficie t'il d'une bourse ?</label>
+    </div>
+
+    <div class="ui-grid-col-3">
+      <p-radioButton name="hasScholarship" [value]="false" label="Non" (ngModelChange)="onChange(false)"
+          [(ngModel)]="enrollment.hasScholarship"></p-radioButton><br>
+    </div>
+    
+    <div class="ui-grid-col-3">
+        <p-radioButton name="hasScholarship" [value]="true" label="Oui" (ngModelChange)="onChange(true)"
+            [(ngModel)]="enrollment.hasScholarship"></p-radioButton>  
+    </div>
+   
+      <div class="ui-grid-col-3"></div>
+
+      <div class="ui-grid-col-1"></div>
+
+  </div>
+
+
+    <br />
+    <div class="ui-grid ui-grid-responsive ui-fluid">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-12">
+          <p-dataTable [value]="tuitions" sortField="name" [editable]="false" [paginator]="true" [rows]="15">
+            <p-column field="name" header="Type" [style]="{'width':'60%'}"></p-column>
+            <p-column [style]="{'width':'20%'}" field="amount" header="Montant">
+              <ng-template let-col let-data="rowData" pTemplate type="body">
+                <span class="col-currency">{{ data[col.field ] |number :
+					'1.2-2' }}</span> </ng-template>
+            </p-column>
+            <p-column field="studentId" header="actions">
+              <ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+                
+                <button *ngIf="data.studentId>0" type="button" pButton icon="fa fa-minus" style="float: left"
+                  (click)="removeTuition(data)" label="Supprimer"></button>
+                <button *ngIf="data.studentId<1" type="button" pButton icon="fa fa-plus" style="float: left"
+                  (click)="addTuition(data)" label="Ajouter"></button>
+              </ng-template>
+            </p-column>
+            <p-footer></p-footer>
+          </p-dataTable>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+  <footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="deleteEnrollment()" label="{{DELETE_LABEL}}"></button>
+      <button type="button" pButton icon="fa fa-check" (click)="saveEnrollment()" label="{{SAVE_LABEL}}"></button>
+    </div>
+  </footer>
+</p-dialog>
+
+<p-dataTable [value]="enrollments" 
+  selectionMode="single" [(selection)]="selectedEnrollment" (onRowSelect)="onRowSelect($event)"
+  expandableRows="true" rowExpandMode="single" (onRowExpand)="getTuitions($event)" 
+  [paginator]="true" [rows]="15" [responsive]="true">
+  <p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}"></p-column>
+
+  <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+    [filter]="col.filter">
+
+    <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body"> <span class="col-date">{{
+	data[col.field] | date:'dd/MM/yyyy' }}</span> </ng-template>
+  </p-column>
+  <ng-template let-enrollment pTemplate="rowexpansion">
+    <div class="ui-grid ui-grid-responsive ui-fluid">
+      <br />
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-1"></div>
+        <div class="ui-grid-col-11">
+          <div *ngIf="errorStudentTuition" class="alert alert-danger">{{ errorStudentTuition }}</div>
+          <div *ngIf="successStudentTuition" class="alert alert-success">{{ successStudentTuition }}</div>
+        </div>
+      </div>
+
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-5"></div>
+        <div class="ui-grid-col-2">
+          <span i18n="@@thePayments">Les payements</span>
+        </div>
+        <div class="ui-grid-col-2">
+          <button type="button" pButton icon="fa fa-print" style="float: left" (click)="printRecap()"
+            label="{{PRINT}}"></button>
+        </div>
+        <div class="ui-grid-col-3">
+          <a *ngIf="reportName" target="_blank" href="assets/reports/{{reportName}}" i18n="@@downloadReport">Telecharger
+            l'etat</a>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-1"></div>
+        <div class="ui-grid-col-11">
+          <p-dataTable [value]="tuitions" sortField="name" [editable]="true" 
+            (onEditComplete)="saveTuition($event)" [responsive]="true"
+            expandableRows="true" rowExpandMode="single" 
+            (onRowExpand)="checkRowExpand($event)" [(selection)]="selectedView">
+
+            <p-column expander="true" header="#" styleClass="col-icon" [style]="{'width':'6%'}">
+
+            </p-column>
+
+            <p-column field="name" header="Type" [style]="{'width':'20%'}">
+
+            </p-column>
+
+            <p-column field="amount" header="Montant dû ({{mainCurrency.symbol}})">
+              <ng-template let-col let-data="rowData" pTemplate type="body">
+                <span class="col-currency">{{ data[col.field ] |number : '1.2-2' }}</span>
+              </ng-template>
+            </p-column>
+
+            <p-column field="paid" header="Payé ({{mainCurrency.symbol}})">
+              <ng-template let-col let-data="rowData" pTemplate type="body">
+                <span class="col-currency">{{ data[col.field ] |number : '1.2-2' }}</span>
+              </ng-template>
+            </p-column>
+
+            <p-column field="rebate" header="Remise ({{mainCurrency.symbol}})">
+              <ng-template let-col let-data="rowData" pTemplate type="body">
+                <span class="col-currency">{{ data[col.field ] |number : '1.2-2' }}</span>
+              </ng-template>
+            </p-column>
+
+            <p-column field="balance" header="Restant ({{mainCurrency.symbol}})">
+              <ng-template let-col let-data="rowData" pTemplate type="body">
+                <span class="col-currency">{{ data[col.field ] |number : '1.2-2' }}</span>
+              </ng-template>
+            </p-column>
+
+            <p-column field="enable" header="Etat" [style]="{'width':'9%'}" [sortable]="true">
+              <ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+                <div class="label-main" *ngIf="data.enable">
+                  <label class="label label-success" style="padding: 5px; border-radius: 5px;">Actif</label>
+                </div>
+                <div class="label-main" *ngIf="!data.enable">
+                  <label class="label label-danger" style="padding: 5px; border-radius: 5px;">Abandonné</label>
+                </div>
+              </ng-template>
+            </p-column>
+
+            <!--p-column field="balance" header="Payer(Carte)" [style]="{'width':'20%'}">
+              <ng-template let-col let-data="rowData" pTemplate type="body">
+
+                <button type="button" class="btn btn-success" [hidden]="data[col.field]>0" label="Payer"
+                  (click)="makePayment(data)">
+                  <i class="fa fa-cc-paypal" style="font-size: 24px; color: red"></i>
+                  <i class="fa fa-cc-visa" style="font-size: 24px; color: red"></i> <i class="fa fa-cc-amex"
+                    style="font-size: 24px; color: red"></i> <i class="fa fa-cc-mastercard"
+                    style="font-size: 24px; color: red"></i>
+                </button>
+              </ng-template>
+            </p-column-->
+
+            <p-column field="id" header="Actions" [style]="{'width':'14%'}" *ngIf="loggedInUser.role == 1">
+              <ng-template let-col let-data="rowData" pTemplate type="body">
+                <button type="button" pButton icon="fa fa-eye" 
+                style="width: 100%; float: left;" label="Activer" [disabled]="enableButton"
+                (click)="enableStudentTuition(data)" *ngIf="!data.enable"></button>
+                <button type="button" pButton icon="fa fa-eye-slash" 
+                style="width: 100%; float: left;" label="Abandonner" [disabled]="enableButton"
+                (click)="disableStudentTuition(data)" *ngIf="data.enable"></button>
+              </ng-template>
+            </p-column>
+
+            <!--p-column field="balance" header="Actions" [style]="{'width':'14%'}">
+              <ng-template let-col let-data="rowData" pTemplate type="body">
+                <button type="button" pButton icon="fa fa-plus" style="width: 100%; float: left;" label="Operations"
+                  (click)="showPaymentCommitmentDialog(data)"></button>
+              </ng-template>
+            </p-column-->
+
+            <!-- Update Payment System 01112019 & 24032021 -->
+            <ng-template let-tuitionViewTable pTemplate="rowexpansion" let-rowIndex="rowIndex">
+              <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="expandRow">
+                
+                <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="studentPaymentCommitment">
+
+                  <p-tabView id="tabList" (onChange)="onTabChange($event)">
+              
+                    <p-tabPanel header="Remise" leftIcon="fa fa-money" [selected]="activeTab === 0">
+              
+                      <br />
+              
+                      <div class="ui-grid-row">
+                        <div class="ui-grid-col-3">
+                          <p>Montant total : </p>
+                        </div>
+                        <div class="ui-grid-col-3">
+                          <p> {{ tuitionView.amount |number : '1.2-2' }} F CFA </p>
+                        </div>
+                        <div class="ui-grid-col-3">
+                          <p>Montant total restant : </p>
+                        </div>
+                        <div class="ui-grid-col-3">
+                          <p> {{ tuitionView.balance |number : '1.2-2' }} F CFA</p>
+                        </div>
+                      </div>
+              
+                      <br />
+              
+                      <div class="ui-grid-row">
+                        <div class="ui-grid-col-3">
+                          <p>Montant total payé : </p>
+                        </div>
+                        <div class="ui-grid-col-3">
+                          <p> {{ tuitionView.paid |number : '1.2-2' }} F CFA</p>
+                        </div>
+                        <div class="ui-grid-col-3">
+                          <p>Montant total de la remise : </p>
+                        </div>
+                        <div class="ui-grid-col-3">
+                          <p> {{ tuitionView.rebate |number : '1.2-2' }} F CFA</p>
+                        </div>
+                      </div>
+              
+                      <br />
+              
+                      <div class="ui-grid-row" *ngIf="currentUser.userAccess != 2">
+                        <div class="ui-grid-col-2">
+                          <button type="button" pButton icon="fa fa-edit" (click)="addNewStudentTuitionRebate()"
+                            label=" Ajouter une remise"></button>
+                        </div>
+                      </div>
+              
+                      <br />
+              
+                      <div *ngIf="addStudentTuitionRebate">
+              
+                        <br />
+              
+                        <button type="button" class="btn btn-primary">
+                          <span class="badge badge-light">*</span> Ajout d'une la remise
+                        </button>
+              
+                        <br /><br />
+              
+                        <div class="ui-grid-row">
+                          <div class="ui-grid-col-3">
+                            <label i18n="@@comment" for="dueDate">Montant de la remise (en F CFA)</label>
+                          </div>
+                          <div class="ui-grid-col-3">
+                            <input pInputText id="newRebate" [(ngModel)]="tuitionView.newRebate" required />
+                          </div>
+                        </div>
+              
+                        <br />
+              
+                        <div class="ui-grid-row">
+                          <div class="ui-grid-col-2">
+                            <button type="button" pButton icon="fa fa-check" (click)="saveTuitionRebate(tuitionView, rowIndex)" label="Enregistrer"></button>
+                          </div>
+                          <div class="ui-grid-col-2">
+                            <button type="button" pButton icon="fa fa-close" (click)="cancelStudentTuitionRebate()"
+                              label="Annuler"></button>
+                          </div>
+                        </div>
+              
+                      </div>
+              
+                      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+                      <div *ngIf="success" class="alert alert-success">{{success}}</div>
+                    </p-tabPanel>
+              
+                    <p-tabPanel header="Engagement" leftIcon="fa fa-money" [selected]="activeTab === 1">
+                      <div class="ui-grid-row">
+                        <div class="ui-grid-col-12">
+
+                          <!--div class="alert alert-primary">
+                            Le montant max d'engagement pouvant être créé est : {{}}
+                          </div-->
+              
+                          <p-dataTable [value]="studentPaymentCommitmentViews" expandableRows="false" [paginator]="true" [rows]="15"
+                            [responsive]="true">
+              
+                            <p-column field="id" header="N°" [style]="{'width':'3%'}" [sortable]="true">
+                              <ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+                                {{ rowIndex +1 }}
+                              </ng-template>
+                            </p-column>
+              
+                            <!--p-column *ngFor="let col of colsPaymentCommitment" [field]="col.field" [header]="col.header"
+                              [sortable]="col.sortable" [filter]="col.filter">
+              
+                              <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+                                <span class="col-date">{{ data.paymentCommitment.dueDate | date:'dd/MM/yyyy' }}</span>
+                                
+                              </ng-template>
+              
+                              <ng-template *ngIf="col.type === 'Double'" let-col let-data="rowData" pTemplate type="body">
+                                <span class="col-currency">{{ data[col.field ] |number : '1.2-2' }}</span>
+                                
+                              </ng-template>
+                            </p-column-->
+              
+                            <p-column field="paymentCommitment.amount" header="Montant dû">
+                              <ng-template let-col let-data="rowData" pTemplate type="body">
+                                <span class="col-currency">{{ data.paymentCommitment.amount |number : '1.2-2' }}</span>
+                              </ng-template>
+                            </p-column>
+              
+                            <p-column field="paid" header="Payé">
+                              <ng-template let-col let-data="rowData" pTemplate type="body">
+                                <span class="col-currency">{{ data.paid |number : '1.2-2' }}</span>
+                              </ng-template>
+                            </p-column>
+              
+                            <p-column field="balance" header="Restant">
+                              <ng-template let-col let-data="rowData" pTemplate type="body">
+                                <span class="col-currency">{{ data.balance |number : '1.2-2' }}</span>
+                              </ng-template>
+                            </p-column>
+              
+                            <p-column field="paymentCommitment.dueDate" header="Date Echéance">
+                              <ng-template let-col let-data="rowData" pTemplate type="body">
+                                <span class="col-date">{{ data.paymentCommitment.dueDate | date:'dd/MM/yyyy' }}</span>
+                              </ng-template>
+                            </p-column>
+              
+                            <p-column field="paymentCommitment.remindDate" header="Date Rappel">
+                              <ng-template let-col let-data="rowData" pTemplate type="body">
+                                <span class="col-date">{{ data.paymentCommitment.remindDate | date:'dd/MM/yyyy' }}</span>
+                              </ng-template>
+                            </p-column>
+              
+                            <p-column field="enable" header="Etat" [style]="{'width':'9%'}" [sortable]="true">
+                              <ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+                                <div class="label-main" *ngIf="data.paymentCommitment.enable">
+                                  <label class="label label-success" style="padding: 5px; border-radius: 5px;">Actif</label>
+                                </div>
+                                <div class="label-main" *ngIf="!data.paymentCommitment.enable">
+                                  <label class="label label-danger" style="padding: 5px; border-radius: 5px;">Abandonné</label>
+                                </div>
+                              </ng-template>
+                            </p-column>
+              
+                            <p-column field="paymentCommitment.comment" header="Commentaire">
+                              <ng-template let-col let-data="rowData" pTemplate type="body">
+                                <span class="">{{ data.paymentCommitment.comment }}</span>
+                              </ng-template>
+                            </p-column>
+              
+                            <p-column field="id" header="Actions" [style]="{'width':'14%'}" *ngIf="currentUser.userAccess != 2">
+                              <ng-template let-col let-data="rowData" pTemplate type="body">
+                                <button type="button" pButton icon="fa fa-eye" 
+                                style="width: 100%; float: left;" label="Activer" [disabled]="enableButton || !tuitionView.enable"
+                                (click)="enablePaymentCommitment(data)" *ngIf="!data.paymentCommitment.enable"></button>
+                                <button type="button" pButton icon="fa fa-eye-slash" 
+                                style="width: 100%; float: left;" label="Abandonner" [disabled]="enableButton"
+                                (click)="disablePaymentCommitment(data)" *ngIf="data.paymentCommitment.enable"></button>
+                              </ng-template>
+                            </p-column>
+              
+                            <ng-template pTemplate="paginatorLeft" *ngIf="currentUser.userAccess != 2">
+                              <button type="button" (click)="addNewPaymentCommitment()" pButton icon="fa fa-plus-circle"
+                                [hidden]="loggedInUser.role>2 && loggedInUser.role!=5 && loggedInUser.role!=8 && loggedInUser.role!=9">
+              
+                              </button>
+                            </ng-template>
+              
+                            <ng-template pTemplate="paginatorRight">
+                              <button type="button" (click)="getStudentPaymentCommitments()" pButton icon="fa fa-refresh"></button>
+                            </ng-template>
+                          </p-dataTable>
+                        </div>
+                      </div>
+              
+                      <br />
+              
+                      <div *ngIf="addPaymentCommitment">
+              
+                        <br />
+              
+                        <button type="button" class="btn btn-primary">
+                          <span class="badge badge-light">*</span> Création d'un engagement
+                        </button>
+              
+                        <br /><br />
+              
+                        <div class="ui-grid-row">
+                          <div class="ui-grid-col-2">
+                            <label i18n="@@amount" for="amount">Montant</label>
+                          </div>
+                          <div class="ui-grid-col-3">
+                            <input pInputText id="amount" [(ngModel)]="studentPaymentCommitment.amount" required />
+                          </div>
+                          <div class="ui-grid-col-1">
+              
+                          </div>
+              
+                          <div class="ui-grid-col-2">
+                            <label i18n="@@comment" for="dueDate">Commentaire</label>
+                          </div>
+                          <div class="ui-grid-col-3">
+                            <textarea id="comment" [(ngModel)]="studentPaymentCommitment.comment" #comment="ngModel"
+                              pInputTextarea></textarea>
+                          </div>
+                          <div class="ui-grid-col-1">
+              
+                          </div>
+                        </div>
+              
+                        <br />
+              
+                        <div class="ui-grid-row">
+                          <div class="ui-grid-col-2">
+                            <label i18n="@@dueDate" for="dueDate">Date Echeance</label>
+                          </div>
+                          <div class="ui-grid-col-3">
+                            <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="dueDate" [showIcon]="false" required [(ngModel)]="studentPaymentCommitment.dueDate">
+                            </p-calendar>
+                          </div>
+                          <div class="ui-grid-col-1">
+              
+                          </div>
+              
+                          <div class="ui-grid-col-2">
+                            <label i18n="@@remindDate" for="remindDate">Date Rappel</label>
+                          </div>
+                          <div class="ui-grid-col-3">
+                            <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="remindDate" required [(ngModel)]="studentPaymentCommitment.remindDate"></p-calendar>
+                          </div>
+                          <div class="ui-grid-col-1">
+              
+                          </div>
+                        </div>
+              
+                        <br />
+              
+                        <div class="ui-grid-row" *ngIf="currentUser.userAccess != 2">
+                          <div class="ui-grid-col-2">
+                            <button type="button" pButton icon="fa fa-check" (click)="saveStudentPaymentCommitment()"
+                              label="Enregistrer"></button>
+                          </div>
+                          <div class="ui-grid-col-2">
+                            <button type="button" pButton icon="fa fa-close" (click)="cancelStudentPaymentCommitment()"
+                              label="Annuler"></button>
+                          </div>
+                        </div>
+              
+                        <br />
+                      </div>
+              
+                      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+                      <div *ngIf="success" class="alert alert-success">{{success}}</div>
+                    </p-tabPanel>
+              
+                    <p-tabPanel header="Paiement" leftIcon="fa fa-money" [selected]="activeTab === 2">
+                      <div class="ui-grid ui-grid-responsive ui-fluid">
+              
+                        <div class="ui-grid-row">
+              
+                          <div class="ui-grid-col-12">
+                            <p-dataTable [value]="studentPayments" [paginator]="true" [rows]="15" [responsive]="true"
+                              [editable]="true">
+              
+                              <p-column *ngFor="let col of colsPayments" [field]="col.field" [header]="col.header"
+                                [sortable]="col.sortable" [filter]="col.filter">
+              
+                                <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+                                  <span class="col-date">{{ data[col.field] | date:'dd/MM/yyyy' }}</span>
+                                </ng-template>
+              
+                              </p-column>
+
+                              <p-column field="enable" header="Etat" [style]="{'width':'9%'}" [sortable]="true">
+                                <ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+                                  <div class="label-main" *ngIf="data.enable">
+                                    <label class="label label-success" style="padding: 5px; border-radius: 5px;">Actif</label>
+                                  </div>
+                                  <div class="label-main" *ngIf="!data.enable">
+                                    <label class="label label-danger" style="padding: 5px; border-radius: 5px;">Inactif</label>
+                                  </div>
+                                </ng-template>
+                              </p-column>
+              
+                              <ng-template pTemplate="paginatorLeft" *ngIf="currentUser.userAccess != 2">
+                                <button type="button" [disabled]="!tuitionView.enable" (click)="addNewPayment()" pButton icon="fa fa-plus-circle"
+                                  [hidden]="loggedInUser.role>2 && loggedInUser.role!=5 && loggedInUser.role!=8 && loggedInUser.role!=9">
+              
+                                </button>
+                              </ng-template>
+                              <ng-template pTemplate="paginatorRight" *ngIf="currentUser.userAccess != 2">
+                                <button type="button" (click)="getStudentPayments()" pButton icon="fa fa-refresh"></button>
+                              </ng-template>
+                            </p-dataTable>
+                          </div>
+              
+                        </div>
+                      </div>
+              
+                      <br />
+              
+                      <div *ngIf="addPayment">
+              
+                        <div class="ui-grid-row">
+              
+                        </div>
+              
+                        <br />
+              
+                        <button type="button" class="btn btn-primary">
+                          <span class="badge badge-light">*</span> Effectuer un paiement - Liste des tranches de paiement
+                        </button>
+              
+                        <p-dataTable [value]="tuitionViewCommitments" sortField="name" [editable]="true">
+              
+                          <p-column field="amount" header="Montant du ({{mainCurrency.symbol}})">
+                            <ng-template let-col let-data="rowData" pTemplate type="body">
+                              <span class="col-currency">{{ data[col.field ] |number : '1.2-2' }}</span>
+                            </ng-template>
+                          </p-column>
+              
+                          <p-column field="balance" header="Montant restant">
+                            <ng-template let-col let-data="rowData" pTemplate type="body">
+                              <span class="col-currency">{{ data[col.field ] |number : '1.2-2' }}</span>
+                            </ng-template>
+                          </p-column>
+              
+                          <p-column field="dueDate" header="Date Echeance">
+                            <ng-template let-col let-data="rowData" pTemplate type="body">
+                              <span class="col-currency">{{ data[col.field ] | date:'dd/MM/yyyy' }}</span>
+                            </ng-template>
+                          </p-column>
+              
+                          <p-column field="newPay" header="Montant a Payer ({{mainCurrency.symbol}})" [editable]="true"
+                            [hidden]="loggedInUser.role>2 && loggedInUser.role!=5 && loggedInUser.role!=8 && loggedInUser.role!=9">
+                          </p-column>
+              
+              
+                          <p-column field="slipNumber" header="Num. bordereau" [editable]="true"
+                            [hidden]="loggedInUser.role>2 && loggedInUser.role!=5 && loggedInUser.role!=8 && loggedInUser.role!=9">
+                          </p-column>
+              
+                          <p-column field="bankPaymentDate" header="Date versement" [editable]="true" 
+                          [hidden]="loggedInUser.role>2 && loggedInUser.role!=5 && loggedInUser.role!=8 && loggedInUser.role!=9" 
+                          [style]=" {'overflow':'visible' }">
+                            <ng-template let-col let-data="rowData" pTemplate="editor">
+                              <p-inputMask mask="99/99/9999" [(ngModel)]="data[col.field]"
+                                placeholder="99/99/9999" slotChar="dd/mm/yyyy"></p-inputMask> 
+                            </ng-template> 
+                          </p-column>
+              
+                          <p-column field="bank.name" header="Banque dest." [style]="{'overflow':'visible'}">
+                            <ng-template let-col let-informationChannel="rowData" pTemplate="body">
+                              <p-autoComplete (onDropdownClick)="bankDropdown.handleDropdownClick($event)"
+                                (onSelect)="bankSelected($event)" [suggestions]="bankDropdown.filteredBanks" [dropdown]="true"
+                                id="iChannel" (completeMethod)="bankDropdown.filter($event)" name="bank" field="name"
+                                placeholder="Banque destinataire" [minLength]="1"></p-autoComplete>
+                            </ng-template>
+                          </p-column>
+              
+                          <p-column field="balance" header="Actions" [style]="{'width':'14%'}" *ngIf="currentUser.userAccess != 2">
+                            <ng-template let-col let-data="rowData" pTemplate type="body">
+                              <button type="button" pButton icon="fa fa-check" style="width: 100%; float: left;" label="Payer"
+                                (click)="saveTuitionNewNew(data)"></button>
+                            </ng-template>
+                          </p-column>
+              
+                        </p-dataTable>
+              
+                        <br />
+              
+                        <div class="ui-grid-row"> 
+                          <div class="ui-grid-col-2">
+                            <button type="button" pButton icon="fa fa-close" (click)="cancelPayment()" label="Annuler"></button>
+                          </div>
+                        </div>
+              
+                      </div>
+              
+                      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+                      <div *ngIf="success" class="alert alert-success">{{success}}</div>
+                    </p-tabPanel>
+              
+                    <p-tabPanel header="Documents" leftIcon="fa fa-file" [selected]="activeTab === 3">
+                      <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="studentTuitionComment">
+              
+                        <div class="ui-grid-row">
+              
+                          <div class="ui-grid-col-12">
+                            <p-dataTable [value]="studentTuitionCommentDocuments" [editable]="true" [paginator]="true" [rows]="15"
+                              [responsive]="true" [style]="{'margin-left':'10px;'}">
+              
+                              <p-column field="createDate" header="Date d'ajout" [editable]="false" [style]="{'width':'50%'}">
+                                <ng-template let-col let-studentTuitionComment="rowData" pTemplate type="body">
+                                  <span class="col-date">{{ studentTuitionComment.createDate | date:'dd/MM/yyyy' }}</span>
+                                </ng-template>
+                              </p-column>
+              
+                              <p-column field="receivedDocument" header="Documents" [editable]="false" [style]="{'width':'50%'}">
+                                <ng-template let-col let-studentTuitionComment="rowData" pTemplate="body">
+                                  <a *ngIf="user" class="btn btn-theme" target="_blank"
+                                    href="assets/docs/student_docs/recusPaiement/{{studentTuitionComment.receivedDocument}}"><i
+                                      class="fa fa-download"></i>Télécharger</a>
+                                </ng-template>
+                              </p-column>
+              
+                              <ng-template pTemplate="paginatorLeft" *ngIf="currentUser.userAccess != 2">
+                                <button type="button" (click)="showDialogToUploadReceivedDocument()" pButton icon="fa fa-plus-circle"
+                                  [hidden]="loggedInUser.role>2 && loggedInUser.role!=5 && loggedInUser.role!=8 && loggedInUser.role!=9">
+              
+                                </button>
+                              </ng-template>
+                              <ng-template pTemplate="paginatorRight">
+                                <button type="button" (click)="getStudentTuitionComments()" pButton icon="fa fa-refresh"></button>
+                              </ng-template>
+                            </p-dataTable>
+                          </div>
+              
+                        </div>
+                      </div>
+              
+                      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+                      <div *ngIf="success" class="alert alert-success">{{success}}</div>
+                    </p-tabPanel>
+              
+                    <p-tabPanel header="Commentaire" leftIcon="fa fa-money" [selected]="activeTab === 4">
+                      <div class="ui-grid-row">
+                        <div class="ui-grid-col-12">
+              
+                          <p-dataTable [value]="studentTuitionCommentComments" [paginator]="true" [rows]="15" [responsive]="true"
+                            [editable]="true">
+              
+                            <p-column field="createDate" header="Date commentaire" [editable]="false" [style]="{'width':'50%'}">
+                              <ng-template let-col let-studentTuitionComment="rowData" pTemplate type="body">
+                                <span class="col-date">{{ studentTuitionComment.createDate | date:'dd/MM/yyyy' }}</span>
+                              </ng-template>
+                            </p-column>
+              
+                            <p-column field="comment" header="Commentaires" [editable]="false" [style]="{'width':'50%'}">
+                              <ng-template let-col let-studentTuitionComment="rowData" pTemplate="body">
+                                {{ studentTuitionComment.comment}}
+                              </ng-template>
+                            </p-column>
+              
+                            <ng-template pTemplate="paginatorLeft" *ngIf="currentUser.userAccess != 2">
+                              <button type="button" (click)="addNewStudentTuitionComment()" pButton icon="fa fa-plus-circle"
+                                [hidden]="loggedInUser.role>2 && loggedInUser.role!=5 && loggedInUser.role!=8 && loggedInUser.role!=9">
+              
+                              </button>
+                            </ng-template>
+                            <ng-template pTemplate="paginatorRight">
+                              <button type="button" (click)="getStudentTuitionComments()" pButton icon="fa fa-refresh"></button>
+                            </ng-template>
+                          </p-dataTable>
+                        </div>
+              
+                      </div>
+              
+                      <br />
+              
+                      <div *ngIf="addStudentTuitionComment">
+              
+                        <br />
+              
+                        <button type="button" class="btn btn-primary">
+                          <span class="badge badge-light">*</span> Ajout d'un commentaire
+                        </button>
+              
+                        <br /><br />
+              
+                        <div class="ui-grid-row">
+                          <div class="ui-grid-col-2">
+                            <label i18n="@@comment" for="dueDate">Commentaire</label>
+                          </div>
+                          <div class="ui-grid-col-10">
+                            <textarea id="comment" [(ngModel)]="studentTuitionComment.comment" #comment="ngModel"
+                              pInputTextarea></textarea>
+                          </div>
+                        </div>
+              
+                        <br />
+              
+                        <div class="ui-grid-row">
+                          <div class="ui-grid-col-2">
+                            <button type="button" pButton icon="fa fa-check" (click)="saveStudentTuitionComment()"
+                              label="Enregistrer"></button>
+                          </div>
+                          <div class="ui-grid-col-2">
+                            <button type="button" pButton icon="fa fa-close" (click)="cancelStudentTuitionComment()"
+                              label="Annuler"></button>
+                          </div>
+                        </div>
+              
+                      </div>
+              
+                      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+                      <div *ngIf="success" class="alert alert-success">{{success}}</div>
+                    </p-tabPanel>
+              
+                  </p-tabView>
+              
+              
+              
+                </div>
+              </div>
+            </ng-template>
+
+          </p-dataTable>
+        </div>
+      </div>
+         <!-- <div class="ui-grid-row" >
+            <button type="button" pButton icon="fa fa-plus" style="width: 100%; float: left;" label="Montant restant"
+                *ngIf="abandon" (click)="showAbandonDialog()" ></button>
+      
+      </div> -->
+    </div>
+  </ng-template>
+ 
+  <ng-template pTemplate="paginatorLeft" *ngIf="currentUser.userAccess != 2">
+    <button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"
+      [hidden]="loggedInUser.role>2 && loggedInUser.role!=5 && loggedInUser.role!=8 && loggedInUser.role!=9"></button>
+  </ng-template>
+  <ng-template pTemplate="paginatorRight">
+    <button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+  </ng-template>
+</p-dataTable>
+
+
+<p-dialog header="{{PAYMENTS}}" [(visible)]="displayPayment" [responsive]="true" showEffect="fade" [modal]="true"
+  width="600" *ngIf="currentUser.userAccess != 2">
+  <div class="ui-grid ui-grid-responsive ui-fluid">
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4">{{tuition.name}}</div>
+      <div class="ui-grid-col-1">{{mainCurrency.symbol}}</div>
+      <div class="ui-grid-col-7">{{tuition.balance}}</div>
+
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4">
+        <label i18n="@@amount" for="inspector">Montant a payer </label>
+      </div>
+      <div class="ui-grid-col-1">{{mainCurrency.symbol}}</div>
+
+      <div class="ui-grid-col-7">
+        <input pInputText id="inspector" [(ngModel)]="payAmount" />
+      </div>
+
+    </div>
+    <div class="ui-grid-row">
+
+      <div class="ui-grid-col-4">
+        <label i18n="@@wantToPayin" for="inspector">Je veux payer en:</label>
+      </div>
+      <div class="ui-grid-col-8">
+        <p-listbox [options]="currencies" [(ngModel)]="selectedCurrency" (onChange)="convertCurrency($event)">
+        </p-listbox>
+      </div>
+
+    </div>
+
+    <hr />
+    <div class="ui-grid-row">
+
+      <div class="ui-grid-col-12">
+        <h5>Paye: {{payAmount|number : '1.2-2'}} {{mainCurrency.symbol}}
+          = {{payAmount/currency.factor|number : '1.2-2'}} {{currency.symbol}}</h5>
+      </div>
+
+    </div>
+    <div class="ui-grid-row">
+
+      <div class="ui-grid-col-4">
+        <h5>Restant: {{tuition.balance-payAmount |number : '1.2-2'}}
+          {{mainCurrency.symbol}}</h5>
+      </div>
+      <div class="ui-grid-col-8">
+        <button type="button" class="btn btn-success">
+          <i class="fa fa-cc-paypal" style="font-size: 24px; color: red"></i>
+          <i class="fa fa-cc-visa" style="font-size: 24px; color: red"></i> <i class="fa fa-cc-amex"
+            style="font-size: 24px; color: red"></i> <i class="fa fa-cc-mastercard"
+            style="font-size: 24px; color: red"></i>
+          <i class="fa fa-cc-discover" style="font-size: 24px; color: red"></i>
+
+        </button>
+      </div>
+
+    </div>
+
+
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+
+      <button type="button" pButton icon="fa fa-check" class="btn btn-success" style="font-size: 24px; color: red"
+        (click)="submitPayment()" label="{{PAY}}"></button>
+
+    </div>
+  </p-footer>
+</p-dialog>
+
+
+<!-- Vue pour la saisie du montant restant apr�s abandon -->
+ <!-- <p-dialog header="Montant restant apr�s abandon" [(visible)]="showAbandon" [responsive]="true" showEffect="fade" [modal]="true"
+         width="600">
+        <form (ngSubmit)="saveAbandonAdjustment()" #studentInfoForm="ngForm">
+           <div class="ui-grid-row">
+            <div class="ui-grid-col-3">
+              <label i18n="@@comment" for="dueDate">Montant de la remise (en F CFA)</label>
+            </div>
+            <div class="ui-grid-col-3">
+              <input name="newRebate" pInputText id="newRebate" [(ngModel)]="tuitionView.newRebate" required />
+            </div>
+          </div>
+           <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              <button type="submit" pButton icon="fa fa-check"  label="Enregistrer"></button>
+            </div>
+            <div class="ui-grid-col-2">
+              <button type="button" pButton icon="fa fa-close" (click)="cancelStudentTuitionRebate()"
+                label="Annuler"></button>
+            </div>
+          </div>
+         </form>    
+ </p-dialog> -->
+<!-- Update Payment System 01112019 -->
+<p-dialog header="Engagement & Paiement" [(visible)]="displayPaymentCommitment" [responsive]="true" showEffect="fade"
+  [modal]="true" width="1000" *ngIf="currentUser.userAccess != 2">
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="studentPaymentCommitment">
+
+    <p-tabView id="tabList" (onChange)="onTabChange($event)">
+
+      <p-tabPanel header="Remise" leftIcon="fa fa-money" [selected]="activeTab === 0">
+
+        <br />
+
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-3">
+            <p>Montant total : </p>
+          </div>
+          <div class="ui-grid-col-3">
+            <p> {{ tuitionView.amount |number : '1.2-2' }} F CFA </p>
+          </div>
+          <div class="ui-grid-col-3">
+            <p>Montant total restant : </p>
+          </div>
+          <div class="ui-grid-col-3">
+            <p> {{ tuitionView.balance |number : '1.2-2' }} F CFA</p>
+          </div>
+        </div>
+
+        <br />
+
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-3">
+            <p>Montant total payé : </p>
+          </div>
+          <div class="ui-grid-col-3">
+            <p> {{ tuitionView.paid |number : '1.2-2' }} F CFA</p>
+          </div>
+          <div class="ui-grid-col-3">
+            <p>Montant total de la remise : </p>
+          </div>
+          <div class="ui-grid-col-3">
+            <p> {{ tuitionView.rebate |number : '1.2-2' }} F CFA</p>
+          </div>
+        </div>
+
+        <br />
+
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-2">
+            <button type="button" pButton icon="fa fa-edit" (click)="addNewStudentTuitionRebate()"
+              label="Modifier la remise"></button>
+          </div>
+        </div>
+
+        <br />
+
+        <div *ngIf="addStudentTuitionRebate">
+
+          <br />
+
+          <button type="button" class="btn btn-primary">
+            <span class="badge badge-light">*</span> Mise à jour de la remise
+          </button>
+
+          <br /><br />
+
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-3">
+              <label i18n="@@comment" for="dueDate">Montant de la remise (en F CFA)</label>
+            </div>
+            <div class="ui-grid-col-3">
+              <input pInputText id="newRebate" [(ngModel)]="tuitionView.newRebate" required />
+            </div>
+          </div>
+
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</p-dialog>
+<p-dialog header="Confirmation" [(visible)]="confirmDisablePaymentCommitment" [responsive]="true" 
+  showEffect="fade" [modal]="true" width="600" *ngIf="currentUser.userAccess != 2">
+  <div class="ui-grid ui-grid-responsive ui-fluid">
+
+    <br />
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-12">
+        Une partie du montant de cet engagement a déjà été payé !
+      </div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-12">
+        Voulez-vous vraiment abandonner cet engagement ?
+      </div>
+    </div>
+
+    <br />
+
+  </div>
+  <footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="cancelDisablingPaymentCommitment()" label="Annuler"></button>
+      <button type="button" pButton icon="fa fa-check" (click)="disablePaymentCommitmentAfterMakingItPayment()" label="Abandonner"></button>
+    </div>
+  </footer>
+</p-dialog>
+
+<p-dialog header="Confirmation" [(visible)]="confirmDisableStudentTuition" [responsive]="true" 
+  showEffect="fade" [modal]="true" width="600" *ngIf="currentUser.userAccess != 2">
+  <div class="ui-grid ui-grid-responsive ui-fluid">
+
+    <br />
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-12">
+        Une partie du montant de cette tranche a déjà été payée !
+      </div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-12">
+        Voulez-vous vraiment abandonner cette tranche ?
+      </div>
+    </div>
+
+    <br />
+
+  </div>
+  <footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="cancelDisablingStudentTuition()" label="Annuler"></button>
+      <button type="button" pButton icon="fa fa-check" (click)="saveDisableStudentTuition()" label="Abandonner"></button>
+    </div>
+  </footer>
+</p-dialog>

@@ -1,0 +1,65 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 class="heading-title pull-left">{{subject.name}}</h1>
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+					ici:</li>
+				<li><a i18n="@@homeLink" href="index.html">Home</a><i
+					class="fa fa-angle-right"></i></li>
+				<li i18n="@@subject" class="current">Matiere</li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<div class="row page-row">
+			<div class="course-wrapper col-md-8 col-sm-7">
+				<article class="course-item">
+					<p class="featured-image page-row">
+						<img class="img-responsive"
+							src="assets/images/subject/{{subject.pic}}" alt="" />
+					</p>
+					<div class="page-row box box-border">
+						<strong i18n="@@courseObjective">Objectifs du cours</strong>
+					</div>
+
+					<div class="page-row">
+						<div [innerHTML]="subject.objectif"></div>
+					</div>
+					<div class="page-row box box-border">
+						<strong i18n="@@courseDescription">Description du cours</strong>
+					</div>
+					<!--//page-row-->
+					<div class="page-row">
+						<div [innerHTML]="subject.description"></div>
+					</div>
+
+
+					<!--//page-row-->
+				</article>
+			</div>
+			<aside
+				class="page-sidebar  col-md-3 col-md-offset-1 col-sm-4 col-sm-offset-1">
+				<section class="widget has-divider">
+					<!-- <app-syllabus></app-syllabus> -->
+				</section>
+				<!--//widget-->
+				<section class="widget has-divider">
+					<app-contact-short></app-contact-short>
+				</section>
+				<!--//widget-->
+
+				<!--//widget-->
+				<section class="widget has-divider">
+					<a class="btn btn-cta" [routerLink]="['/onlineRegistration']"
+						[queryParams]="{ event:'INSCRIPTION'}"><i
+						class="fa fa-play-circle"></i>Inscription en ligne</a>
+				</section>
+				<!--//widget-->
+			</aside>
+		</div>
+		<!--//page-row-->
+	</div>
+</div>

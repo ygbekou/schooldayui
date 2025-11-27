@@ -1,0 +1,47 @@
+<form (ngSubmit)="saveUser()" #contactInfoForm="ngForm">
+
+    <div class="ui-grid-row">
+        <div class="ui-grid-col-6">
+
+            <div style="margin-top: 30px; margin-bottom: 30px;">
+                <p-checkbox name="allowedToConnect" [binary]="true" label="est autorisé à se connecter"
+                    [(ngModel)]="user.allowedToConnect"></p-checkbox>
+            </div>
+
+        </div>
+        <div class="ui-grid-col-6">
+
+            <div style="margin-top: 30px; margin-bottom: 30px;">
+                <span *ngIf="user.currentlyConnected"
+                    style="padding: 8px 12px; background: #22C55E; color: white; border-radius: 10px; font-size: 10px;">
+                    Connecté
+                </span>
+                <span *ngIf="!user.currentlyConnected"
+                    style="padding: 8px 12px; background: #EF4444; color: white; border-radius: 10px; font-size: 10px;">
+                    Déconnecté
+                </span>
+            </div>
+
+            <div>
+                <strong>Date de dernière connexion : </strong>
+                <span>{{ user.lastLoginDate ? (user.lastLoginDate | date:'dd/MM/yyyy HH:mm:ss') : 'Jamais connecté'
+                    }}</span>
+            </div>
+        </div>
+
+    </div>
+
+    <button pButton type="submit" label="{{SAVE_LABEL}}"></button>
+
+    <!-- <button [disabled]="!contactInfoForm.form.valid" pButton type="submit"
+		label="{{SAVE_LABEL}}"></button> -->
+
+    <br>
+    <div style="margin-top: 10px;">
+        <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+        <div *ngIf="success" class="alert alert-success">{{success}}</div>
+
+    </div>
+
+
+</form>

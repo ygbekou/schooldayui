@@ -1,0 +1,90 @@
+<div class="ui-grid-row">
+    <div class="ui-grid-col-8">
+        <p-autoComplete [(ngModel)]="theSchoolYear"
+            (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+            [suggestions]="schoolYearDropdown.filteredSchoolYears"
+            [dropdown]="true" id="schoolYear"
+            (completeMethod)="schoolYearDropdown.filter($event)"
+            name="schoolYear" field="year" [size]="30" [size]="150" 
+            placeholder="Année universitaire" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+    </div>
+    <div class="ui-grid-col-4">
+
+            <button type="button" pButton icon="fa fa-search" (click)="search()"
+                label="Voir mes heures" style="margin-bottom: 4px; height: 35px;"></button>
+       
+    </div>
+</div>
+
+<p-dataTable [value]="mHours" selectionMode="single"
+	expandableRows="true" rowExpandMode="single" [paginator]="true"
+	[rows]="15" [(selection)]="monthlyHours" [responsive]="true"
+	(onRowExpand)="getDailyHoursByMonth($event)"> <p-column
+	expander="true" styleClass="col-icon" [style]="{'width':'5%'}"></p-column>
+
+	<p-column *ngFor="let col of cols" [field]="col.field" [style]="col.style"
+	[header]="col.header" [sortable]="col.sortable" [filter]="col.filter">
+	</p-column>
+
+    <ng-template let-MonthlyHours pTemplate="rowexpansion"> 
+		<div class="ui-grid ui-grid-responsive ui-fluid">
+        
+            <p-dataTable [value]="dHours" selectionMode="single"
+            expandableRows="true" rowExpandMode="single" [paginator]="true"
+            [rows]="15" [(selection)]="dailyHours" [responsive]="true"
+            (onRowExpand)="gethoursCourseByDay($event)"> <p-column
+            expander="true" styleClass="col-icon" [style]="{'width':'5%'}"></p-column>
+        
+            <!-- <p-column *ngFor="let col of colsD" [field]="col.field" [style]="col.style"
+            [header]="col.header" [sortable]="col.sortable" [filter]="col.filter">
+            </p-column>  -->
+
+                <p-column header="Ordre" [style]="{'width':'5%'}">	
+                    <ng-template let-i="rowIndex" pTemplate="body">
+                        {{i+1}}
+                    </ng-template>
+                </p-column>  
+                <p-column
+                    field="date" header="Date" [style]="{'width':'50%'}">
+                </p-column>
+                <p-column
+                    field="hours" header="Nbr. Heures (H)" [style]="{'width':'50%'}">
+                </p-column>
+
+            <ng-template let-DailyHours pTemplate="rowexpansion"> 
+                <div class="ui-grid ui-grid-responsive ui-fluid">
+
+                    <p-dataTable [value]="cHours" [responsive]="true" [rows]="15"  [paginator]="true">
+                        <p-column header="Ordre" [style]="{'width':'5%'}">	
+                            <ng-template let-i="rowIndex" pTemplate="body">
+                                {{i+1}}
+                            </ng-template>
+                        </p-column>  
+                        <p-column
+                            field="code" header="Code" [style]="{'width':'25%'}">
+                        </p-column>
+                        <p-column
+                            field="classe" header="Classe" [style]="{'width':'25%'}">
+                        </p-column>
+                        <p-column
+                            field="course" header="Cours" [style]="{'width':'25%'}">
+                        </p-column>
+                        <p-column
+                            field="hours" header="Nbr. Heures (H)" [style]="{'width':'25%'}">
+                        </p-column>
+                    </p-dataTable>
+                
+
+                </div> 
+            </ng-template> 
+
+            
+
+        </p-dataTable>
+		
+	
+    </div> 
+</ng-template> 
+	
+
+</p-dataTable>

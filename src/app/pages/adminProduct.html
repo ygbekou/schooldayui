@@ -1,0 +1,339 @@
+<file-uploader></file-uploader>
+<p-growl [(value)]="msgs"></p-growl>
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="700">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="product">
+
+	<div class="panel-group" id="accordion">
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<a data-toggle="collapse" data-parent="#accordion"
+						href="#collapse-1"> General </a>
+				</h4>
+			</div>
+			<!--//pane-heading-->
+			<div id="collapse-1" class="panel-collapse">
+				<div class="panel-body">
+
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-2">
+							<label i18n="@@category" for="category">Categorie</label>
+						</div>
+						<div class="ui-grid-col-9">
+							<p-autoComplete [(ngModel)]="product.category"
+								(onDropdownClick)="categoryDropdown.handleDropdownClick($event)"
+								[suggestions]="categoryDropdown.filteredCategories"
+								[dropdown]="true" id="category" required
+								(completeMethod)="categoryDropdown.filter($event)"
+								name="category" field="name" [size]="30"
+								placeholder="{{CATEGORY}}" [minLength]="1" #category="ngModel"></p-autoComplete>
+							<div [hidden]="category.valid || category.pristine"
+								class="alert alert-danger" i18n="@@categoryRequired">Categorie
+								Requise</div>
+						</div>
+						<div class="ui-grid-col-1"></div>
+					</div>
+
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-2">
+							<label i18n="@@room" for="room">Emplacement</label>
+						</div>
+						<div class="ui-grid-col-9">
+							<p-autoComplete [(ngModel)]="product.room"
+								(onDropdownClick)="roomDropdown.handleDropdownClick($event)"
+								[suggestions]="roomDropdown.filteredRooms" [dropdown]="true"
+								id="room" required
+								(completeMethod)="roomDropdown.filter($event)" name="category"
+								field="name" [size]="30" placeholder="{{PRODUCT_ROOM}}"
+								[minLength]="1" #room="ngModel"></p-autoComplete>
+							<div [hidden]="room.valid || room.pristine"
+								class="alert alert-danger" i18n="@@roomRequired">Emplacement
+								Requis</div>
+						</div>
+						<div class="ui-grid-col-1"></div>
+					</div>
+
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-2">
+							<label i18n="@@name" for="name">Nom ou titre</label>
+						</div>
+						<div class="ui-grid-col-9">
+							<input pInputText id="name" [(ngModel)]="product.name" required
+								#name="ngModel" />
+						</div>
+						<div [hidden]="name.valid || name.pristine"
+							class="alert alert-danger" i18n="@@nameRequired">Nom Requis</div>
+						<div class="ui-grid-col-1"></div>
+					</div>
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-2">
+							<label i18n="@@brand" for="brand">Marque</label>
+						</div>
+						<div class="ui-grid-col-9">
+							<p-autoComplete [(ngModel)]="product.brand"
+								(onDropdownClick)="brandDropdown.handleDropdownClick($event)"
+								[suggestions]="brandDropdown.filteredBrands" [dropdown]="true"
+								id="brand" (completeMethod)="brandDropdown.filter($event)"
+								name="brand" field="name" [size]="30" placeholder="{{BRAND}}"
+								[minLength]="1" #brand="ngModel"></p-autoComplete>
+							<div [hidden]="brand.valid || brand.pristine"
+								class="alert alert-danger" i18n="@@brandRequired">Marque
+								Requise</div>
+						</div>
+						<div class="ui-grid-col-1"></div>
+					</div>
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-2">
+							<label i18n="@@productCode" for="productCode">Code</label>
+						</div>
+						<div class="ui-grid-col-9">
+							<input pInputText id="productCode"
+								[(ngModel)]="product.productCode" #productCode="ngModel" />
+						</div>
+						<div [hidden]="productCode.valid || productCode.pristine"
+							class="alert alert-danger" i18n="@@productCodeRequired">Code
+							Requis</div>
+						<div class="ui-grid-col-1"></div>
+					</div>
+
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-2">
+							<label i18n="@@description" for="description">Description</label>
+						</div>
+						<div class="ui-grid-col-9">
+							<textarea id="description" [(ngModel)]="product.description"
+								#description="ngModel" [rows]="3" pInputTextarea
+								autoResize="autoResize" style="min-height: 61px"></textarea>
+						</div>
+						<div class="ui-grid-col-1"></div>
+					</div>
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-2">
+							<label i18n="@@productQty" for="qty">Qte</label>
+						</div>
+						<div class="ui-grid-col-9">
+							<input pInputText id="qty" [(ngModel)]="product.qty"
+								#qty="ngModel" />
+						</div>
+						<div class="ui-grid-col-1"></div>
+					</div>
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-2">
+							<label i18n="@@productQtyInStock" for="qtyInStock">Qte en
+								stock</label>
+						</div>
+						<div class="ui-grid-col-9">
+							<input pInputText id="qtyInStock"
+								[(ngModel)]="product.qtyInStock" #qtyInStock="ngModel" />
+						</div>
+						<div class="ui-grid-col-1"></div>
+					</div>
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-4">
+							<label i18n="@@active" for="status">Active?</label>
+						</div>
+						<div class="ui-grid-col-8">
+							<p-checkbox [(ngModel)]="product.status" binary="true"
+								id="status"></p-checkbox>
+						</div>
+					</div>
+
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-4">
+							<label i18n="@@returnable" for="returnable">Empruntable?</label>
+						</div>
+						<div class="ui-grid-col-8">
+							<p-checkbox [(ngModel)]="product.returnable" binary="true"
+								id="returnable"></p-checkbox>
+						</div>
+					</div>
+
+				</div>
+				<!--//panel-body-->
+			</div>
+			<!--//panel-colapse-->
+		</div>
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<a data-toggle="collapse" data-parent="#accordion"
+						href="#collapse-2"> Livre </a>
+				</h4>
+			</div>
+			<!--//pane-heading-->
+			<div id="collapse-2" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-2">
+							<label i18n="@@author" for="author">Auteur</label>
+						</div>
+						<div class="ui-grid-col-9">
+							<p-autoComplete [(ngModel)]="product.author"
+								(onDropdownClick)="authorDropdown.handleDropdownClick($event)"
+								[suggestions]="authorDropdown.filteredAuthors" [dropdown]="true"
+								id="author" (completeMethod)="authorDropdown.filter($event)"
+								name="author" field="name" [size]="30" placeholder="{{AUTHOR}}"
+								[minLength]="1" #author="ngModel"></p-autoComplete>
+							<div [hidden]="author.valid || author.pristine"
+								class="alert alert-danger" i18n="@@authorRequired">Auteur
+								Requis</div>
+						</div>
+						<div class="ui-grid-col-1"></div>
+					</div>
+
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-2">
+							<label i18n="@@publisher" for="publisher">Editeur</label>
+						</div>
+						<div class="ui-grid-col-9">
+							<p-autoComplete [(ngModel)]="product.publisher"
+								(onDropdownClick)="publisherDropdown.handleDropdownClick($event)"
+								[suggestions]="publisherDropdown.filteredPublishers"
+								[dropdown]="true" id="publisher"
+								(completeMethod)="publisherDropdown.filter($event)"
+								name="publisher" field="name" [size]="30"
+								placeholder="{{PUBLISHER}}" [minLength]="1" #publisher="ngModel"></p-autoComplete>
+							<div [hidden]="publisher.valid || publisher.pristine"
+								class="alert alert-danger" i18n="@@publisherRequired">Editeur
+								Requis</div>
+						</div>
+						<div class="ui-grid-col-1"></div>
+					</div>
+
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-2">
+							<label i18n="@@language" for="language">Langue</label>
+						</div>
+						<div class="ui-grid-col-9">
+							<p-autoComplete [(ngModel)]="product.language"
+								(onDropdownClick)="languageDropdown.handleDropdownClick($event)"
+								[suggestions]="languageDropdown.filteredLanguages"
+								[dropdown]="true" id="language"
+								(completeMethod)="languageDropdown.filter($event)"
+								name="language" field="name" [size]="30"
+								placeholder="{{LANGUAGE}}" [minLength]="1" #language="ngModel"></p-autoComplete>
+							<div [hidden]="language.valid || language.pristine"
+								class="alert alert-danger" i18n="@@languageRequired">Langue
+								Requise</div>
+						</div>
+						<div class="ui-grid-col-1"></div>
+					</div>
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-2">
+							<label i18n="@@isbn" for="isbn">ISBN</label>
+						</div>
+						<div class="ui-grid-col-9">
+							<input pInputText id="isbn" [(ngModel)]="product.isbn"
+								#isbn="ngModel" />
+						</div>
+						<div [hidden]="isbn.valid || isbn.pristine"
+							class="alert alert-danger" i18n="@@isbnRequired">ISBN
+							Requis</div>
+						<div class="ui-grid-col-1"></div>
+					</div>
+
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-2">
+							<label i18n="@@pages" for="pages">Nombre de pages</label>
+						</div>
+						<div class="ui-grid-col-9">
+							<input pInputText id="pages" [(ngModel)]="product.pages"
+								#pages="ngModel" />
+						</div>
+						<div class="ui-grid-col-1"></div>
+					</div>
+
+
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-2">
+							<label i18n="@@publicationYear" for="publicationYear">
+								Annee publication</label>
+						</div>
+						<div class="ui-grid-col-9">
+							<input pInputText id="publicationYear"
+								[(ngModel)]="product.publicationYear" #publicationYear="ngModel" />
+						</div>
+						<div class="ui-grid-col-1"></div>
+					</div>
+
+				</div>
+				<!--//panel-body-->
+			</div>
+			<!--//panel-colapse-->
+		</div>
+	</div>
+</div>
+
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+
+<app-search-component [user]="user" [schText]="searchText"
+	(parentSearchText)="updateText($event)" [search]="searchProductFct"></app-search-component>
+
+<p-dataTable [value]="products" selectionMode="single"
+	[(selection)]="selectedProduct" expandableRows="true"
+	(onRowSelect)="onRowSelect($event)"
+	(onRowExpand)="getProductCopies($event)" [paginator]="true" [rows]="15"
+	[responsive]="true"> <p-column expander="true"
+	styleClass="col-icon" [style]="{'width':'5%'}"></p-column> <p-column
+	*ngFor="let col of cols" [field]="col.field" [style]="col.style"
+	[header]="col.header" [sortable]="col.sortable" [filter]="col.filter"></p-column>
+<p-column field="id" header="Image" [style]="{'width':'7%'}">
+<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate
+	type="body">
+<button type="button" pButton icon="fa fa-picture-o" style="float: left"
+	(click)="showDialogToUploadImage(data)"></button>
+</ng-template> </p-column> <ng-template let-product pTemplate="rowexpansion">
+
+<div class="ui-grid ui-grid-responsive ui-fluid">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<div class="ui-grid-row" [innerHTML]="product.description"></div>
+			<div class="ui-grid-row">
+				<img width="80%" src="assets/images/product/{{product.pic}}" alt="" />
+			</div>
+
+		</div>
+		<div class="ui-grid-col-8">
+			<p-dataTable [value]="product.productCopies"
+				(onEditComplete)="saveProductCopyEvent($event)" [editable]="true">
+			<p-column field="code" header="Code" [editable]="true"
+				[style]="{'width':'30%'}"></p-column> <p-column field="status"
+				header="Etat" [style]="{'width':'45%'}"> <ng-template
+				let-col let-productCopy="rowData" pTemplate="body"> <p-selectButton
+				(onChange)="saveProductCopy(productCopy)" [options]="statuses"
+				[(ngModel)]="productCopy[col.field]"></p-selectButton> </ng-template> </p-column> <p-column
+				[style]="{'width':'25%'}" header="Action"> <ng-template
+				let-col let-productCopy="rowData" pTemplate="body">
+			<button type="button" pButton icon="fa fa fa-trash"
+				style="float: left" (click)="deleteProductCopy(productCopy)"
+				label="{{DELETE_LABEL}}"></button>
+			</ng-template> </p-column> <p-footer>
+			<div class="ui-helper-clearfix" style="width: 20%">
+				<button type="button" pButton icon="fa fa-plus" style="float: left"
+					(click)="addNew(product)" label="{{ADD_LABEL}}"></button>
+			</div>
+			</p-footer> </p-dataTable>
+		</div>
+	</div>
+</div>
+
+</ng-template> <ng-template pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>

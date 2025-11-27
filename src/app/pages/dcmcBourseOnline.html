@@ -1,0 +1,49 @@
+<div class="page-wrapper">
+    <header class="page-heading clearfix">
+      <h1 i18n="@@adminSpace" class="heading-title pull-left">
+        <img class="thumb" src="assets/images/scoolday.png" alt="" />
+      </h1>
+      <div class="breadcrumbs pull-right">
+        <ul class="breadcrumbs-list">
+          <li i18n="@@youAreHere" class="breadcrumbs-label">Vous êtes
+            ici:</li>
+          <li><a i18n="@@homeLink" href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+          <li><a i18n="@@admin" href="#">Dcmc</a><i class="fa fa-angle-right"></i></li>
+          <li i18n="@@information" class="current">Inscription projet SIFA</li>
+        </ul>
+      </div>
+      <!--//breadcrumbs-->
+    </header>
+	<div class="page-content">
+		<div [hidden]="currentUser.role===1||currentUser.role===9"
+			class="alert alert-danger" i18n="@@youNeedToBeConnectedAsAdmin">Vous
+			devez être connecté en tant que DCMC pour voir ce contenu</div>
+		<div class="row page-row"
+			[hidden]="!(currentUser.role===1||currentUser.role===9)">
+			<app-dcmc-menu></app-dcmc-menu>
+			<!--//page-sidebar-->
+        <!--//page-sidebar-->
+        <div class="content-wrapper col-md-10 col-sm-8">
+
+        <p-tabView (onChange)="onTabChange($event)">
+
+          <p-tabPanel
+					header="Projet SIFA (Inscrits)" leftIcon="fa fa-newspaper-o">
+          <app-admin-sifa></app-admin-sifa> </p-tabPanel> 
+          <p-tabPanel
+					header="Rentrée du 15 Mai" leftIcon="fa fa-newspaper-o">
+          <app-admin-sifa1></app-admin-sifa1> </p-tabPanel> 
+          <p-tabPanel
+					header="Rentrée du 15 Octobre" leftIcon="fa fa-newspaper-o">
+          <app-admin-sifa2></app-admin-sifa2> </p-tabPanel> 
+        
+        </p-tabView>
+        </div>
+        <!--//content-wrapper-->
+      </div>
+      <!--//page-row-->
+    </div>
+    <!--//page-content-->
+  </div>
+  <!--//page-->
+  

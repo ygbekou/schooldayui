@@ -1,0 +1,136 @@
+<p-confirmDialog #cd header="Confirmation" icon="pi pi-exclamation-triangle">
+	<p-footer>
+		<button type="button" pButton icon="pi pi-times" label="Non" (click)="cd.reject()"></button>
+		<button type="button" pButton icon="pi pi-check" label="Oui" (click)="cd.accept()"></button>
+	</p-footer>
+</p-confirmDialog>
+<p-growl [(value)]="msgs"></p-growl>
+
+<div class="ui-grid-row" *ngIf="user.role>=3">
+	<div class="ui-grid-col-7"></div>
+	<div class="ui-grid-col-2">
+		<button type="button" pButton icon="fa fa-print" style="float: left" (click)="printSyllabus()"
+			label="{{PRINT}}"></button>
+	</div>
+	<div class="ui-grid-col-3">
+		<a *ngIf="reportName" target="_blank" href="assets/reports/{{reportName}}" i18n="@@downloadReport">Telecharger
+			l'etat</a>
+	</div>
+</div>
+<form (ngSubmit)="search()" #searchForm="ngForm">
+	<div class="ui-grid ui-grid-responsive ui-fluid"
+		[hidden]="user.role>2 && user.role!=8 && user.role!=11 && user.role!=14">
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-6">
+				<p-autoComplete [(ngModel)]="theSchoolYear"
+					(onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+					[suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear"
+					(completeMethod)="schoolYearDropdown.filter($event)" name="schoolYear" field="year" [size]="30"
+					placeholder="{{SCHOOLYEAR}}" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+			</div>
+			<div class="ui-grid-col-6">
+				<p-autoComplete [(ngModel)]="theTerm" (onDropdownClick)="termDropdown.handleDropdownClick($event)"
+					[suggestions]="termDropdown.filteredTerms" [dropdown]="true" id="term"
+					(completeMethod)="termDropdown.filter($event)" name="term" field="name" [size]="30"
+					placeholder="{{TERM}}" [minLength]="1" #term="ngModel"></p-autoComplete>
+			</div>
+		</div>
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-10">
+				<input type="text" pInputText class="form-control" id="searchT" required [(ngModel)]="searchText"
+					placeholder="{{COURSE_SEARCH_TEXT}}" name="searchT" #searchT="ngModel">
+			</div>
+			<div class="ui-grid-col-2">
+				<button type="button" pButton icon="fa fa-search" (click)="search()" label="Go"
+					style="margin-top: 0px; height: 35px;"></button>
+			</div>
+		</div>
+
+	</div>
+</form>
+<p-dataTable [value]="courses" selectionMode="single" [(selection)]="selectedCourse" expandableRows="true"
+	(onRowSelect)="onRowSelect($event)" (onRowExpand)="getSyllabuses($event)" [paginator]="true" [rows]="15"
+	[responsive]="true"> <p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}"></p-column> <p-column
+		*ngFor="let col of cols" [field]="col.field" [header]="col.header" [style]="col.style" [sortable]="col.sortable"
+		[filter]="col.filter">
+		<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body"> <span
+				class="col-date">{{data[
+				col.field ] | date:'dd/MM/yy' }}</span> </ng-template> </p-column>
+	<ng-template let-course pTemplate="rowexpansion">
+
+		<div class="tabbed-info page-row">
+			<ul class="nav nav-tabs">
+				<li class="active"><a i18n="@@coursePrograms" href="#tab1" data-toggle="tab">Programme de Cours</a></li>
+				<li><a i18n="@@assignments" href="#tab2" data-toggle="tab" *ngIf="user.userAccess != 2">Devoirs</a></li>
+			</ul>
+
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab1">
+					<div class="ui-grid ui-grid-responsive ui-fluid">
+						<div class="ui-grid-row">
+							<div>
+								<span i18n="@@topic">Sujets:</span>
+								<p-dataTable [value]="syllabuses" sortField="" [editable]="true"
+									(onEditComplete)="saveSyllabusEvent($event)"> <p-column field="courseTopicName"
+										header="Sujet" [style]="{'width':'60%'}">
+										<ng-template let-col let-syllabus="rowData" pTemplate type="body">
+											<div [innerHTML]="syllabus[ col.field ]"></div>
+										</ng-template> </p-column> <p-column field="syllabusDateStr" header="Debut"
+										[editable]="user.role<3 || user.role==8 || user.role==11"
+										[style]=" {'overflow':'visible' }">
+										<ng-template let-col let-syllabus="rowData" pTemplate="editor">
+											<p-inputMask mask="99/99/9999" [(ngModel)]="syllabus[col.field]"
+												placeholder="99/99/9999" slotChar="dd/mm/yyyy"
+												(onComplete)="saveSyllabus(syllabus)"></p-inputMask> </ng-template>
+									</p-column>
+
+									<p-column field="status" header="Etat"> <ng-template let-col let-syllabus="rowData"
+											pTemplate="body"> <p-toggleButton
+												[hidden]="user.role > 2 && user.role != 8 && user.role != 11"
+												[(ngModel)]="syllabus[col.field]" onLabel="Termine"
+												offLabel="Pas termine" onIcon="fa fa-check-square"
+												offIcon="fa fa-square"
+												(click)="saveSyllabusStatus(syllabus)"></p-toggleButton> <p-toggleButton
+												[hidden]="user.role<3 || user.role==8 || user.role==11"
+												[(ngModel)]="syllabus[col.field]" onLabel="Termine" disabled="true"
+												offLabel="Pas termine" onIcon="fa fa-check-square"
+												offIcon="fa fa-square"></p-toggleButton>
+										</ng-template> </p-column>
+
+
+
+									<p-column field="comments" header="Commentaires"
+										[editable]="user.role<3 || user.role==8 || user.role==11"> </p-column>
+									<p-column field="delegStatus" header="Deleg-Valid"
+										*ngIf="user.role===3 || user.role===1 || user.role===8">
+										<ng-template let-col let-syllabus="rowData" pTemplate="body"
+											*ngIf="user.role===3">
+											<p-toggleButton [(ngModel)]="syllabus[col.field]" onLabel="Termine"
+												offLabel="Pas termine" onIcon="fa fa-check-square"
+												offIcon="fa fa-square" (onChange)="saveDelegSyllabusStatus(syllabus)">
+											</p-toggleButton>
+										</ng-template>
+										<ng-template let-col let-syllabus="rowData" pTemplate="body"
+											*ngIf="user.role===1 || user.role===8">
+											<p-toggleButton [(ngModel)]="syllabus[col.field]" onLabel="Termine"
+												offLabel="Pas termine" onIcon="fa fa-check-square" disabled="true"
+												offIcon="fa fa-square">
+											</p-toggleButton>
+										</ng-template>
+									</p-column>
+								</p-dataTable>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="tab-pane" id="tab2">
+					<div>
+						<app-admin-assignment [courseId]="course.id"></app-admin-assignment>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ng-template> <p-footer>
+		<div class="ui-helper-clearfix" style="width: 100%"></div>
+	</p-footer> </p-dataTable>

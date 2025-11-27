@@ -1,0 +1,83 @@
+<p-dialog header="Payement" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="450">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="selectedCourse">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@course" for="beginDate">Cours</label>
+		</div>
+		<div class="ui-grid-col-9">{{selectedCourse.name}}</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@cost" for="beginDate">Cout</label>
+		</div>
+		<div class="ui-grid-col-9">{{selectedCourse.cost|currency:'CFA':true:'.0-0'}}</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<label i18n="@@leftToPay" for="endDate">Reste a payer</label>
+		</div>
+		<div class="ui-grid-col-9">{{selectedCourse.toPay|currency:'CFA':true:'.0-0'}}</div>
+		<div class="ui-grid-col-1"></div>
+	</div>
+
+	<div class="ui-grid-row"
+		*ngIf="loggedInUser.role===1||loggedInUser.role===5">
+		<div class="ui-grid-col-2">
+			<label i18n="@@amount" for="amount">Montant</label>
+		</div>
+		<div class="ui-grid-col-10">
+			<input pInputText id="amount" [(ngModel)]="selectedCourse.pay" />
+		</div>
+	</div>
+
+</div>
+
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix"
+		*ngIf="loggedInUser.role===1||loggedInUser.role===5">
+		<button type="button" pButton icon="fa fa-floppy-o" (click)="save()"
+			label="{{PAY}}"></button>
+	</div>
+</footer> </p-dialog>
+
+
+<p-dataTable [value]="courses" selectionMode="single"
+	[(selection)]="selectedCourse" expandableRows="true"
+	(onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15"
+	(onRowExpand)="getPayments($event)" [responsive]="true">
+<p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}"></p-column>
+<p-column *ngFor="let col of cols" [field]="col.field"
+	[header]="col.header" [sortable]="col.sortable" [filter]="col.filter">
+<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData"
+	pTemplate type="body"> <span class="col-date">{{
+	data[ col.field ] | date:'dd/MM/yy' }}</span> </ng-template> <ng-template
+	*ngIf="col.type === 'money'" let-col let-data="rowData" pTemplate
+	type="body"> <span class="col-currency">{{ data[
+	col.field ] |currency:'CFA':true:'.0-0' }}</span> </ng-template> </p-column> <ng-template let-course
+	pTemplate="rowexpansion">
+<div class="ui-grid ui-grid-responsive ui-fluid">
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-6"></div>
+		<div class="ui-grid-col-6">
+			<span i18n="@@thePayments">Les payements:</span>
+			<p-dataTable [value]="payments" sortField="paymentDate">
+
+			<p-column field="paymentDate" header="Date Payement"> <ng-template
+				let-col let-pay="rowData" pTemplate="body"> <span>{{pay[col.field]
+				| date:'dd/MM/yy'}}</span> </ng-template> </p-column> <p-column field="amount" header="{{AMOUNT}}">
+			<ng-template let-col let-pay="rowData" pTemplate="body">
+			<span>{{pay[col.field] | currency:'CFA':true:'.0-0'}}</span> </ng-template> </p-column> </p-dataTable>
+		</div>
+	</div>
+
+
+
+</div>
+</ng-template> </p-dataTable>

@@ -1,0 +1,179 @@
+<file-uploader></file-uploader>
+<p-growl [(value)]="msgs"></p-growl>
+<div class="ui-grid-row" *ngIf="invoiceDetailsOrFeesColumnEditable">
+	<div class="ui-grid-col-4">
+		<button type="button" class="btn btn-primary">
+			<span class="badge badge-light">*</span>Enregistrer un nouveau cours
+		</button>
+	</div>
+	<div class="ui-grid-col-4">
+		<p-autoComplete [(ngModel)]="theSchoolYear" (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+		 [suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear" (completeMethod)="schoolYearDropdown.filter($event)"
+		 name="schoolYear" field="year" [size]="30" placeholder="{{SCHOOLYEAR}}" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+	</div>
+
+	<div class="ui-grid-col-4">
+		<p-autoComplete [(ngModel)]="theTerm" (onDropdownClick)="termDropdown.handleDropdownClick($event)" [suggestions]="termDropdown.filteredTerms"
+		 [dropdown]="true" id="term" (completeMethod)="termDropdown.filter($event)" name="term" field="name" [size]="30"
+		 placeholder="{{TERM}}" [minLength]="1" #term="ngModel"></p-autoComplete>
+	</div>
+
+</div>
+
+<form (ngSubmit)="search()" #searchForm="ngForm" *ngIf="invoiceDetailsOrFeesColumnEditable">
+	<div class="ui-grid ui-grid-responsive ui-fluid">
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-10">
+				<input type="text" pInputText class="form-control" id="searchTT" required [(ngModel)]="searchText" placeholder="{{COURSE_SEARCH_TEXT}}"
+				 name="searchTT" #searchTT="ngModel">
+			</div>
+			<div class="ui-grid-col-2">
+				<button type="button" pButton icon="fa fa-search" (click)="search()" label="Go" style="margin-top: 0px; height: 35px;"></button>
+			</div>
+		</div>
+
+	</div>
+</form> 
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div> 
+<p-dataTable [value]="coursesViewInvoice" [paginator]="true" [rows]="15" expandableRows="true" *ngIf="coursesViewInvoice && invoiceDetailsOrFeesColumnEditable"
+ (onEditComplete)="columnModify($event)" (onRowExpand)="getCoursePreReqs($event); getTimeTables($event)" [responsive]="true"
+ [editable]="true">
+	<p-column expander="true" styleClass="col-icon" [style]="{'width':'3%'}"></p-column>
+
+	<p-column *ngFor="let col of cols" [style]="col.style" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+	 [editable]="col.editable" [filter]="col.filter">
+		<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body"> <span class="col-date">{{
+				data[
+				col.field ] | date:'dd/MM/yy' }}</span> </ng-template>
+	</p-column>
+	<p-column field="id" header="actions" [style]="{'width':'10%'}">
+		<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+			<button type="button" pButton icon="fa fa-plus-circle" style="float: left" (click)="saveInvoiceDetails(data)" label="Ajouter"></button>
+		</ng-template>
+	</p-column>
+	<ng-template let-cv pTemplate="rowexpansion">
+		<div class="ui-grid ui-grid-responsive ui-fluid" style="font-size: 16px; padding: 20px">
+
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-6">
+					<strong>Enseignant:</strong> {{cv.course.teacher.firstName+' '+ cv.course.teacher.lastName}}
+				</div>
+				<div class="ui-grid-col-3">
+					<strong>Credit:</strong> {{cv.course.credit}}
+				</div>
+				<div class="ui-grid-col-3">
+					<strong>Prerequis:</strong> {{cv.prereq}}
+				</div>
+			</div>
+			<br />
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4" align="center">
+					<strong>Classe</strong> <br /> {{cv.course.classe.name}}
+				</div>
+				<div class="ui-grid-col-4" align="center">
+					<strong>Jour</strong>
+				</div>
+				<div class="ui-grid-col-4" align="center">
+					<strong>Heure</strong>
+				</div>
+			</div>
+			<div class="ui-grid-row" *ngFor="let timeTable of cv.timeTables">
+				<div class="ui-grid-col-4" align="center"></div>
+				<div class="ui-grid-col-4" align="center">{{timeTable.weekdayName}}</div>
+				<div class="ui-grid-col-4" align="center">{{timeTable.timePeriodDescription}}</div>
+			</div> 
+		</div>
+	</ng-template>
+	<p-footer></p-footer>
+</p-dataTable>
+
+<br />
+<br />
+<button type="button" class="btn btn-primary">
+	<span class="badge badge-light">*</span>Les cours ajoutés à la
+	facture
+</button>
+<p-dataTable [value]="registeredInvoicesDetails" [paginator]="true" [rows]="15" expandableRows="true" [responsive]="true"
+ *ngIf="registeredInvoicesDetails" (onRowExpand)="getCourseViewPreReqs($event); getViewTimeTables($event)" [editable]="invoiceDetailsOrFeesColumnEditable"
+ (onEditComplete)="columnInvoiceDetailsModify($event)">
+	<p-column expander="true" styleClass="col-icon" [style]="{'width':'3%'}"></p-column>
+	<p-column *ngFor="let col of colregs" [style]="col.style" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+	 [filter]="col.filter" [editable]="col.editable">
+		<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body"> <span class="col-date">{{data[
+				col.field ] | date:'dd/MM/yy' }}</span> </ng-template>
+	</p-column>
+	<p-column *ngIf=" (loggedInUser.role==1||loggedInUser.role==5||loggedInUser.role==2||loggedInUser.role==9) 
+						&& invoiceDetailsOrFeesColumnEditable "
+	 field="id" header="actions" [style]="{'width':'20%'}">
+		<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+			<button type="button" pButton icon="fa fa-save" (click)="updateInvoiceDetails(data)" label="Save"></button>
+			<button type="button" pButton icon="fa fa-times-circle" (click)="removeInvoiceDetails(data)" label="Supprimer"></button>
+
+		</ng-template>
+	</p-column>
+	<ng-template let-cv pTemplate="rowexpansion">
+		<div class="ui-grid ui-grid-responsive ui-fluid" style="font-size: 16px; padding: 20px">
+
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-6">
+					<strong>Enseignant:</strong> {{cv.course.teacher.firstName+' '+ cv.course.teacher.lastName}}
+				</div>
+				<div class="ui-grid-col-3">
+					<strong>Credit:</strong> {{cv.course.credit}}
+				</div>
+				<div class="ui-grid-col-3">
+					<strong>Prerequis:</strong> {{cv.prereq}}
+				</div>
+			</div>
+			<br />
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4" align="center">
+					<strong>Classe</strong> <br /> {{cv.course.classe.name}}
+				</div>
+				<div class="ui-grid-col-4" align="center">
+					<strong>Jour</strong>
+				</div>
+				<div class="ui-grid-col-4" align="center">
+					<strong>Heure</strong>
+				</div>
+			</div>
+			<div class="ui-grid-row" *ngFor="let timeTable of cv.timeTables">
+				<div class="ui-grid-col-4" align="center"></div>
+				<div class="ui-grid-col-4" align="center">{{timeTable.weekdayName}}</div>
+				<div class="ui-grid-col-4" align="center">{{timeTable.timePeriodDescription}}</div>
+			</div> 
+		</div>
+	</ng-template>
+	<p-footer></p-footer>
+</p-dataTable>
+
+
+<br />
+<br />
+<button type="button" class="btn btn-primary">
+	<span class="badge badge-light">*</span> Autres dépenses
+</button>
+<p-dataTable [value]="registeredInvoicesFees" [paginator]="true" [rows]="15" [responsive]="true" [editable]="invoiceDetailsOrFeesColumnEditable"
+ (onEditComplete)="columnFeeModify($event)">
+	<p-column field="fee.name" header="Libelle" [style]="{'overflow':'visible'}">
+		<ng-template let-col let-invoiceFee="rowData" pTemplate="body">
+			<p-autoComplete [(ngModel)]="invoiceFee.fee" (onDropdownClick)="feeDropdown.handleDropdownClick($event)"
+			 [suggestions]="feeDropdown.filteredFees" [dropdown]="true" id="expense" (completeMethod)="feeDropdown.filter($event)"
+			 name="expenseType" field="name" placeholder="Depenses" [minLength]="1" #fee="ngModel"></p-autoComplete>
+		</ng-template>
+	</p-column>
+	<p-column *ngFor="let col of colFee" [style]="col.style" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+	 [filter]="col.filter" [editable]="col.editable"> </p-column>
+	<p-column *ngIf=" (loggedInUser.role==1||loggedInUser.role==5||loggedInUser.role==2||loggedInUser.role==9) 
+						&& invoiceDetailsOrFeesColumnEditable "
+	 field="id" header="actions">
+		<ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+			<button type="button" pButton icon="fa fa-check-circle" (click)="saveFeeInvoiceDetails(data)" label="Sauvegarder"></button>
+			<button type="button" pButton icon="fa fa-times-circle" (click)="removeInvoiceDetails(data)" label="Supprimer"></button>
+
+		</ng-template>
+	</p-column>
+	<ng-template pTemplate="paginatorLeft">
+		<button type="button" (click)="addFee()" pButton icon="fa fa-plus-circle"></button>
+	</ng-template>

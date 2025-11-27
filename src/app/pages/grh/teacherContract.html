@@ -1,0 +1,83 @@
+<form (ngSubmit)="save()" #teacherInfoForm="ngForm">
+<div class="ui-grid ui-grid-responsive ui-fluid">
+
+  <div class="ui-grid-row form-group">
+  	<div class="ui-grid-col-2">
+        <label i18n="@@contractType" for="contractType">Type du contrat : </label>
+    </div>
+    <div class="ui-grid-col-4">
+    <p-autoComplete [(ngModel)]="contract.contractType" (onDropdownClick)="contractTypeDropdown.handleDropdownClick($event)"
+      [suggestions]="contractTypeDropdown.filteredContractTypes" [dropdown]="true" id="contractType"
+      (completeMethod)="contractTypeDropdown.filter($event)" name="contractType" field="wording"
+        placeholder="Choisissez le type de contrat" [minLength]="1" [size]="30"></p-autoComplete>
+    </div>
+  </div>
+
+  <div class="ui-grid-row form-group">
+    <div class="ui-grid-col-2">
+        <label i18n="@@startingDate" for="startDate">Date de début : </label>
+    </div>
+    <div class="ui-grid-col-4">
+        <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="startDate" name="startDate"
+          [showIcon]="true" [(ngModel)]="contract.startDate" #startDate="ngModel" required
+          ></p-calendar>
+    </div>
+    <div [hidden]="startDate.valid || startDate.pristine" class="alert alert-danger" i18n="@@startingDateRequired">Date
+      de début requise</div>
+  </div>
+
+  <div class="ui-grid-row form-group">
+    <div class="ui-grid-col-2">
+        <label i18n="@@endingDate" for="endDate">Date de fin : </label>
+    </div>
+    <div class="ui-grid-col-4">
+        <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="endDate" name="endDate"
+          [showIcon]="true" [(ngModel)]="contract.endDate" #endDate="ngModel"
+           ></p-calendar>
+    </div>
+    <div [hidden]="endDate.valid || endDate.pristine" class="alert alert-danger" i18n="@@endingDateRequired">Date
+      de début requise</div>
+  </div>
+
+  <div class="ui-grid-row form-group">
+    <div class="ui-grid-col-2">
+        <label i18n="@@cnssNumer" for="cnssNumer">Numéro CNSS : </label>
+    </div>
+    <div class="ui-grid-col-4">
+        <input pInputText id="cnssNumer" name="cnssNumer" class="form-control"
+          [(ngModel)]="contract.cnssNumer" placeholder="Entrez le numéro de CNSS de l'employé" />
+    </div>
+  </div>
+
+  <div class="ui-grid-row form-group">
+  	<div class="ui-grid-col-2">
+        <label i18n="@@personType" for="personType"> {{ PERSON_TYPE }} : </label>
+    </div>
+    <div class="ui-grid-col-4">
+    <p-autoComplete [(ngModel)]="contract.personType" (onDropdownClick)="personTypeDropdown.handleDropdownClick($event)"
+      [suggestions]="personTypeDropdown.filteredPersonTypes" [dropdown]="true" id="personType"
+      (completeMethod)="personTypeDropdown.filter($event)" name="personType" field="name"
+        placeholder="Choisissez le type de personne" [minLength]="1" [size]="30"></p-autoComplete>
+    </div>
+  </div>
+
+
+  <input type="hidden" pInputText class="form-control" id="userId" required [(ngModel)]="employee.user.id" name="userId"
+    #userId="ngModel">
+</div>
+
+  <button [disabled]="!teacherInfoForm.form.valid" pButton type="submit" label="{{SAVE_LABEL}}"></button>
+  &nbsp;&nbsp;
+  <button [disabled]="employee.id > 0" pButton type="button" (click)="delete()" label="{{DELETE_LABEL}}"></button>
+
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+  <div *ngIf="success" class="alert alert-success">{{success}}</div>
+
+</form>
+<!-- Initialize Quill editor -->
+<script>
+  var quill = new Quill('#editor', {
+    theme: 'bubble'
+  });
+
+</script>

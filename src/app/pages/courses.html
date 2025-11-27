@@ -1,0 +1,112 @@
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 class="heading-title pull-left">
+			Les Cours <span style="position: relative; left: 4%;"> <iframe
+					src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2Fcourses&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId"
+					height="35" style="border: none; overflow: hidden; height: 30px; vertical-align: bottom;"
+					scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+			</span>
+		</h1>
+
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li class="breadcrumbs-label">Vous etes ici:</li>
+				<li><a href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+				<li class="current">Les Cours</li>
+
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<div class="row page-row">
+			<div class="courses-wrapper col-md-8 col-sm-7">
+				<div class="featured-courses tabbed-info page-row">
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#tab1" data-toggle="tab">Selectionner
+								la filiere</a></li>
+					</ul>
+
+
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab1">
+							<div class="row">
+
+								<div class="item col-md-6 col-sm-6 col-xs-6" *ngFor="let cycleGroup of groupedColleges | keyvalue">
+									<h3 style="color: darkred;">{{ cycleGroup.key }}</h3>
+									<ul>
+										<li *ngFor="let aCollege of cycleGroup.value">
+											<a [routerLink]="['/collegeSingle']" [queryParams]="{ id: aCollege.id }"
+												target="_blank" (click)="setCurrentCollege(aCollege)">
+												<i class="fa fa-book"></i> {{ aCollege.name }}
+											</a>
+										</li>
+									</ul>
+								</div>
+
+
+							</div>
+							<!--//row-->
+						</div>
+
+					</div>
+
+
+				</div>
+				<!--//featured-courses-->
+				<p class="text-muted page-row">Filiere: {{college.name}}</p>
+				<div class="table-responsive">
+
+					<p-dataTable [value]="courses" sortField="level" selectionMode="single"
+						[(selection)]="selectedCourse" (onRowSelect)="onRowSelect($event)" rowGroupMode="subheader"
+						groupField="level" expandableRowGroups="true" [sortableRowGroup]="false"> <ng-template
+							pTemplate="rowgroupheader" let-rowData>{{rowData['level']}}</ng-template>
+						<p-column [style]="{'width':'15%'}" field="code" header="Code"></p-column>
+						<p-column [style]="{'width':'50%'}" field="name" header="Nom"></p-column>
+						<p-column [style]="{'width':'10%','text-align':'center'}" field="credit"
+							header="Crédits"></p-column> <p-column [style]="{'width':'15%'}" field="prereq"
+							header="Prérequis"></p-column>
+						<p-column [style]="{'width':'10%','text-align':'center'}" field="termName"
+							header="Semestre"></p-column> </p-dataTable>
+
+				</div>
+				<p-dialog header="Descrption" [(visible)]="display" width="600" modal="true">
+					<div>
+						<strong> <a [routerLink]="['/subjectDetails']"
+								[queryParams]="{ id:selectedCourse.id}">{{selectedCourse.name}}</a></strong>
+					</div>
+					<div [innerHTML]="selectedCourse.description"></div>
+					<a class="btn btn-theme read-more" [routerLink]="['/subjectDetails']"
+						[queryParams]="{ id:selectedCourse.id}">Voir les details du
+						cours<i class="fa fa-chevron-right" style="background: transparent"></i>
+					</a>
+				</p-dialog>
+			</div>
+			<!--//courses-wrapper-->
+			<aside class="page-sidebar  col-md-3 col-md-offset-1 col-sm-4 col-sm-offset-1">
+				<section class="widget has-divider">
+					<a class="btn btn-cta" [routerLink]="['/onlineRegistration']"
+						[queryParams]="{ event:'INSCRIPTION'}"><i class="fa fa-play-circle"></i>Inscription en ligne</a>
+				</section>
+				<!--//widget-->
+				<section class="widget has-divider">
+					<app-prospectus></app-prospectus>
+				</section>
+				<!--//widget-->
+				<section class="widget row-divider">
+					<app-testimonial-list></app-testimonial-list>
+				</section>
+				<!--//widget-->
+
+			</aside>
+		</div>
+
+		<!--//page-row-->
+		<iframe
+			src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2Fcourses&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId"
+			width="450" height="80" style="border: none; overflow: hidden" scrolling="no" frameborder="0"
+			allowTransparency="true"></iframe>
+	</div>
+	<!--//page-content-->
+</div>
+<!--//page-->

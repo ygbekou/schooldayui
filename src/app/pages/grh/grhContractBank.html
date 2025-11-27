@@ -1,0 +1,45 @@
+<form (ngSubmit)="save()" #teacherInfoForm="ngForm">
+<div class="ui-grid ui-grid-responsive ui-fluid">
+
+  <div class="ui-grid-row form-group">
+  	<div class="ui-grid-col-2">
+        <label i18n="@@bank" for="bank">Banque : </label>
+    </div>
+    <div class="ui-grid-col-4">
+    <p-autoComplete [(ngModel)]="contractBank.bank" (onDropdownClick)="bankDropdown.handleDropdownClick($event)"
+      [suggestions]="bankDropdown.filteredBanks" [dropdown]="true" id="bank"
+      (completeMethod)="bankDropdown.filter($event)" name="bank" field="name"
+        placeholder="Choisissez la banque de l'employé" [minLength]="1" [size]="30" required></p-autoComplete>
+    </div>
+  </div>
+
+  <div class="ui-grid-row form-group">
+    <div class="ui-grid-col-2">
+        <label i18n="@@employeeAccountNumber" for="employeeAccountNumber">Numéro du compte : </label>
+    </div>
+    <div class="ui-grid-col-4">
+        <input pInputText id="employeeAccountNumber" name="employeeAccountNumber" class="form-control"
+          [(ngModel)]="contractBank.employeeAccountNumber"
+           placeholder="Entrez le numéro du compte de l'employé" required />
+    </div>
+  </div>
+
+  <input type="hidden" pInputText class="form-control" id="userId" required [(ngModel)]="employee.user.id" name="userId"
+    #userId="ngModel">
+</div>
+
+  <button [disabled]="!teacherInfoForm.form.valid" pButton type="submit" label="{{SAVE_LABEL}}"></button>
+  &nbsp;&nbsp;
+  <button [disabled]="employee.id > 0" pButton type="button" (click)="delete()" label="{{DELETE_LABEL}}"></button>
+
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+  <div *ngIf="success" class="alert alert-success">{{success}}</div>
+
+</form>
+<!-- Initialize Quill editor -->
+<script>
+  var quill = new Quill('#editor', {
+    theme: 'bubble'
+  });
+
+</script>

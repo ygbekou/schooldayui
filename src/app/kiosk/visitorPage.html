@@ -1,0 +1,60 @@
+<form (ngSubmit)="doCico()" #cicoForm="ngForm" autocomplete="off">
+
+  <div class="form-group">
+    <label i18n="@@lastName" for="name">Nom et Prenom:</label>
+    <input type="text" pInputText class="form-control" id="name" required placeholder="" name="name"
+      [(ngModel)]="cico.name" #name="ngModel">
+  </div>
+  <div class="form-group">
+    <label i18n="@@lastName" for="phone">Tel:</label>
+    <input type="text" pInputText class="form-control" id="phone"   placeholder="" name="phone"
+      [(ngModel)]="cico.phone" #phone="ngModel">
+  </div>
+  <div class="form-group">
+    <label i18n="@@lastName" for="raison">Raison:</label>
+    <input type="text" pInputText class="form-control" id="raison" required placeholder="" name="raison"
+      [(ngModel)]="cico.reason" #reason="ngModel">
+  </div>
+  <div class="form-group">
+    <label i18n="@@lastName" for="visitee">Personne visitee :</label>
+    <input type="text" pInputText class="form-control" id="visitee" required placeholder="" name="visitee"
+      [(ngModel)]="cico.visitee" #visitee="ngModel">
+  </div>
+  <div class="form-group">
+    <label i18n="@@lastName" for="matricule">Badge:</label>
+    <input type="text" pInputText class="form-control" id="madge" required placeholder="" name="matricule"
+      [(ngModel)]="cico.matricule" #matricule="ngModel">
+  </div>
+
+  <button pButton type="submit" icon="fa fa fa-play-circle" style="margin-top: 0px; width: 100%; height: 50px;"
+    label="Enregistrer"></button>
+  <br /><br />
+  <p-card>
+    <p-header>
+      <button pButton type="button" class="ui-button-danger" *ngIf="error"
+        style="margin-top: 0px; width: 100%; height: 50px;">
+        <strong>{{error}}</strong>
+      </button>
+      <button pButton type="button" class="ui-button-danger" *ngIf="aUser.cicoStatus===0||aUser.cicoStatus===6||aUser.cicoStatus===7"
+        style="margin-top: 0px; width: 100%; height: 50px;">
+        <strong>{{msg}}</strong>
+      </button>
+      <button pButton type="button" class="ui-button-success" *ngIf="aUser.cicoStatus===1"
+        style="margin-top: 0px; width: 100%; height: 50px;">
+        <strong>{{msg}}</strong>
+      </button>
+      <button pButton type="button" class="ui-button-secondary" *ngIf="aUser.cicoStatus===2"
+        style="margin-top: 0px; width: 100%; height: 50px;">
+        <strong>{{msg}}</strong>
+      </button>
+      <button pButton type="button" class="ui-button-warning" *ngIf="aUser.cicoStatus===3"
+        style="margin-top: 0px; width: 100%; height: 50px;">
+        <strong>{{msg}}</strong>
+      </button>
+      <button pButton type="button" class="ui-button-info" *ngIf="aUser.cicoStatus===4"
+        style="margin-top: 0px; width: 100%; height: 50px;">
+        <strong>{{msg}}</strong>
+      </button>
+    </p-header>
+  </p-card>
+</form>

@@ -1,0 +1,100 @@
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="tuition">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@tuitionType" for="tuitionType">Tranche</label>
+		</div>
+		<div class="ui-grid-col-7">
+			<p-autoComplete [(ngModel)]="tuition.tuitionType"
+				(onDropdownClick)="tuitionTypeDropdown.handleDropdownClick($event)"
+				[suggestions]="tuitionTypeDropdown.filteredTuitionTypes"
+				[dropdown]="true" id="tuitionType"
+				(completeMethod)="tuitionTypeDropdown.filter($event)"
+				name="tuitionType" field="name" [size]="30"
+				placeholder="{{TUITION_TYPE}}" [minLength]="1"
+				#tuitionType="ngModel"></p-autoComplete>
+			<div [hidden]="tuitionType.valid || tuitionType.pristine"
+				class="alert alert-danger" i18n="@@tuitionTypeRequired">Tranche
+				Requise</div>
+		</div>
+		<div class="ui-grid-col-2"></div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@dueDate" for="dueDate">Date Echeance</label>
+		</div>
+		<div class="ui-grid-col-7">
+			<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="dueDate" [showIcon]="false"
+				[(ngModel)]="tuition.dueDate"></p-calendar>
+		</div>
+		<div class="ui-grid-col-2"></div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@remindDate" for="remindDate">Date Rappel</label>
+		</div>
+		<div class="ui-grid-col-7">
+			<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="remindDate" [showIcon]="false"
+				[(ngModel)]="tuition.remindDate"></p-calendar>
+		</div>
+		<div class="ui-grid-col-2"></div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@amount" for="beginDate">Montant</label>
+		</div>
+		<div class="ui-grid-col-7">
+			<input pInputText id="amount" [(ngModel)]="tuition.amount" required />
+		</div>
+		<div class="ui-grid-col-2"></div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-3">
+			<label i18n="@@schoolYear" for="schoolYear">Annee Scolaire</label>
+		</div>
+		<div class="ui-grid-col-7">
+			<p-autoComplete [(ngModel)]="tuition.schoolYear"
+				(onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+				[suggestions]="schoolYearDropdown.filteredSchoolYears"
+				[dropdown]="true" id="schoolYear"
+				(completeMethod)="schoolYearDropdown.filter($event)"
+				name="schoolYear" field="year" [size]="30"
+				placeholder="{{SCHOOLYEAR}}" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+			<div [hidden]="schoolYear.valid || schoolYear.pristine"
+				class="alert alert-danger" i18n="@@schoolYearRequired">Annee
+				scolaire Requise</div>
+		</div>
+		<div class="ui-grid-col-2"></div>
+	</div>
+</div>
+<br />
+<br />
+<br />
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+
+<p-dataTable [value]="tuitions" selectionMode="single"
+	[(selection)]="selectedTuition" expandableRows="true"
+	(onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15"
+	[responsive]="true"> <p-column *ngFor="let col of cols"
+	[field]="col.field" [header]="col.header" [sortable]="col.sortable"
+	[filter]="col.filter"> <ng-template
+	*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+	type="body"> <span class="col-date">{{ data[
+	col.field ] | date:'dd/MM/yy' }}</span> </ng-template> </p-column> <ng-template
+	pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>

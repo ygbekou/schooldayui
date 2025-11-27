@@ -1,0 +1,135 @@
+<form (ngSubmit)="search()">
+
+    <div class="ui-grid ui-grid-responsive ui-fluid">
+    
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+                <label i18n="@@beginDate" for="beginDate">Date de début</label>
+            </div>
+            <div class="ui-grid-col-3">
+                <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="beginDate" name="beginDate"
+                    [(ngModel)]="searchAttendance.beginDate" #beginDate="ngModel"
+                    placeholder="dd/mm/yyyy"></p-calendar>
+            </div>
+            <div class="ui-grid-col-1"></div>
+            <div class="ui-grid-col-2">
+                <label i18n="@@endDate" for="endDate">Date de fin</label>
+            </div>
+            <div class="ui-grid-col-3">
+                <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="endDate" name="endDate"
+                    [(ngModel)]="searchAttendance.endDate" #endDate="ngModel"
+                    placeholder="dd/mm/yyyy"></p-calendar>
+            </div>
+            <div class="ui-grid-col-1"></div>
+        </div>
+
+        <br>
+    
+    <div class="ui-grid-row">
+        <div class="ui-grid-col-3">
+            <p-autoComplete [(ngModel)]="searchAttendance.schoolyear"
+                (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+                [suggestions]="schoolYearDropdown.filteredSchoolYears"
+                [dropdown]="true" id="schoolYear"
+                (completeMethod)="schoolYearDropdown.filter($event)"
+                name="schoolYear" field="year" [size]="30"
+                placeholder="{{SCHOOLYEAR}}" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+        </div>
+        <div class="ui-grid-col-1"></div>
+        <div class="ui-grid-col-3">
+            <p-autoComplete [(ngModel)]="searchAttendance.term"
+                (onDropdownClick)="termDropdown.handleDropdownClick($event)"
+                [suggestions]="termDropdown.filteredTerms" [dropdown]="true"
+                id="term" (completeMethod)="termDropdown.filter($event)"
+                name="term" field="name" [size]="30" placeholder="{{TERM}}"
+                [minLength]="1" #term="ngModel"></p-autoComplete>
+        </div>
+        <div class="ui-grid-col-1"></div>
+        <div class="ui-grid-col-4">
+            <p-dropdown [options]="etats" [(ngModel)]="searchAttendance.status" name="etat" id="etat" #etat="ngModel" placeholder="Sélectionner un état"></p-dropdown>
+    
+        </div>
+    </div>
+    
+    
+    <div class="ui-grid-row">
+        <div class="ui-grid-col-3" style="margin: 2px;">
+          <p-autoComplete [(ngModel)]="searchAttendance.classe"
+            (onDropdownClick)="classDropdown.handleDropdownClick($event)" [suggestions]="classDropdown.filteredClasses"
+            [dropdown]="true" id="classe" (completeMethod)="classDropdown.filter($event)" name="classe" field="name"
+            [size]="30" placeholder="Classe" [minLength]="1" #classe="ngModel"></p-autoComplete>
+        </div>
+        <div class="ui-grid-col-1"></div>
+    
+        <div class="ui-grid-col-3"  style="margin: 2px;">
+          <p-autoComplete [(ngModel)]="searchAttendance.subject"
+            (onDropdownClick)="subjectDropdown.handleDropdownClick($event)"
+            [suggestions]="subjectDropdown.filteredSubjects" [dropdown]="true" id="subject"
+            (completeMethod)="subjectDropdown.filter($event)" name="subject" field="name" [size]="30"
+            placeholder="Matiére" [minLength]="1" #subject="ngModel"></p-autoComplete>
+        </div>
+        <div class="ui-grid-col-1"></div>
+    
+        <div class="ui-grid-col-4" style="width: 200px; margin: 2px;">
+            <button type="submit" pButton icon="fa fa-search" (click)="search()" label="Go"
+            style="margin-top: 0px; height: 30px;"></button>
+      
+          </div>
+        </div>
+    
+    </div>
+    
+    </form>
+    <br>
+    <div>
+    
+        <p-dataTable [value]="attendanceDetails" [responsive]="true" [rows]="15"  [paginator]="true">
+            <p-column header="Ordre" [style]="{'width':'5%'}">	
+                <ng-template let-i="rowIndex" pTemplate="body">
+                    {{i+1}}
+                </ng-template>
+            </p-column>  
+            <p-column
+                field="lastName" header="Nom" [style]="{'width':'15%'}">
+            </p-column>
+            <p-column
+                field="firstName" header="Prénom" [style]="{'width':'15%'}">
+            </p-column>
+            <p-column
+                field="sclass" header="Filière" [style]="{'width':'14%'}">
+            </p-column>
+            <p-column field="createDate" header="Date" [style]="{'width':'12%'}">
+                <ng-template let-col let-data="rowData" pTemplate="body">
+                    <span>{{ data.createDate | date: 'dd/MM/yyyy' }}</span>
+                </ng-template>
+            </p-column>
+            <p-column
+                field="descHour" header="Quand ?" [style]="{'width':'15%'}">
+            </p-column>
+            <p-column
+                field="attendance.subjectCode" header="Cours" [style]="{'width':'12%'}">
+            </p-column>
+            
+            <p-column
+                field="stContact" header="Contact Etu." [style]="{'width':'11%'}">
+            </p-column>
+            <p-column
+                field="parContact" header="Contact Paren." [style]="{'width':'11%'}">
+            </p-column>
+            <p-column
+                field="sex" header="Sexe" [style]="{'width':'5%'}">
+            </p-column>
+            
+            <p-column field="estPresent" header="Etat" [style]="{'width':'8%'}" >
+                <ng-template pTemplate type="body" let-data="rowData">
+                 
+                    <div class="label-main" *ngIf="data.estPresent == 1">
+                      <label class="label label-success" style="padding: 5px; border-radius: 5px;">Présent</label>
+                    </div>
+                    <div class="label-main" *ngIf="data.estPresent == 0">
+                      <label class="label label-danger" style="padding: 5px; border-radius: 5px;">Absent</label>
+                    </div>
+                </ng-template>
+            </p-column>
+        </p-dataTable>
+    </div>

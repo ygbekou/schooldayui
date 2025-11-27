@@ -1,0 +1,87 @@
+<file-uploader></file-uploader>
+
+<p-dialog header="Details" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="campusImage">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@group" for="description">Groupe</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id=Groupe [(ngModel)]="campusImage.title" required />
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@description" for="description">Description</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id=description
+				[(ngModel)]="campusImage.description" required />
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@active" for="status">Active</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-checkbox [(ngModel)]="campusImage.status" binary="true"
+				id="status"></p-checkbox>
+		</div>
+
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@rank" for="rank">Rank</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="rank" [(ngModel)]="campusImage.rank" />
+		</div>
+	</div>
+</div>
+<br />
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+
+<p-dataTable [value]="campusImages" selectionMode="single"
+	[(selection)]="selectedCampusImage" expandableRows="true"
+	(onRowSelect)="onRowSelect($event)" [paginator]="true" rows="5"
+	[responsive]="true"> <p-column expander="true"
+	styleClass="col-icon" [style]="{'width':'5%'}"></p-column> <p-column
+	*ngFor="let col of cols" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [filter]="col.filter"> </p-column> <p-column
+	field="id" header="actions" [style]="{'width':'7%'}"> <ng-template
+	let-data="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+<button type="button" pButton icon="fa fa-picture-o" style="float: left"
+	(click)="showDialogToUploadImage(data)"></button>
+</ng-template> </p-column> <ng-template let-campusImage pTemplate="rowexpansion">
+<div class="ui-grid ui-grid-responsive ui-fluid"
+	style="font-size: 16px; padding: 20px">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2">
+			<img class="thumb" src="assets/images/gallery/{{campusImage.pic}}"
+				alt="" />
+		</div>
+	</div>
+</div>
+</ng-template> <ng-template pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>
+<!--//page-->
+<!-- Initialize Quill editor -->
+<script>
+	var quill = new Quill('#editor', {
+		theme : 'bubble'
+	});
+</script>

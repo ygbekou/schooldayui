@@ -1,0 +1,115 @@
+<form  #teacherInfoForm="ngForm">
+  <div class="form-group">
+    <label i18n="@@hiringDate" for="hiredDate">Date d'embauche:</label>
+    <p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="hiredDate" name="hiredDate"
+      [showIcon]="true" [(ngModel)]="teacher.hiredDate" #hiredDate="ngModel" required></p-calendar>
+    <div [hidden]="hiredDate.valid || hiredDate.pristine" class="alert alert-danger" i18n="@@hiringDateRequired">Date
+      d'embauche Requis</div>
+  </div>
+
+  <div class="form-group">
+    <label><span i18n="@@matricule">Matricule:</span>
+      {{teacher.matricule}} </label>
+  </div>
+
+  <div class="ui-grid-row form-group" *ngIf="teacher.user.role == 5">
+    <div class="ui-grid-col-2">
+      <label i18n="@@employeeType" for="employeeType">Type : </label>
+    </div>
+    <div class="ui-grid-col-3">
+      <p-dropdown [options]="employeeTypes" optionLabel="code"
+        id="employeeType" name="employeeType" [(ngModel)]="employeeType"
+        placeholder="Choisissez le type de l'employee" required>
+      </p-dropdown>
+    </div>
+    <div class="ui-grid-col-1"></div>
+  </div>
+
+  <div class="ui-grid-row form-group" *ngIf="teacher.user.role == 2">
+    <div class="ui-grid-col-2">
+      <label i18n="@@teacherType" for="teacherType">Type : </label>
+    </div>
+    <div class="ui-grid-col-3">
+      <p-dropdown [options]="teacherTypes" optionLabel="code" (onChange)="PostTeacherType()"
+        id="teacherType" name="teacherType" [(ngModel)]="teacherType"
+        placeholder="Choisissez le type de l'enseignant" required>
+      </p-dropdown>
+    </div>
+    <div class="ui-grid-col-1"></div>
+  </div>
+
+  <div class="ui-grid-row form-group" *ngIf="teacher.user.role == 2">
+    <div class="ui-grid-col-2">
+      <label i18n="@@teacherLevel" for="teacherLevel">Niveau : </label>
+    </div>
+    <div class="ui-grid-col-3">
+      <p-dropdown [options]="teacherLevels" optionLabel="code"
+        id="teacherLevel" name="teacherLevel" [(ngModel)]="teacherLevel"
+        placeholder="Choisissez le niveau de l'enseignant" required>
+      </p-dropdown>
+    </div>
+    <div class="ui-grid-col-1"></div>
+  </div>
+
+  <div class="form-group">
+    <label i18n="@@position" for="position">Position</label>
+    <p-autoComplete [(ngModel)]="teacher.position" (onDropdownClick)="positionDropdown.handleDropdownClick($event)"
+      [suggestions]="positionDropdown.filteredPositions" [dropdown]="true" id="position"
+      (completeMethod)="positionDropdown.filter($event)" name="position" field="name" [size]="30"
+      placeholder="{{POSITION}}" [minLength]="1"></p-autoComplete>
+  </div>
+
+  <div class="form-group">
+    <label i18n="@@department" for="department">Departement</label>
+    <p-autoComplete [(ngModel)]="teacher.department" (onDropdownClick)="departmentDropdown.handleDropdownClick($event)"
+      [suggestions]="departmentDropdown.filteredDepartments" [dropdown]="true" id="department"
+      (completeMethod)="departmentDropdown.filter($event)" name="department" field="name" [size]="30"
+      placeholder="{{DEPARTMENT}}" [minLength]="1"></p-autoComplete>
+  </div>
+
+  <div class="ui-grid-row">
+    <div class="ui-grid-col-4">
+      <label i18n="@@resume" for="resume">CV</label>
+    </div>
+  </div>
+  <div class="ui-grid-row">
+    <div class="ui-grid-col-12">
+      <p-editor id="resume" name="resume" [(ngModel)]="teacher.resume" [style]="{'height':'200px'}"
+        #teacherResume="ngModel"></p-editor>
+    </div>
+  </div>
+  <div class="form-group">
+    <label i18n="@@status" for="status">Etat:</label>
+
+    <div class="ui-g-12">
+      <p-radioButton id="status" name="status" value="1" label="{{ACTIF}}" [(ngModel)]="teacher.status"></p-radioButton>
+      <p-radioButton id="status" name="status" value="0" label="{{INACTIF}}" [(ngModel)]="teacher.status">
+      </p-radioButton>
+    </div>
+  </div>
+
+
+  <input type="hidden" pInputText class="form-control" id="userId" required [(ngModel)]="teacher.user.id" name="userId"
+    #userId="ngModel">
+
+  <button [disabled]="!teacherInfoForm.form.valid" pButton (click)="save()" label="{{SAVE_LABEL}}"></button>
+&nbsp;&nbsp;
+  <button [disabled]="teacher.id > 0" pButton type="button" (click)="delete()" label="{{DELETE_LABEL}}"></button>
+&nbsp;&nbsp;
+  <button *ngIf="teacher.id > 0" pButton type="button" (click)="printCard()" label="{{PRINT_CARD}}"></button>
+&nbsp;&nbsp;
+  <a *ngIf="reportName" target="_blank" href="assets/reports/{{reportName}}" i18n="@@downloadReport">Telecharger la
+    carte</a>
+
+
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+  <div *ngIf="success" class="alert alert-success">{{success}}</div>
+
+</form>
+<!-- Initialize Quill editor -->
+<script>
+  var quill = new Quill('#editor', {
+    theme: 'bubble'
+  });
+
+</script>

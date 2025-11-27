@@ -1,0 +1,124 @@
+<p-growl [(value)]="msgs"></p-growl>
+
+<!-- 
+<div>
+
+	<div class="card">
+		<div class="card flex justify-content-center">
+			<i class="pi pi-send"></i>
+			<button pButton label="Envoyer SMS" severity="success" icon="fa fa-envelope-o" style="padding: 5px;margin: 10px;" (click)="confirm()"></button>
+		</div>
+	</div>
+		<p-confirmDialog #cd >
+			<ng-template pTemplate="headless" let-message>
+				<div class="flex flex-column align-items-center p-5 surface-overlay border-round">
+					<div class="border-circle bg-primary inline-flex justify-content-center align-items-center h-6rem w-6rem -mt-8">
+						<i class="pi pi-question text-5xl"></i>
+					</div>
+					<span class="font-bold text-2xl block mb-2 mt-4">{{ message.header }}</span>
+					<p class="mb-0">{{ message.message }}</p>
+					<div class="flex align-items-center gap-2 mt-4">
+						<button pButton label="OUI" (click)="cd.accept()"></button>
+						<button pButton label="NON" (click)="cd.reject()"></button>
+					</div>
+				</div>
+			</ng-template>
+		</p-confirmDialog>
+
+</div>
+
+
+<div>
+
+	<div class="card">
+		<div class="card flex justify-content-center">
+			<i class="pi pi-send"></i>
+			<button pButton label="Envoyer SMS C.SOIR" severity="success" icon="fa fa-envelope-o" style="padding: 5px;margin: 10px;" (click)="confirmCs()"></button>
+		</div>
+	</div>
+		<p-confirmDialog #cdCs >
+			<ng-template pTemplate="headless" let-message>
+				<div class="flex flex-column align-items-center p-5 surface-overlay border-round">
+					<div class="border-circle bg-primary inline-flex justify-content-center align-items-center h-6rem w-6rem -mt-8">
+						<i class="pi pi-question text-5xl"></i>
+					</div>
+					<span class="font-bold text-2xl block mb-2 mt-4">{{ message.header }}</span>
+					<p class="mb-0">{{ message.message }}</p>
+					<div class="flex align-items-center gap-2 mt-4">
+						<button pButton label="OUI" (click)="cdCs.accept()"></button>
+						<button pButton label="NON" (click)="cdCs.reject()"></button>
+					</div>
+				</div>
+			</ng-template>
+		</p-confirmDialog>
+
+</div> -->
+
+
+<p-dataTable [value]="attendances" selectionMode="single"
+	expandableRows="true" rowExpandMode="single" [paginator]="true"
+	[rows]="15" [(selection)]="attendance" [responsive]="true"
+	(onRowExpand)="getAttendanceDetailsByAttendanceId($event)"> <p-column
+	expander="true" styleClass="col-icon" [style]="{'width':'5%'}"></p-column>
+
+	<p-column *ngFor="let col of cols" [field]="col.field" [style]="col.style"
+	[header]="col.header" [sortable]="col.sortable" [filter]="col.filter">
+	</p-column>
+	
+	
+	<ng-template	let-attendance pTemplate="rowexpansion"> 
+		<div class="ui-grid ui-grid-responsive ui-fluid">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-12">
+				 
+
+				  <div class="label-main" *ngIf="attendance.attendanceDone == 1">
+					<label class="label label-success" style="padding: 5px; border-radius: 5px;">Appel fait</label>
+				  </div>
+				  <div class="label-main" *ngIf="attendance.attendanceDone == 0">
+					<label class="label label-danger" style="padding: 5px; border-radius: 5px;">Appel non fait</label>
+				  </div>
+				</div>
+			  </div>
+	<p-dataTable [value]="attendanceDetails" [responsive]="true" [rows]="15"  [paginator]="true">
+		<p-column header="Ordre" [style]="{'width':'5%'}">	
+			<ng-template let-i="rowIndex" pTemplate="body">
+				{{i+1}}
+			</ng-template>
+		</p-column>  
+		<p-column
+			field="lastName" header="Nom" [style]="{'width':'15%'}">
+		</p-column>
+		<p-column
+			field="firstName" header="Prénom" [style]="{'width':'15%'}">
+		</p-column>
+		<p-column
+			field="stContact" header="Contact Etu." [style]="{'width':'15%'}">
+		</p-column>
+		<p-column
+			field="parContact" header="Contact Paren." [style]="{'width':'15%'}">
+		</p-column>
+		<p-column
+			field="sclass" header="Filière" [style]="{'width':'10%'}">
+		</p-column>
+		<p-column
+			field="sex" header="Sexe" [style]="{'width':'5%'}">
+		</p-column>
+		
+		<p-column field="estPresent" header="Etat" [style]="{'width':'8%'}" >
+			<ng-template   pTemplate type="body" let-data="rowData">
+			 
+				<div class="label-main" *ngIf="data.estPresent == 1">
+				  <label class="label label-success" style="padding: 5px; border-radius: 5px;">Présent</label>
+				</div>
+				<div class="label-main" *ngIf="data.estPresent == 0">
+				  <label class="label label-danger" style="padding: 5px; border-radius: 5px;">Absent</label>
+				</div>
+			</ng-template>
+		</p-column>
+	</p-dataTable>
+</div> 
+</ng-template> 
+
+
+</p-dataTable>

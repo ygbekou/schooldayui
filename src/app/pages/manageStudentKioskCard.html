@@ -1,0 +1,88 @@
+
+<form (ngSubmit)="desactivateAndGenerateNewStudentKioskCardNumber()"
+#studentInfoForm="ngForm">
+	<!--
+	<div class="form-group">
+		<div class="ui-g-3">
+			<label i18n="@@registrationDate" for="registrationDate">Date
+			d'Enregistrement :</label>
+		</div>
+		<div class="ui-g-9">
+			<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="registrationDate" name="registrationDate"
+				[showIcon]="true" [(ngModel)]="student.registrationDate"
+				#registrationDate="ngModel" required></p-calendar>
+		</div>
+		<div [hidden]="registrationDate.valid || registrationDate.pristine"
+			class="alert alert-danger">Date d'enregistrement Requis</div>
+	</div>
+	-->
+
+	<div class="form-group">
+		<div class="ui-g-2">
+			<label><span i18n="@@matricule">Numéro de la carte :</span></label>
+		</div>
+		<div class="ui-g-10">
+			<label *ngIf="studentKiosk.kioskCardNumber != null"> {{studentKiosk.kioskCardNumber}} </label>
+			<label *ngIf="studentKiosk.kioskCardNumber == null"> - </label>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="ui-g-2">
+			<label i18n="@@status" for="status">Etat :</label>
+		</div>
+		<div class="ui-g-10">
+			<label *ngIf="studentKiosk.status == 1"> {{ ACTIF }} </label>
+			<label *ngIf="studentKiosk.status == 0"> {{ INACTIF }} </label>
+			<label *ngIf="studentKiosk.status == null"> - </label>
+		</div>
+	</div>
+
+	<br />
+
+			<input type="hidden" pInputText class="form-control" id="userId"
+				required [(ngModel)]="student.user.id" name="userId" #userId="ngModel">
+
+			<button [disabled]="!studentInfoForm.form.valid" pButton type="submit"
+				 icon="fa fa-save" label="{{ generateLabel }}" *ngIf="studentKiosk.id > 0"></button>&nbsp;&nbsp;
+
+			<!--
+			<button [disabled]="student.id <= 0" pButton type="button"
+				(click)="delete()" label="{{DELETE_LABEL}}"></button>
+				&nbsp;&nbsp;
+			-->
+
+		  <button *ngIf="studentKiosk.id > 0" pButton type="button" icon="fa fa-print"
+				(click)="printCard()" label="{{PRINT_CARD}}"></button>
+				&nbsp;&nbsp;
+
+			<!--
+		  <a *ngIf="reportName" target="_blank" href="assets/reports/{{reportName}}" i18n="@@downloadReport">Telecharger la
+		    carte</a>
+			-->
+
+			<a *ngIf="reportName" target="_blank" href="assets/reports/{{reportName}}"
+				i18n="@@downloadReport" class="btn btn-theme">
+						<i class="fa fa-download"></i>
+						Télécharger la carte
+			</a>
+
+	<br />
+
+	<div *ngIf="error" class="alert alert-danger"
+		style="margin-top: 20px;">
+		{{error}}
+	</div>
+	<div *ngIf="success" class="alert alert-success"
+		style="margin-top: 20px;">
+		{{success}}
+	</div>
+
+</form>
+
+<!-- Initialize Quill editor -->
+<script>
+	var quill = new Quill('#editor', {
+		theme : 'bubble'
+	});
+</script>

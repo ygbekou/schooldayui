@@ -1,0 +1,49 @@
+<div class="page-wrapper">
+  <header class="page-heading clearfix">
+    <h1 i18n="@@adminSpace" class="heading-title pull-left">
+      <img class="thumb" src="assets/images/scoolday.png" alt="" />
+    </h1>
+    <div class="breadcrumbs pull-right">
+      <ul class="breadcrumbs-list">
+        <li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+          ici:</li>
+        <li><a i18n="@@homeLink" href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+        <li><a i18n="@@admin" href="#">GRH</a><i class="fa fa-angle-right"></i></li>
+        <li i18n="@@information" class="current">Enseignant</li>
+      </ul>
+    </div>
+    <!--//breadcrumbs-->
+  </header>
+  <div class="page-content">
+    <div [hidden]="currentUser.role===10" class="alert alert-danger"
+      i18n="@@youNeedToBeConnectedAsAdmin">Vous
+      devez etre connecte en tant que GRH pour voir ce contenu</div>
+    <div class="row page-row" [hidden]="currentUser.role!==10">
+      <app-grh-menu></app-grh-menu>
+      <!--//page-sidebar-->
+      <div class="content-wrapper col-md-10 col-sm-8">
+        <button *ngIf="user.id>0" type="button" class="btn btn-primary">
+          <span><img width="25" src="assets/images/user/{{user.pic}}" alt="" /> </span>{{user.firstName +' '+ user.lastName
+					+(user.phone==null?'':' | Contact: '+user.phone
+					)+(user.email==null?'':' | E-mail: '+user.email)}}
+        </button>
+        <p-tabView id="tabList" (onChange)="onTabChange($event)">
+
+          <p-tabPanel header="{{SEARCH}}" leftIcon="fa fa-male" [selected]="activeTab === 0">
+            <app-admin-user-list (onUserSelected)="onUserSelected($event)" [role]="5"></app-admin-user-list>
+          </p-tabPanel>
+
+          <p-tabPanel header="{{COURSES}}" leftIcon="fa fa-bookmark"
+           [selected]="activeTab === 1" *ngIf="user.id > 0">
+            <app-manage-course [selectedUserT]="user"></app-manage-course>
+          </p-tabPanel>
+
+        </p-tabView>
+      </div>
+      <!--//content-wrapper-->
+    </div>
+    <!--//page-row-->
+  </div>
+  <!--//page-content-->
+</div>
+<!--//page-->

@@ -1,0 +1,70 @@
+<p-growl [(value)]="msgs"></p-growl>
+<form (ngSubmit)="search()" #searchForm="ngForm">
+  
+  <div class="ui-grid ui-grid-responsive ui-fluid" >
+  <div class="ui-grid-row">
+
+     <div class="ui-grid-col-2">
+					<label i18n="@@beginDate" for="beginDate">Date de début</label>
+				</div>
+				<div class="ui-grid-col-3">
+					<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="beginDate" name="beginDate"
+						[(ngModel)]="searchTextObject.beginDate" #beginDate="ngModel"
+						placeholder="dd/mm/yyyy"></p-calendar>
+				</div>
+				<div class="ui-grid-col-1"></div>
+				<div class="ui-grid-col-2">
+					<label i18n="@@endDate" for="endDate">Date de fin</label>
+				</div>
+				<div class="ui-grid-col-3">
+					<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="endDate" name="endDate"
+						[(ngModel)]="searchTextObject.endDate" #endDate="ngModel"
+						placeholder="dd/mm/yyyy"></p-calendar>
+				</div>
+				<div class="ui-grid-col-1"></div>
+    </div>
+
+    <div class="ui-grid-row">
+      <!-- <div  class="ui-grid-col-5"  style="margin-top: 0px; height: 35px;">
+         <p-autoComplete [(ngModel)]="user"
+          (onDropdownClick)="userDropdown.handleDropdownClick($event)"
+          [suggestions]="userDropdown.filteredUsers" [dropdown]="true"
+          id="seller" (completeMethod)="userDropdown.filter($event)"
+          name="seller" field="name" [size]="30"
+          placeholder="Vendeur" [minLength]="1"></p-autoComplete>
+      </div>
+      <div class="ui-grid-col-5">
+        <input  type="text" pInputText class="form-control" id="searchT"  [(ngModel)]="searchTextObject.searchText"
+          placeholder="Prospect, Cours, filiere" name="searchT" #searchT="ngModel">
+      </div> -->
+      <div class="ui-grid-col-2">
+        <button type="button" pButton icon="fa fa-search" (click)="search()" label="Go"
+          style="margin-top: 0px; height: 35px;"></button>
+      </div>
+    </div>
+
+  </div>
+</form>
+
+
+<p-dataTable [value]="userOnlineRegistrationViews" selectionMode="single"  expandableRows="true"
+  [paginator]="true" [rows]="15"  [responsive]="true"  (onRowExpand)="getOlineRegistrationUsers($event)">
+  <p-column expander="true" styleClass="col-icon" [style]="{'width':'3%'}"></p-column>
+  <p-column *ngFor="let col of colso" [style]="col.style" [field]="col.field" [header]="col.header"
+    [sortable]="col.sortable" [filter]="col.filter">
+    <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body"> <span class="col-date">{{ data[
+	col.field ] | date:'dd/MM/yy' }}</span> </ng-template>
+  </p-column>
+
+  <ng-template let-userSubjectView pTemplate="rowexpansion">
+     <p-dataTable [value]="userSubjectViews" selectionMode="single" rowExpandMode="single" [paginator]="true" [rows]="15" [responsive]="true">
+             <p-column expander="true" styleClass="col-icon" [style]="{'width':'3%'}"></p-column>
+              <p-column *ngFor="let col of cols" [style]="col.style" [field]="col.field" [header]="col.header"
+    [sortable]="col.sortable" [filter]="col.filter">
+    <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body"> <span class="col-date">{{ data[
+	col.field ] | date:'dd/MM/yy' }}</span> </ng-template>
+  </p-column>
+      </p-dataTable>
+  </ng-template>
+</p-dataTable>
+

@@ -1,0 +1,83 @@
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="500">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="faq">
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@title" for="title">Titre</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="title" [(ngModel)]="faq.title" required />
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@message" for="message">Message</label>
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-12">
+			<p-editor [(ngModel)]="faq.message" [style]="{'height':'100px'}"></p-editor>
+		</div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@active" for="status">Active</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-checkbox [(ngModel)]="faq.status" binary="true" id="status"></p-checkbox>
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@rank" for="rank">Rank</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="rank" [(ngModel)]="faq.rank" />
+		</div>
+	</div>
+</div>
+<br />
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+
+<p-dataTable [value]="faqs" selectionMode="single"
+	[(selection)]="selectedFaq" expandableRows="true"
+	(onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15"
+	[responsive]="true"> <p-column expander="true"
+	styleClass="col-icon" [style]="{'width':'5%'}"></p-column> <p-column
+	*ngFor="let col of cols" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [filter]="col.filter"> <ng-template
+	*ngIf="col.type === 'string' || col.type === undefined" let-col
+	let-data="rowData" pTemplate type="body"> <span
+	class="col-string">{{ data[ col.field ] }}</span> </ng-template> </p-column> <ng-template
+	let-faq pTemplate="rowexpansion">
+<div class="ui-grid ui-grid-responsive ui-fluid"
+	style="font-size: 16px; padding: 20px">
+	<div class="ui-grid-row">
+		<div [innerHTML]="faq.message" class="ui-grid-col-12"></div>
+	</div>
+
+</div>
+</ng-template> <ng-template pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>
+<!--//page-->
+<!-- Initialize Quill editor -->
+<script>
+	var quill = new Quill('#editor', {
+		theme : 'bubble'
+	});
+</script>

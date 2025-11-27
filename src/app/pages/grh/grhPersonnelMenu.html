@@ -1,0 +1,145 @@
+<div class="page-wrapper">
+  <header class="page-heading clearfix">
+    <h1 i18n="@@adminSpace" class="heading-title pull-left">
+      <img class="thumb" src="assets/images/scoolday.png" alt="" />
+    </h1>
+    <div class="breadcrumbs pull-right">
+      <ul class="breadcrumbs-list">
+        <li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+          ici:</li>
+        <li><a i18n="@@homeLink" href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+        <li><a i18n="@@admin" href="#">GRH</a><i class="fa fa-angle-right"></i></li>
+        <li i18n="@@information" class="current">Personnel</li>
+      </ul>
+    </div>
+    <!--//breadcrumbs-->
+  </header>
+  <div class="page-content">
+    <div [hidden]="currentUser.role===10" class="alert alert-danger"
+      i18n="@@youNeedToBeConnectedAsAdmin">Vous
+      devez etre connecte en tant que GRH pour voir ce contenu</div>
+    <div class="row page-row" [hidden]="currentUser.role!==10">
+      <app-grh-menu></app-grh-menu>
+      <!--//page-sidebar-->
+      <div class="content-wrapper col-md-10 col-sm-8">
+        <button *ngIf="user.id>0" type="button" class="btn btn-primary">
+          <span><img width="25" src="assets/images/user/{{user.pic}}" alt="" /> </span>{{user.firstName +' '+ user.lastName
+					+(user.phone==null?'':' | Contact: '+user.phone
+					)+(user.email==null?'':' | E-mail: '+user.email)}}
+        </button>
+        <p-tabView id="tabList" (onChange)="onTabChange($event)">
+
+          <p-tabPanel header="{{SEARCH}}" leftIcon="fa fa-male" [selected]="activeTab === 0">
+            <app-admin-user-list (onUserSelected)="onUserSelected($event)" [role]="15"></app-admin-user-list>
+          </p-tabPanel>
+          <p-tabPanel header="{{PROFILE}}" leftIcon="fa fa-search" [selected]="activeTab === 1" *ngIf="user.id > 0">
+            <p-tabView (onChange)="onSubProfileTabChange($event)">
+
+              <p-tabPanel header="{{PERSONAL}}" leftIcon="fa fa-male">
+                <app-user-personalInfo [user]="user"></app-user-personalInfo>
+              </p-tabPanel>
+              <p-tabPanel header="{{CONTACT}}" leftIcon="fa fa-male">
+                <app-user-contactInfo [user]="user"></app-user-contactInfo>
+              </p-tabPanel>
+
+              <!--
+              <p-tabPanel header="{{PROFESSIONAL}}" leftIcon="fa fa-male">
+                <app-manage-teacher [user]="user"></app-manage-teacher>
+              </p-tabPanel>
+              -->
+              <p-tabPanel header="{{PROFESSIONAL}}" leftIcon="fa fa-male">
+                <app-grh-manage-employee [user]="user"></app-grh-manage-employee>
+              </p-tabPanel>
+              <!--
+              <p-tabPanel header="{{TEACHER_PROFESSIONAL}}" leftIcon="fa fa-male">
+                <app-grh-manage-employee-teacher [user]="user"></app-grh-manage-employee-teacher>
+              </p-tabPanel>
+              -->
+
+              <p-tabPanel header="{{CARD}}" leftIcon="fa fa-male">
+                <app-grh-manage-personnel-kiosk-card [user]="user">
+                </app-grh-manage-personnel-kiosk-card>
+              </p-tabPanel>
+
+            </p-tabView>
+          </p-tabPanel>
+
+          <p-tabPanel header="{{CONTRACT}}" leftIcon="fa fa-newspaper-o" *ngIf="user.id > 0">
+            <p-tabView>
+
+              <p-tabPanel header="{{CONTRACT_DETAILS}}" leftIcon="fa fa-newspaper-o">
+                <app-manage-teacher-contract [user]="user"></app-manage-teacher-contract>
+              </p-tabPanel>
+
+              <p-tabPanel header="{{EMPLOYEE_CONTRACT_BANK}}" leftIcon="fa fa-newspaper-o">
+                <app-grh-contract-bank [user]="user"></app-grh-contract-bank>
+              </p-tabPanel>
+
+               <p-tabPanel header="{{CONTRACT_DOCUMENTS}}" leftIcon="fa fa-file">
+                <app-grh-employee-documents [user]="user"></app-grh-employee-documents>
+              </p-tabPanel>
+
+            </p-tabView>
+          </p-tabPanel>
+
+          <p-tabPanel header="{{AVANTAGE_VALUE}}" leftIcon="fa fa-money" *ngIf="user.id > 0">
+            <p-tabView>
+
+              <p-tabPanel header="{{PAY_DETAILS}}" leftIcon="fa fa-money">
+                <app-grh-pay-detail></app-grh-pay-detail>
+              </p-tabPanel>
+
+              <p-tabPanel header="{{AVANTAGE_DETAILS}}" leftIcon="fa fa-money">
+                <app-grh-avantage-value></app-grh-avantage-value>
+              </p-tabPanel>
+
+            </p-tabView>
+          </p-tabPanel>
+
+          <p-tabPanel header="{{GENERATE_PAY_SLIP}}" leftIcon="fa fa-money" *ngIf="user.id > 0">
+            <app-grh-generate-pay-slip></app-grh-generate-pay-slip>
+          </p-tabPanel>
+          <p-tabPanel header="{{DOCUMENT}}" leftIcon="fa fa-file" *ngIf="user.id > 0">
+            <p-tabView>
+
+              <p-tabPanel header="{{AUTRES_TYPE_DOCUMENTS}}" leftIcon="fa fa-file">
+                <app-grh-employee-another-document-type [user]="user"></app-grh-employee-another-document-type>
+              </p-tabPanel>
+               <p-tabPanel header="Documents" leftIcon="fa fa-file">
+                <app-grh-employee-another-documents [user]="user"></app-grh-employee-another-documents>
+              </p-tabPanel>
+
+            </p-tabView>
+          </p-tabPanel>
+           <p-tabPanel header="Congé" leftIcon="fa fa-file" *ngIf="user.id > 0">
+            <p-tabView>
+
+              <p-tabPanel header="Demande Congé" leftIcon="fa fa-file">
+                <app-admin-get-conge [user]="user"></app-admin-get-conge>
+              </p-tabPanel>
+               <p-tabPanel header="Récap. Congé" leftIcon="fa fa-file">
+                <app-admin-conge-history [user]="user"></app-admin-conge-history>
+              </p-tabPanel>
+              
+               <!-- <p-tabPanel header="Documents" leftIcon="fa fa-file">
+                <app-grh-employee-another-documents [user]="user"></app-grh-employee-another-documents>
+              </p-tabPanel> -->
+
+            </p-tabView>
+          </p-tabPanel>
+
+          <!--
+          <p-tabPanel header="{{COURSES}}" leftIcon="fa fa-bookmark" *ngIf="user.id > 0">
+            <app-manage-course [selectedUserT]="user"></app-manage-course>
+          </p-tabPanel>
+          -->
+
+        </p-tabView>
+      </div>
+      <!--//content-wrapper-->
+    </div>
+    <!--//page-row-->
+  </div>
+  <!--//page-content-->
+</div>
+<!--//page-->

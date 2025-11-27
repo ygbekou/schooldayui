@@ -1,0 +1,170 @@
+<div class="page-wrapper">
+  <header class="page-heading clearfix">
+    <h1 i18n="@@adminSpace" class="heading-title pull-left">
+      <img class="thumb" src="assets/images/scoolday.png" alt="" />
+    </h1>
+    <div class="breadcrumbs pull-right">
+      <ul class="breadcrumbs-list">
+        <li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+          ici:</li>
+        <li><a i18n="@@homeLink" href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+        <li><a i18n="@@admin" href="#">GRH</a><i class="fa fa-angle-right"></i></li>
+        <li i18n="@@statistics" class="current">Etats</li>
+      </ul>
+    </div>
+    <!--//breadcrumbs-->
+  </header>
+  <div class="page-content">
+    <div [hidden]="currentUser.role===10" class="alert alert-danger"
+      i18n="@@youNeedToBeConnectedAsAdmin">Vous
+      devez etre connecte en tant que GRH</div>
+
+    <div class="row page-row" [hidden]="currentUser.role!==10">
+      <app-grh-menu></app-grh-menu>
+
+			<!--//page-sidebar-->
+      <div class="content-wrapper col-md-10 col-sm-8">
+
+				<p-tabView (onChange)="onTabChange($event)">
+
+          <p-tabPanel header="{{ BANK_REPORTS }}" leftIcon="fa fa-file">
+            <p-tabView (onChange)="onSubBankTabChange($event)">
+
+              <p-tabPanel header="{{ GLOBAL_ALL_BANK_REPORTS }}" leftIcon="fa fa-file">
+                <app-grh-generate-report-global-vir-salaire-banque>
+                </app-grh-generate-report-global-vir-salaire-banque>
+              </p-tabPanel>
+
+              <p-tabPanel header="{{ RECAP_BY_BANK_REPORTS }}" leftIcon="fa fa-file">
+                <app-grh-generate-report-recapitulatif-vir-salaire-banque>
+                </app-grh-generate-report-recapitulatif-vir-salaire-banque>
+              </p-tabPanel>
+
+              <p-tabPanel header="{{ GLOBAL_ALL_EMPLOYEES_REPORTS }}" leftIcon="fa fa-file">
+                <app-grh-generate-report-recapitulatif-vir-salaire-employes>
+                </app-grh-generate-report-recapitulatif-vir-salaire-employes>
+              </p-tabPanel>
+
+            </p-tabView>
+          </p-tabPanel>
+
+          <p-tabPanel header="{{ PAY_EMPLOYEES_REPORTS }}" leftIcon="fa fa-file">
+            <p-tabView (onChange)="onSubEmployeeTabChange($event)">
+
+              <p-tabPanel header="{{ PAY_SLIPS_EMPLOYEES_REPORT }}" leftIcon="fa fa-file">
+                <app-grh-generate-report-all-employees-pay-slips>
+                </app-grh-generate-report-all-employees-pay-slips>
+              </p-tabPanel>
+
+              <p-tabPanel header="{{ PAY_SLIP_EMPLOYEE_REPORT }}" leftIcon="fa fa-file">
+                <app-grh-generate-report-employee-pay-slip>
+                </app-grh-generate-report-employee-pay-slip>
+              </p-tabPanel>
+
+            </p-tabView>
+          </p-tabPanel>
+
+          <p-tabPanel header="{{ PAY_TEACHERS_REPORTS }}" leftIcon="fa fa-file">
+            <p-tabView (onChange)="onSubTeacherTabChange($event)">
+
+              <p-tabPanel header="{{ HONORAIRE_ALL_TEACHERS_REPORT }}" leftIcon="fa fa-file">
+                <p-tabView>
+
+                  <p-tabPanel header="Etat détaillé" leftIcon="fa fa-file">
+        						<app-grh-generate-report-honoraires-all-teachers>
+                    </app-grh-generate-report-honoraires-all-teachers>
+                  </p-tabPanel>
+
+                  <p-tabPanel header="Etat récapitulatif" leftIcon="fa fa-file">
+        						<app-grh-generate-report-honoraires-recapitulatif-all-teachers>
+                    </app-grh-generate-report-honoraires-recapitulatif-all-teachers>
+                  </p-tabPanel>
+
+                </p-tabView>
+    					</p-tabPanel>
+
+              <p-tabPanel header="{{ HONORAIRE_TYPE_TEACHERS_REPORT }}" leftIcon="fa fa-file">
+                <p-tabView>
+
+                  <p-tabPanel header="Etat détaillé" leftIcon="fa fa-file">
+        						<app-grh-generate-report-honoraire-teacher-types>
+                    </app-grh-generate-report-honoraire-teacher-types>
+                  </p-tabPanel>
+
+                  <p-tabPanel header="Etat récapitulatif" leftIcon="fa fa-file">
+        						<app-grh-generate-report-honoraire-recapitulatif-teacher-types>
+                    </app-grh-generate-report-honoraire-recapitulatif-teacher-types>
+                  </p-tabPanel>
+
+                </p-tabView>
+    					</p-tabPanel>
+
+              <p-tabPanel header="{{ HONORAIRE_TEACHER_REPORT }}" leftIcon="fa fa-file">
+    						<app-grh-generate-report-honoraires-one-teacher>
+                </app-grh-generate-report-honoraires-one-teacher>
+              </p-tabPanel>
+             
+
+            </p-tabView>
+          </p-tabPanel>
+          <p-tabPanel header="Etat Conge" leftIcon="fa fa-file">
+    						<app-admin-generate-all-employee-conge-status>
+                </app-admin-generate-all-employee-conge-status>
+    			</p-tabPanel>
+          <p-tabPanel header="Etat de paie" leftIcon="fa fa-file">
+            <p-tabView>
+
+              <p-tabPanel header="Détails Interventions Enseignants" leftIcon="fa fa-file">
+                <app-grh-generate-report-honoraire-detaille-all-teachers>
+                </app-grh-generate-report-honoraire-detaille-all-teachers>
+              </p-tabPanel>
+
+              <!-- <p-tabPanel header="Etat Virement" leftIcon="fa fa-file">
+                <app-grh-generate-etat-paye-ens-externe [reportSourceName]="etatPayeMensuel">
+                </app-grh-generate-etat-paye-ens-externe>
+              </p-tabPanel> -->
+              <p-tabPanel header="Etat Virement" leftIcon="fa fa-file">
+                <p-tabView>
+                  <p-tabPanel header="Virement par enseignant par banque" leftIcon="fa fa-file">
+                    <app-grh-generate-etat-paye-ens-externe [reportSourceName]="'etatPayeMensuel'">
+                    </app-grh-generate-etat-paye-ens-externe>
+                  </p-tabPanel>
+                  <p-tabPanel header="Virement par banque" leftIcon="fa fa-file">
+                    <app-grh-generate-etat-paye-ens-externe [reportSourceName]="'etatPayeMensuelBank'">
+                    </app-grh-generate-etat-paye-ens-externe>
+                  </p-tabPanel>
+                </p-tabView>
+              </p-tabPanel>
+
+
+              <p-tabPanel header="Etat paie" leftIcon="fa fa-file">
+                <p-tabView>
+                  <p-tabPanel header="Global" leftIcon="fa fa-file">
+                    <app-grh-generate-etat-paye-ens-externe [reportSourceName]="'etatGlobalPaie'">
+                    </app-grh-generate-etat-paye-ens-externe>
+                  </p-tabPanel>
+                  <p-tabPanel header="Par enseignant" leftIcon="fa fa-file">
+                    <app-grh-generate-etat-paye-ens-externe [reportSourceName]="'etatIndividuelPaieHonoraireEnseignant'">
+                    </app-grh-generate-etat-paye-ens-externe>
+                  </p-tabPanel>
+                </p-tabView>
+              </p-tabPanel>
+
+              <!--<p-tabPanel header="Etat paie Enseignant Interne" leftIcon="fa fa-file">
+                <app-grh-generate-etat-paye-ens-interne>
+                </app-grh-generate-etat-paye-ens-interne>
+              </p-tabPanel>-->
+
+            </p-tabView>
+          </p-tabPanel>
+
+				</p-tabView>
+			</div>
+			<!--//content-wrapper-->
+
+    </div>
+    <!--//page-row-->
+  </div>
+  <!--//page-content-->
+</div>
+<!--//page-->

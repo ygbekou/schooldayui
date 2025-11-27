@@ -1,0 +1,140 @@
+<p-dialog header="Ajout - Dossier d'Immobilisation" [(visible)]="displayDialog" [responsive]="true" showEffect="fade"
+    [modal]="true" width="700" height="1200">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="folder">
+        <div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@key" for="key">Code Identification : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="key" class="form-control" [(ngModel)]="folder.identificationCode" disabled=true/>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@wording" for="wording">N° Dossier : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="wording" class="form-control" [(ngModel)]="folder.folderNumber" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@bon" for="on">Libellé : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="bon" class="form-control" [(ngModel)]="folder.designation" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@date" for="date">Reference : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="date" class="form-control" [(ngModel)]="folder.reference" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@budget" for="budget">N° Budget : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input pInputText id="budget" class="form-control" [(ngModel)]="folder.budgetNomenclatureNumber" />
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@year" for="year">Année Fiscal : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-autoComplete [(ngModel)]="folder.fiscalYear" (onDropdownClick)="fiscalYearDropdown.handleDropdownClick($event)"
+                        [suggestions]="fiscalYearDropdown.filteredFiscalYears" [dropdown]="true" id="year"
+                        (completeMethod)="fiscalYearDropdown.filter($event)" name="year" field="key" placeholder="Annee Fiscal"
+                        [minLength]="1"></p-autoComplete>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@reception" for="reception">Reception  : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-autoComplete [(ngModel)]="folder.reception"
+                        (onDropdownClick)="receptionDropdown.handleDropdownClick($event)"
+                        [suggestions]="receptionDropdown.filteredReceptions" [dropdown]="true" id="reception"
+                        (completeMethod)="receptionDropdown.filter($event)" name="reception" field="procesVerbaleNumber" placeholder="N° Proces Verbal de reception"
+                        [minLength]="1"></p-autoComplete>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@nature" for="nature">Nature : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-autoComplete [(ngModel)]="folder.nature" (onDropdownClick)="natureDropdown.handleDropdownClick($event)"
+                        [suggestions]="natureDropdown.filteredNatures" [dropdown]="true" id="nature"
+                        (completeMethod)="natureDropdown.filter($event)" name="nature" field="name"
+                        placeholder="Nature de l'immobilisation" [minLength]="1"></p-autoComplete>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+
+            <div class="ui-grid-row form-group">
+                <div class="ui-grid-col-2">
+                    <label i18n="@@account" for="account">Compte Comptable : </label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-autoComplete [(ngModel)]="folder.account" (onDropdownClick)="accountDropdown.handleDropdownClick($event)"
+                        [suggestions]="accountDropdown.filteredAccounts" [dropdown]="true" id="account"
+                        (completeMethod)="accountDropdown.filter($event)" name="account" field="accountTitle"
+                        placeholder="Compe comptable" [minLength]="1"></p-autoComplete>
+                </div>
+                <div class="ui-grid-col-1"></div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-close" (click)="delete()" label="{{DELETE_LABEL}}"></button>
+            <button type="button" pButton icon="fa fa-check" (click)="save()" label="{{SAVE_LABEL}}"></button>
+        </div>
+    </footer>
+</p-dialog>
+
+
+<p-dataTable [value]="folders" selectionMode="single" [(selection)]="selectedfolder" expandableRows="true"
+    [paginator]="true" [rows]="5" (onRowSelect)="onRowSelect($event)" [responsive]="true">
+    <p-column expander="true" styleClass="col-icon" [style]="{'width':'5%'}">
+
+    </p-column>
+    <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [sortable]="col.sortable"
+        [style]="col.style" [filter]="col.filter">
+        <ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate type="body">
+            <span class="col-date">{{ data[ col.field ] | date:'dd/MM/yy' }}</span>
+        </ng-template>
+    </p-column>
+
+    <ng-template pTemplate="paginatorLeft">
+        <button type="button" (click)="showDialogToAdd()" pButton icon="fa fa-plus-circle"></button>
+    </ng-template>
+    <ng-template pTemplate="paginatorRight">
+        <button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+    </ng-template>
+</p-dataTable>

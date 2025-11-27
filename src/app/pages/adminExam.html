@@ -1,0 +1,64 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 i18n="@@adminSpace" class="heading-title pull-left">
+			<img class="thumb" src="assets/images/scoolday.png" alt="" />
+		</h1>
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+					ici:</li>
+				<li><a i18n="@@homeLink" href="index.html">Home</a><i
+					class="fa fa-angle-right"></i></li>
+				<li><a i18n="@@admin" href="#">Admin</a><i
+					class="fa fa-angle-right"></i></li>
+				<li i18n="@@applications" class="current">Examens et notes</li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<div [hidden]="currentUser.role===1||currentUser.role===5"
+			class="alert alert-danger" i18n="@@youNeedToBeConnectedAsAdmin">Vous
+			devez etre connecte en tant qu'administrateur pour voir ce contenu</div>
+		<div class="row page-row"
+			[hidden]="!(currentUser.role===1||currentUser.role===5)">
+			<app-admin-menu></app-admin-menu>
+			<!--//page-sidebar-->
+			<div class="content-wrapper col-md-10 col-sm-8">
+
+				<p-tabView id="tabList" (onChange)="onTabChange($event)">
+
+					<p-tabPanel header="{{ENTER_NOTES}}" leftIcon="fa fa-search">
+						<app-admin-exam-list (onExamSelected)="onExamSelected($event)" [role]="1">
+						</app-admin-exam-list>
+					</p-tabPanel>
+
+					<p-tabPanel header="{{CLOSE_SEMESTRE_GROUP}}" leftIcon="fa fa-calculator">
+						<app-admin-exam-close-semestre-group>
+						</app-admin-exam-close-semestre-group>
+					</p-tabPanel>
+
+					<p-tabPanel header="{{CALCULATIONS}}" leftIcon="fa fa-calculator">
+						<p-tabView id="tabList" (onChange)="onTabChange($event)">
+							<p-tabPanel header="{{MONTHLY_QUATERLY}}" leftIcon="fa fa-calculator">
+								<app-admin-calc-month></app-admin-calc-month>
+							</p-tabPanel>
+							<p-tabPanel header="{{SEMESTER}}" leftIcon="fa fa-calculator">
+								<app-admin-calc-semester></app-admin-calc-semester>
+							</p-tabPanel>
+							<p-tabPanel header="{{ANNUAL}}" leftIcon="fa fa-calculator">
+								<app-admin-calc-year></app-admin-calc-year>
+							</p-tabPanel>
+						</p-tabView>
+					</p-tabPanel>
+
+				</p-tabView>
+			</div>
+			<!--//content-wrapper-->
+		</div>
+		<!--//page-row-->
+	</div>
+	<!--//page-content-->
+</div>
+<!--//page-->

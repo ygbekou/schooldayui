@@ -1,0 +1,289 @@
+<p-growl [(value)]="msgs"></p-growl>
+
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="500">
+<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="timeTable">
+	<div>
+
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-2">
+				<label i18n="@@days" for="days">Jour</label>
+			</div>
+			<div class="ui-grid-col-10">
+				<p-dropdown [options]="weekDays" [(ngModel)]="timeTable.weekday.id"
+					[style]="{'width':'50%'}"></p-dropdown>
+			</div>
+		</div>
+
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-2">
+				<label i18n="@@quater" for="term">Trimestre</label>
+			</div>
+			<div class="ui-grid-col-5">
+				<p-autoComplete [(ngModel)]="timeTable.term"
+					(onDropdownClick)="termDropdown.handleDropdownClick($event)"
+					[suggestions]="termDropdown.filteredTerms" [dropdown]="true"
+					id="term" (completeMethod)="termDropdown.filter($event)"
+					name="term" field="name" [size]="30" placeholder="{{TERM}}"
+					[minLength]="1" #term="ngModel"></p-autoComplete>
+			</div>
+			<div class="ui-grid-col-5"></div>
+		</div>
+
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-2">
+				<label i18n="@@period" for="period">Heure</label>
+			</div>
+			<div class="ui-grid-col-10">
+				<p-dropdown [options]="timePeriods"
+					[(ngModel)]="timeTable.timePeriod.id" [style]="{'width':'70%'}"></p-dropdown>
+			</div>
+		</div>
+
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-2">
+				<label i18n="@@subject" for="subject">Matiere</label>
+			</div>
+			<div class="ui-grid-col-9">{{selectedCourse.subject.name}}</div>
+			<div class="ui-grid-col-1"></div>
+		</div>
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-2">
+				<label i18n="@@class" for="classe">Classe</label>
+			</div>
+			<div class="ui-grid-col-9">
+				{{selectedCourse.classe.level.name}}</div>
+			<div class="ui-grid-col-1"></div>
+		</div>
+
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-2">
+				<label i18n="@@teacher" for="teacher">Enseignant</label>
+			</div>
+			<div class="ui-grid-col-9">{{selectedCourse.teacher.name}}</div>
+			<div class="ui-grid-col-1"></div>
+		</div>
+
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-2">
+				<label i18n="@@building" for="building">Building</label>
+			</div>
+			<div class="ui-grid-col-9">
+				<p-autoComplete [(ngModel)]="timeTable.building"
+					(onSelect)="clearSelectedRoom()"
+					(onDropdownClick)="buildingDropdown.handleDropdownClick($event)"
+					[suggestions]="buildingDropdown.filteredBuildings"
+					[dropdown]="true" id="building"
+					(completeMethod)="buildingDropdown.filter($event)" name="building"
+					field="name" [size]="30" placeholder="Building" [minLength]="1"></p-autoComplete>
+			</div>
+			<div class="ui-grid-col-1"></div>
+		</div>
+
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-2">
+				<label i18n="@@room" for="room">Room</label>
+			</div>
+			<div class="ui-grid-col-9">
+				<p-autoComplete [(ngModel)]="timeTable.room"
+					(onDropdownClick)="roomDropdown.handleDropdownClick($event, timeTable.building)"
+					[suggestions]="roomDropdown.filteredRooms" [dropdown]="true"
+					id="room" name="room" field="name" [size]="20"
+					(completeMethod)="roomDropdown.filter($event)" placeholder="Room"
+					[minLength]="1"> </p-autoComplete>
+			</div>
+			<div class="ui-grid-col-1"></div>
+		</div>
+
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-3">
+				<label i18n="@@catch_up" for="building">Rattrapage ?</label>
+			</div>
+			<div class="ui-grid-col-8">
+				<p-checkbox [binary]="true" id="catch_up" [(ngModel)]="timeTable.catch_up" #catch_up="ngModel"></p-checkbox>
+				<!-- <p-checkbox name="catch_up" [binary]="true" label="Rattrapage ?" [(ngModel)]="timeTable.catch_up"></p-checkbox> -->
+			</div>
+			<div class="ui-grid-col-1"></div>
+		</div>
+		<div class="ui-grid-row" *ngIf="timeTable.catch_up">
+			<div class="ui-grid-col-2">
+				<label i18n="@@dateCatchUpCourse" for="building">Date</label>
+			</div>
+			<div class="ui-grid-col-9">
+				<p-calendar monthNavigator="true" yearRange="1940:2050" yearNavigator="true" id="dateCatchUpCourse" name="dateCatchUpCourse"
+  				[showIcon]="true" [(ngModel)]="timeTable.dateCatchUpCourse" #dateCatchUpCourse="ngModel" required></p-calendar>
+			</div>
+			<div class="ui-grid-col-1"></div>
+		</div>
+
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-12">
+				<div *ngIf="msg" class="alert alert-success">{{msg}}</div>
+				<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br />
+<br />
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix" *ngIf="user.userAccess != 2">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+
+		<button type="button" pButton icon="fa fa-check" (click)="close()"
+			label="{{CLOSE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+<form (ngSubmit)="search()" #searchForm="ngForm">
+	<!--
+	<div class="ui-grid ui-grid-responsive ui-fluid"
+		[hidden]="user.role!=1 && user.role!=5 && user.role!=8">
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-10">
+				<input type="text" pInputText class="form-control" id="searchT"
+					required [(ngModel)]="searchText"
+					placeholder="{{COURSE_SEARCH_TEXT}}" name="searchT"
+					#searchT="ngModel">
+			</div>
+			<div class="ui-grid-col-2">
+				<button type="button" pButton icon="fa fa-search" (click)="search()"
+					label="Go" style="margin-top: 0px; height: 35px;"></button>
+			</div>
+		</div>
+
+	</div>
+	-->
+
+	<div class="ui-grid ui-grid-responsive ui-fluid" [hidden]="user.role!=1 && user.role!=5 && user.role!=8 && user.role!=11&& user.role!=14">
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-6">
+				<p-autoComplete [(ngModel)]="theSchoolYear"
+					(onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+					[suggestions]="schoolYearDropdown.filteredSchoolYears"
+					[dropdown]="true" id="schoolYear"
+					(completeMethod)="schoolYearDropdown.filter($event)"
+					name="schoolYear" field="year" [size]="30"
+					placeholder="{{SCHOOLYEAR}}" [minLength]="1"></p-autoComplete>
+			</div>
+			<div class="ui-grid-col-6">
+				<p-autoComplete [(ngModel)]="theTerm"
+					(onDropdownClick)="termDropdown.handleDropdownClick($event)"
+					[suggestions]="termDropdown.filteredTerms" [dropdown]="true"
+					id="term" (completeMethod)="termDropdown.filter($event)"
+					name="term" field="name" [size]="30" placeholder="{{TERM}}"
+					[minLength]="1"></p-autoComplete>
+			</div>
+		</div>
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-10">
+				<input type="text" pInputText class="form-control" id="searchT"
+					required [(ngModel)]="searchText"
+					placeholder="{{COURSE_SEARCH_TEXT}}" name="searchT"
+					#searchT="ngModel">
+			</div>
+			<div class="ui-grid-col-2">
+				<button type="button" pButton icon="fa fa-search" (click)="search()"
+					label="Go" style="margin-top: 0px; height: 35px;"></button>
+			</div>
+		</div>
+
+	</div>
+</form>
+<p-dataTable [value]="courses" selectionMode="single"
+	[(selection)]="selectedCourse" expandableRows="true"
+	(onRowExpand)="getTimeTables($event)" [paginator]="true" [rows]="15"
+	[responsive]="true"> <p-column expander="true"
+	styleClass="col-icon" [style]="{'width':'5%'}"></p-column> <p-column
+	*ngFor="let col of cols" [field]="col.field" [header]="col.header"
+	[sortable]="col.sortable" [style]="col.style" [filter]="col.filter">
+<ng-template *ngIf="col.type === 'Date'" let-col let-data="rowData"
+	pTemplate type="body"> <span class="col-date">{{
+	data[ col.field ] | date:'dd/MM/yy' }}</span> </ng-template> </p-column> <ng-template let-course
+	pTemplate="rowexpansion">
+
+<div class="ui-grid ui-grid-responsive ui-fluid">
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2"></div>
+		<div class="ui-grid-col-10">
+			<p-dataTable [value]="course.timeTables" [responsive]="true"
+				[(selection)]="selectedTimeTable"
+				(onRowSelect)="onRowSelect($event)" selectionMode="single">
+			<p-column field="termName" header="Trimestre"></p-column> <p-column
+				field="weekdayName" header="Jour"></p-column> <p-column
+				field="timePeriodDescription" header="Heures"></p-column>
+				<p-footer *ngIf="user.userAccess != 2">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<button type="button" pButton icon="fa fa-plus" style="float: left"
+						(click)="showDialogToAdd()" label="{{ADD_LABEL}}"></button>
+				</div>
+				<div class="ui-grid-col-4">
+					<button type="button" pButton icon="fa fa-search"
+						style="float: left" (click)="showDialogToViewTimeTable()"
+						label="{{COURSE_VIEW_LABEL}}"></button>
+				</div>
+
+				<div class="ui-grid-col-4">
+					<button type="button" pButton icon="fa fa-search"
+						style="float: left"
+						(click)="showDialogToViewClassTimeTable(selectedCourse.classe.id)"
+						label="{{CLASS_VIEW_LABEL}}"></button>
+				</div>
+			</div>
+			</p-footer> </p-dataTable>
+		</div>
+	</div>
+</div>
+
+</ng-template> </p-dataTable>
+
+<p-dialog
+	header="Emploi du Temps- {{school.beginTime}} - {{school.endTime}}"
+	[(visible)]="displayTimeTableDialog" [responsive]="true"
+	showEffect="fade" [modal]="true" width="1000">
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-2" *ngIf="displayTimeTableDialogClass">
+			<label i18n="@@quater" for="schoolYear">Année scolaire</label>
+		</div>
+		<div class="ui-grid-col-3" *ngIf="displayTimeTableDialogClass">
+			<p-autoComplete [(ngModel)]="theSchoolYearTimeTable"
+				(onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+				[suggestions]="schoolYearDropdown.filteredSchoolYears"
+				[dropdown]="true" id="schoolYear"
+				(completeMethod)="schoolYearDropdown.filter($event)"
+				name="schoolYear" field="year"
+				placeholder="{{SCHOOLYEAR}}" [minLength]="1"></p-autoComplete>
+		</div>
+		<div class="ui-grid-col-2">
+			<label i18n="@@quater" for="term">Trimestre</label>
+		</div>
+		<div class="ui-grid-col-3">
+			<p-autoComplete [(ngModel)]="term"
+				(onDropdownClick)="termDropdown.handleDropdownClick($event)"
+				[suggestions]="termDropdown.filteredTerms" [dropdown]="true"
+				id="termV" (completeMethod)="termDropdown.filter($event)"
+				name="termV" field="name"
+				placeholder="{{TERM}}" [minLength]="1" #termV="ngModel"></p-autoComplete>
+		</div>
+		<div class="ui-grid-col-2">
+			<button type="button" pButton icon="fa fa-search"
+				style="float: left"
+				(click)="getTimeTable()"
+				label="Afficher"></button>
+		</div>
+	</div>
+
+	<br/>
+
+<!--  WIth binding of min and max time the calendar won't load.
+	<p-schedule
+	[events]="events" [header]="headerConfig" [minTime]="school.beginTime"
+	[maxTime]="school.endTime" [defaultView]="'agendaWeek'" locale="fr"></p-schedule>
+	--> <p-schedule [events]="events" [header]="headerConfig"
+	minTime="07:00:00" maxTime="18:00:00" [defaultView]="'agendaWeek'"
+	locale="fr"></p-schedule> </p-dialog>

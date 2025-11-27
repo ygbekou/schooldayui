@@ -1,0 +1,69 @@
+<div class="page-wrapper">
+  <header class="page-heading clearfix">
+    <h1 i18n="@@adminSpace" class="heading-title pull-left">
+      <img class="thumb" src="assets/images/scoolday.png" alt="" />
+    </h1>
+    <div class="breadcrumbs pull-right">
+      <ul class="breadcrumbs-list">
+        <li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+          ici:</li>
+        <li><a i18n="@@homeLink" href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+        <li><a i18n="@@admin" href="#">GRH</a><i class="fa fa-angle-right"></i></li>
+        <li i18n="@@statistics" class="current">Statistiques</li>
+      </ul>
+    </div>
+    <!--//breadcrumbs-->
+  </header>
+  <div class="page-content">
+    <div [hidden]="currentUser.role===10" class="alert alert-danger"
+      i18n="@@youNeedToBeConnectedAsAdmin">Vous
+      devez etre connecte en tant que GRH</div>
+
+    <div class="row page-row" [hidden]="currentUser.role!==10">
+      <app-grh-menu></app-grh-menu>
+
+			<!--//page-sidebar-->
+      <div class="content-wrapper col-md-10 col-sm-8">
+
+				<p-tabView (onChange)="onTabChange($event)">
+
+					<p-tabPanel header="{{FISCAL_YEAR}}" leftIcon="fa fa-newspaper-o">
+						<app-grh-fiscal-year></app-grh-fiscal-year>
+					</p-tabPanel>
+
+					<p-tabPanel header="{{TYPE_CONTRACT}}" leftIcon="fa fa-newspaper-o">
+						<app-grh-contract-type></app-grh-contract-type>
+					</p-tabPanel>
+
+          <p-tabPanel header="{{EMPLOYEE_DOCUMENT_TYPE}}" leftIcon="fa fa-newspaper-o">
+						<app-grh-employee-document-type></app-grh-employee-document-type>
+					</p-tabPanel>
+
+					<p-tabPanel header="{{BANK}}" leftIcon="fa fa-newspaper-o">
+						<app-grh-employee-bank></app-grh-employee-bank>
+					</p-tabPanel>
+
+					<p-tabPanel header="{{PAIEMENT_MODE}}" leftIcon="fa fa-newspaper-o">
+						<app-grh-paiement-mode></app-grh-paiement-mode>
+					</p-tabPanel>
+
+					<p-tabPanel header="{{TYPE_AVANTAGE}}" leftIcon="fa fa-newspaper-o">
+						<app-grh-avantage-type></app-grh-avantage-type>
+					</p-tabPanel>
+
+					<p-tabPanel header="{{AVANTAGE}}" leftIcon="fa fa-newspaper-o">
+						<app-grh-avantage></app-grh-avantage>
+					</p-tabPanel>
+				</p-tabView>
+			</div>
+			<!--//content-wrapper-->
+
+
+
+      <!--//content-wrapper-->
+    </div>
+    <!--//page-row-->
+  </div>
+  <!--//page-content-->
+</div>
+<!--//page-->

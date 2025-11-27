@@ -1,0 +1,106 @@
+<p-dialog header="Detail" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" [style]="{ 'z-index': zIndexDialog }">
+	<div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="cycle">
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-4">
+				<label for="name">Code</label>
+			</div>
+			<div class="ui-grid-col-8">
+				<input pInputText id="name" [(ngModel)]="cycle.code" />
+			</div>
+		</div>
+
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-4">
+				<label for="name">Nom</label>
+			</div>
+			<div class="ui-grid-col-8">
+				<input pInputText id="name" [(ngModel)]="cycle.name" />
+			</div>
+		</div>
+
+		<br />
+		
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-4">
+				<label for="ordreAffichageMenuSiteWeb">Ordre d'affichage - Menu Web</label>
+			</div>
+			<div class="ui-grid-col-8">
+				<input type="number" pInputText id="ordreAffichageMenuSiteWeb" 
+					[(ngModel)]="cycle.ordreAffichageMenuSiteWeb" />
+			</div>
+		</div>
+
+		<br />
+		
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-4">
+				<label for="creditsPerSemester">Credits par Sem./Trim.</label>
+			</div>
+			<div class="ui-grid-col-8">
+				<input type="number" pInputText id="creditsPerSemester" 
+					[(ngModel)]="cycle.creditsPerSemester" />
+			</div>
+		</div>
+		<br>
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-6">
+				<p-radioButton name="cycleType" [value] = "1" label="Licence & Masters"
+				 [(ngModel)]="cycle.cycleType"></p-radioButton><br>
+			</div>
+			<div class="ui-grid-col-6">
+			<p-radioButton name="cycleType" [value]= "2" label="Formations Modulaires"
+				 [(ngModel)]="cycle.cycleType"></p-radioButton><br>
+			</div>
+
+		</div>
+		
+		<br />
+		<div class="ui-grid-row">
+			<div class="ui-grid-col-2">
+			  <label i18n="@@status" for="status">Activé ?</label>
+			</div>
+			<div class="ui-grid-col-10">
+			  <p-checkbox [(ngModel)]="cycle.publier" binary="true" id="status"></p-checkbox>
+			</div>
+		  </div>
+
+	</div>
+
+	<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+	<footer>
+		<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+			
+			<button type="button" pButton icon="fa fa-close" (click)="confirmDelete()"
+				label="Supprimer"></button>
+			<button type="button" pButton icon="fa fa-check" (click)="save()"
+				label="Sauvegarder"></button>
+		</div>
+	</footer>
+</p-dialog>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" width="425" [closable]="false"></p-confirmDialog>
+
+<p-dataTable [value]="cycles" selectionMode="single"
+	[(selection)]="selectedCycle" expandableRows="true"
+	(onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15"
+	[responsive]="true"> <p-column *ngFor="let col of cols"
+	[field]="col.field" [header]="col.header" [sortable]="col.sortable"
+	[filter]="col.filter" [style]="col.style"> <ng-template
+	*ngIf="col.type === 'string' || col.type === undefined" let-col
+	let-data="rowData" pTemplate type="body"> <span
+	class="col-string">{{ data[ col.field ] }}</span> </ng-template> <ng-template
+	*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+	type="body"> <span class="col-date">{{
+	data[col.field ] | date:'dd/MM/yy' }}</span> </ng-template> <ng-template
+	*ngIf="col.type === 'text'" let-col let-data="rowData" pTemplate
+	type="body">
+<div [innerHTML]="data[ col.field ]"></div>
+</ng-template> </p-column> <ng-template pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>
+

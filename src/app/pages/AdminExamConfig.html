@@ -1,0 +1,74 @@
+<file-uploader></file-uploader>
+
+<p-dialog header="{{DETAIL}}" [(visible)]="displayDialog"
+	[responsive]="true" showEffect="fade" [modal]="true" width="500">
+<div class="ui-grid ui-grid-responsive ui-fluid">
+    <div class="ui-grid-row">
+        <div class="ui-grid-col-4">
+          <label i18n="@@schoolYear" for="schoolYear">Année Scolaire :</label>
+        </div>
+        <div class="ui-grid-col-8">
+          <p-autoComplete [(ngModel)]="examConfiguration.schoolYear"
+            (onDropdownClick)="schoolYearDropdown.handleDropdownClick($event)"
+            [suggestions]="schoolYearDropdown.filteredSchoolYears" [dropdown]="true" id="schoolYear" required
+            (completeMethod)="schoolYearDropdown.filter($event)" name="schoolYear" field="year" [size]="30"
+            placeholder="schoolyear" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+          <div [hidden]="schoolYear.valid || schoolYear.pristine" class="alert alert-danger" i18n="@@schoolYearRequired">
+            Annee
+            scolaire Requise</div>
+        </div>
+        <!-- <div class="ui-grid-col-1"></div> -->
+      </div><br>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-4">
+          <label i18n="@@schoolYear" for="schoolYear">Type d'examen :</label>
+        </div>
+        <div class="ui-grid-col-8">
+          <p-autoComplete [(ngModel)]="examConfiguration.examType"
+            (onDropdownClick)="examTypeDropdown.handleDropdownClick($event)"
+            [suggestions]="examTypeDropdown.filteredExamTypes" [dropdown]="true" id="examType" required
+            (completeMethod)="examTypeDropdown.filter($event)" name="examType" field="name" [size]="30"
+            placeholder="Type d'examen" [minLength]="1" #schoolYear="ngModel"></p-autoComplete>
+          <div [hidden]="schoolYear.valid || schoolYear.pristine" class="alert alert-danger" i18n="@@examTypeRequired">
+            Type d'exam Requis</div>
+        </div>
+    
+        <!-- <div class="ui-grid-col-1"></div> -->
+      </div> <br>
+
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-4">
+            <label i18n="@@examNbr" for="examNbr">Nombre d'examen : </label>
+        </div>
+        <div class="ui-grid-col-8">
+            <input type="number" pInputText id="examNbr" [(ngModel)]="examConfiguration.numberOfExams" />
+        </div>
+    </div>
+    
+    
+</div>
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" pButton icon="fa fa-close" (click)="delete()"
+			label="{{DELETE_LABEL}}"></button>
+		<button type="button" pButton icon="fa fa-check" (click)="save()"
+			label="{{SAVE_LABEL}}"></button>
+	</div>
+</footer> </p-dialog>
+
+
+<p-dataTable [value]="examConfigurations" selectionMode="single"
+	[(selection)]="selectedExamConfiguration" expandableRows="true"
+	(onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15"
+	[responsive]="true"> <p-column *ngFor="let col of cols"
+	[field]="col.field" [header]="col.header" [sortable]="col.sortable"
+	[filter]="col.filter"> </p-column> <ng-template
+	pTemplate="paginatorLeft">
+<button type="button" (click)="showDialogToAdd()" pButton
+	icon="fa fa-plus-circle"></button>
+</ng-template> <ng-template pTemplate="paginatorRight">
+<button type="button" (click)="getAll()" pButton icon="fa fa-refresh"></button>
+</ng-template> </p-dataTable>

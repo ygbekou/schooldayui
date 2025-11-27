@@ -1,0 +1,71 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 i18n="@@teamLink" class="heading-title pull-left">Authenticité d'un Diplôme</h1>
+		
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li i18n="@@youAreHere" class="breadcrumbs-label">Vous êtes
+					ici:</li>
+				<li><a i18n="@@homeLink" href="index.html">Home</a><i
+					class="fa fa-angle-right"></i></li>
+				<li i18n="@@teamLink" class="current">Authenticité d'un Diplôme</li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+	
+            <div style="margin-bottom: 200px; margin-top: 70px;">
+    
+                <form (ngSubmit)="verifier()" #degreeForm="ngForm">
+                    <div class="row">	
+                        <div class="col-md-10">
+                            <!-- <input type="text" [(ngModel)]="degree.degreeNumber" required class="form-control" name="degree" id="degree" placeholder="Entrez le numero du diplôme ici ..." style="width: 100%; border-radius: 10; height: 40px;"> -->
+                            <div class="form-group">
+                               <input type="text" 
+                                    class="form-control" id="degree" required [(ngModel)]="degree.degreeNumber"
+                                    name="degree" #dgree="ngModel" placeholder="Entrez le numero du diplôme ici ..." style="width: 100%; border-radius: 10; height: 40px;">
+                                <div [hidden]="dgree.valid || dgree.pristine"
+                                    class="alert alert-danger" i18n="@@degree">renseignez le numero du diplôme</div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">              
+                            <button type="submit" [disabled]="!degreeForm.form.valid" class="btn btn-theme" style="width: 100%; border-radius: 2; height: 40px;"><i class='fas fa-send'></i></button>        
+                        </div>
+                    </div>
+
+                    
+                    
+                </form>
+
+                <div style="margin-top: 80px;">
+                    <h5 *ngIf="mailError" style="color: red; text-align: center;">{{message}}</h5>
+                    <h5 *ngIf="!mailError" style="color: green; text-align: center;">{{message}}</h5>
+                </div>
+
+                <div *ngIf="!mailError" style="width: 50%; margin: 0 auto; text-align: center;">
+                    <img class="img-responsive example-image"
+                         src="assets/images/Degree_succes.gif"
+                         alt="diplôme accepté" />
+                </div>
+
+                
+                <!-- <div *ngIf="mailError" style="width: 50%; margin: 0 auto; text-align: center;">
+                    <img class="img-responsive example-image"
+                         src="assets/images/Degree_echec.gif"
+                         alt="diplôme refusé" />
+                </div>
+                 -->
+
+               
+	
+		</div>
+		
+	</div>
+
+</div>
+
+
+
+

@@ -1,0 +1,31 @@
+<section class="events" style="height: /*430px;*/ 720px;">
+	<h1 class="section-heading text-highlight">
+		<span class="line">Evènements</span>
+	</h1>
+	<div class="section-content">
+		<div class="event-item" *ngFor="let event of events">
+		<!--div class="event-item" style="padding-bottom: 20px;" *ngFor="let event of events"-->
+			<p class="date-label">
+				<span class="month">{{event.startsAt|date:'MMM'}}</span> <span
+					class="date-number">{{event.startsAt|date:'dd'}}</span>
+			</p>
+			<div class="details">
+				<h2 class="title">{{event.title}}</h2>
+				<p class="time">
+					<i class="fa fa-clock-o"></i>{{event.startsAt|date:'HH:mm'}} -
+					{{event.endsAt|date:'HH:mm'}}
+				</p>
+				<p class="location">
+					<i class="fa fa-map-marker"></i>{{event.address}}, {{event.city}}
+				</p>
+			</div>
+			<!--//details-->
+		</div>
+
+
+		<a class="read-more" href="#/events">Tous les évènements<i
+			class="fa fa-chevron-right"></i></a>
+	</div>
+	<!--//section-content-->
+</section>
+<!--//events-->

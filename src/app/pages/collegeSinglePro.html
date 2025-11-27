@@ -1,0 +1,196 @@
+
+<div class="page-wrapper">
+	<div class="row page-row">
+		<div class="col-md-9 col-sm-8">
+			<h1 class="heading-title pull-left">
+				{{level.name}} <span style="position: relative; left: 2%; top: 10px;">
+				<iframe
+						src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2FcollegeSinglePro%3Fid%3D56&width=450&layout=standard&action=like&size=large&show_faces=false&share=true&height=35&appId"
+						width="450" height="35" style="border: none; overflow: hidden"
+						scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+			</span>
+			</h1>
+		</div>
+
+		<div class="col-md-3 col-sm-4">
+			<div class="breadcrumbs pull-right">
+				<ul class="breadcrumbs-list">
+
+					<li class="breadcrumbs-label">Vous etes ici:</li>
+					<li><a href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+					<li class="current">Filière</li>
+
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="page-content">
+		<div class="row page-row">
+			<div class="course-wrapper col-md-8 col-sm-7">
+				<article class="course-item">
+					<p class="featured-image page-row">
+						<img class="img-responsive"
+							src="assets/images/level/{{level.pic}}" alt="" />
+					</p>
+					<div class="page-row box box-border">
+						<ul class="list-unstyled no-margin-bottom">
+							<li><strong>Debut disponibilite:</strong> <em>{{level.openDate|date:'MMMM
+									yyyy'}}</em></li>
+							<li><strong>Duree: </strong> <em>{{level.duration}}
+									jours</em></li>
+						</ul>
+					</div>
+					<!--//page-row-->
+					<div class="page-row">
+						<div [innerHTML]="level.description"></div>
+					</div>
+					<!--//page-row-->
+					<div class="tabbed-info page-row">
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#tab1" data-toggle="tab">Les
+									Cours</a></li>
+							<li><a href="#tab2" data-toggle="tab">Coût de la
+									formation</a></li>
+							<li><a href="#tab3" data-toggle="tab">Condition
+									d'admission</a></li>
+							<li><a href="#tab4" data-toggle="tab">Calendier de
+									formations</a></li>
+							<li><a href="#tab5" data-toggle="tab">Demande de
+									Renseignements</a></li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="tab1">
+								<p>
+									Les cours suivants sont requis pour <strong>{{level.name}}</strong>.
+								</p>
+								<div class="table-responsive">
+
+									<p-dataTable [value]="courses" sortField="name"
+										expandableRows="true"> <p-column expander="true"
+										styleClass="col-icon"></p-column> <p-column field="name"
+										header="Nom"></p-column> <p-column field="exam"
+										header="Examen"></p-column> <p-column field="durationPro"
+										header="Duree(jours)"></p-column> <ng-template let-course
+										pTemplate="rowexpansion">
+									<div class="ui-grid ui-grid-responsive ui-fluid"
+										style="font-size: 16px; padding: 20px">
+										<div class="ui-grid-row">
+											<div class="ui-grid-col-12">
+												<div [innerHTML]="course.description"></div>
+											</div>
+										</div>
+									</div>
+									</ng-template> </p-dataTable>
+
+								</div>
+								<!--//table-responsive-->
+							</div>
+							<div class="tab-pane" id="tab2">
+								<div [innerHTML]="level.fees"></div>
+							</div>
+							<div class="tab-pane" id="tab3">
+								<div [innerHTML]="level.admission"></div>
+							</div>
+							<div class="tab-pane" id="tab4">
+
+								<p-dataTable [value]="futureCourses" selectionMode="single"
+									[responsive]="true"> <p-column
+									*ngFor="let col of futureCols" [field]="col.field"
+									[header]="col.header"> <ng-template
+									*ngIf="col.field === 'selected'" let-row="rowData"
+									let-index="rowIndex" let-col pTemplate type="body">
+								<input type="checkbox" id="qa{{index}}" name="qa" #qa="ngModel"
+									[(ngModel)]="row[col.field]" /> </ng-template> <ng-template
+									*ngIf="col.type === 'Date'" let-col let-data="rowData"
+									pTemplate type="body"> <span class="col-date">{{data[
+									col.field ] | date:'dd/MM/yy' }}</span> </ng-template> <ng-template
+									*ngIf="col.type === 'money'" let-col let-data="rowData"
+									pTemplate type="body"> <span class="col-currency">{{
+									data[ col.field ] |currency:'CFA':true:'.0-0' }}</span> </ng-template> </p-column> <p-footer>
+								<div class="ui-helper-clearfix" style="width: 100%">
+									<button type="button" pButton icon="fa fa-plus"
+										style="float: left" (click)="registerCourses()"
+										label="Je m'inscris aux cours selectionnes"></button>
+								</div>
+								</p-footer> </p-dataTable>
+							</div>
+							<div class="tab-pane" id="tab5">
+								<form (ngSubmit)="sendMessage()" #profileForm="ngForm">
+
+									<div class="form-group">
+										<label for="lastName">Nom:</label> <input type="text"
+											pInputText class="form-control" id="lastName" required
+											[(ngModel)]="contact.lastName" name="lastName"
+											#lastName="ngModel">
+										<div [hidden]="lastName.valid || lastName.pristine"
+											class="alert alert-danger">Nom Requis</div>
+									</div>
+									<div class="form-group">
+										<label for="firstName">Prenom:</label> <input type="text"
+											pInputText class="form-control" id="firstName" required
+											[(ngModel)]="contact.firstName" name="firstName"
+											#firstName="ngModel">
+										<div [hidden]="firstName.valid || firstName.pristine"
+											class="alert alert-danger">Prenom Requis</div>
+									</div>
+									<div class="form-group">
+										<label for="email">E-mail</label> <input type="email"
+											pInputText class="form-control" id="email" required
+											[(ngModel)]="contact.email" name="email" #email="ngModel">
+										<div [hidden]="email.valid || email.pristine"
+											class="alert alert-danger">Email Requis</div>
+									</div>
+
+									<div class="form-group">
+										<label for="phone">Telephone</label> <input type="text"
+											pInputText class="form-control" id="phone"
+											[(ngModel)]="contact.phone" name="phone" #phone="ngModel">
+									</div>
+
+									<div class="form-group">
+										<label for="message">Message</label>
+										<p-editor [(ngModel)]="contact.message"
+											[style]="{'height':'200px'}" name="message"></p-editor>
+									</div>
+
+									<button (click)="button=2" pButton type="submit"
+										label="Envoyer"></button>
+
+									<br>
+									<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+									<div *ngIf="success" class="alert alert-success">{{success}}</div>
+
+								</form>
+							</div>
+						</div>
+					</div>
+					<!--//tabbed-info-->
+				</article>
+				<!--//course-item-->
+			</div>
+			<!--//course-wrapper-->
+			<aside
+				class="page-sidebar  col-md-3 col-md-offset-1 col-sm-4 col-sm-offset-1">
+				<section class="widget has-divider">
+					<app-prospectus></app-prospectus>
+				</section>
+				<!--//widget-->
+				<section class="widget has-divider">
+					<app-contact-short></app-contact-short>
+				</section>
+
+				<section class="widget has-divider">
+					<a class="btn btn-cta" [routerLink]="['/onlineRegistration']"
+						[queryParams]="{ event:'INSCRIPTION'}"><i
+						class="fa fa-play-circle"></i>Inscription en ligne</a>
+				</section>
+				<!--//widget-->
+			</aside>
+		</div>
+		<!--//page-row-->
+		<iframe
+			src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2FcollegeSinglePro%3Fid%3D56&width=450&layout=standard&action=like&size=large&show_faces=false&share=true&height=35&appId"
+			width="450" height="35" style="border: none; overflow: hidden"
+			scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+	</div>
+</div>

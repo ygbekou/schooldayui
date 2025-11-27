@@ -1,0 +1,109 @@
+<p-growl [(value)]="msgs"></p-growl>
+<div class="ui-grid-row">
+	<div class="ui-grid-col-6">
+		<button *ngIf="user.role==1||user.role==5" type="button"
+			class="btn btn-primary">
+			<span class="badge badge-light">1</span>Selectionner l'emprunteur
+		</button>
+		<form (ngSubmit)="search()" #searchForm="ngForm">
+			<div class="ui-grid ui-grid-responsive ui-fluid"
+				[hidden]="user.role>1&&user.role!=5">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-10">
+						<input type="text" pInputText class="form-control" id="searchT"
+							required [(ngModel)]="searchTextU"
+							placeholder="{{USER_SEARCH_PARTS}}" name="searchT"
+							#searchT="ngModel">
+					</div>
+					<div class="ui-grid-col-2">
+						<button type="button" pButton icon="fa fa-search"
+							(click)="search()" label="Go"
+							style="margin-top: 0px; height: 35px;"></button>
+					</div>
+				</div>
+			</div>
+		</form>
+
+		<p-dataTable [value]="users" selectionMode="single" *ngIf="users"
+			[(selection)]="borrower" expandableRows="true"
+			(onRowSelect)="onUserSelected($event)" [paginator]="true" [rows]="15"
+			[responsive]="true"> <p-column
+			*ngFor="let col of userCols" [field]="col.field"
+			[header]="col.header" [sortable]="col.sortable" [filter]="col.filter">
+		</p-column> </p-dataTable>
+
+	</div>
+	<div class="ui-grid-col-6">
+		<button *ngIf="user.role==1||user.role==5" type="button"
+			class="btn btn-primary">
+			<span class="badge badge-light">2</span>Selectionner le produit
+		</button>
+		<app-search-component [user]="user" [schText]="searchText"
+			[hidden]="user.role>1&&user.role!=5"
+			(parentSearchText)="updateText($event)" [search]="searchProductFct"></app-search-component>
+
+		<p-dataTable [value]="products" selectionMode="single"
+			*ngIf="products" [(selection)]="selectedProduct"
+			expandableRows="true" (onRowSelect)="onRowSelect($event)"
+			(onRowExpand)="getInStockProductCopies($event)" [paginator]="true"
+			[rows]="15" [responsive]="true"> <p-column
+			expander="true" styleClass="col-icon" [style]="{'width':'5%'}"></p-column>
+		<p-column *ngFor="let col of cols" [field]="col.field"
+			[style]="col.style" [header]="col.header" [sortable]="col.sortable"
+			[filter]="col.filter"> </p-column> <ng-template let-product
+			pTemplate="rowexpansion">
+
+		<div class="ui-grid ui-grid-responsive ui-fluid">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4">
+					<div class="ui-grid-row" [innerHTML]="product.description"></div>
+				</div>
+				<div class="ui-grid-col-8">
+					<p-dataTable [value]="product.productCopies"
+						(onEditComplete)="saveProductCopyEvent($event)" [editable]="true">
+					<p-column field="code" header="Code" [style]="{'width':'60%'}"></p-column>
+					<p-column [style]="{'width':'40%'}"> <ng-template
+						let-col let-productCopy="rowData" pTemplate="body">
+					<button type="button" pButton icon="fa fa-check"
+						style="float: left" (click)="addToBasket(productCopy)"
+						label="{{RENT}}"></button>
+					</ng-template> </p-column> </p-dataTable>
+				</div>
+			</div>
+		</div>
+
+		</ng-template> </p-dataTable>
+	</div>
+</div>
+<br />
+<br />
+<div [hidden]="user.role>1&&user.role!=5">
+	<label for="float-input">{{borrower.firstName}}
+		{{borrower.lastName}}</label>
+</div>
+<button type="button" *ngIf="user.role==1||user.role==5"
+	class="btn btn-primary">
+	<span class="badge badge-light">3</span>Retourner le produit ou
+	Adjuster la date retour
+</button>
+<p-dataTable [value]="productCopyUsers" [editable]="true"
+	[paginator]="true" [rows]="15" [responsive]="true"
+	(onEditComplete)="saveUserProductCopy($event)"> <p-column
+	*ngFor="let col of borrowedCols" [field]="col.field"
+	[style]="col.style" [header]="col.header" [sortable]="col.sortable"
+	[filter]="col.filter" [editable]="col.editable"> <ng-template
+	*ngIf="col.type === 'Date'" let-col let-data="rowData" pTemplate
+	type="body"> <span class="col-date">{{ data[
+	col.field ] | date:'dd/MM/yyyy' }}</span> </ng-template> <ng-template
+	*ngIf="col.field === 'dueDate'" let-col let-data="rowData" pTemplate
+	type="body"> <span *ngIf="data['isOverDue'] === true"
+	style="color: red;">{{ data[ col.field ] | date:'dd/MM/yyyy'}}</span> <span
+	*ngIf="data['isOverDue'] === false">{{ data[ col.field ]
+	|date:'dd/MM/yyyy'}}</span> </ng-template> </p-column> <p-column *ngIf="user.role==1"> <ng-template
+	let-col let-productCopyUser="rowData" pTemplate="body">
+<button type="button" pButton icon="fa fa fa-undo" style="float: left"
+	*ngIf="productCopyUser.returnDate==null"
+	(click)="returnProduct(productCopyUser)" label="{{RETURN_LABEL}}">
+</button>
+</ng-template> </p-column> </p-dataTable>
+

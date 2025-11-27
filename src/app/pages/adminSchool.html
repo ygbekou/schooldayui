@@ -1,0 +1,200 @@
+<div class="ui-grid ui-grid-responsive ui-fluid">
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@name" for="slogan">Nom</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="name" [(ngModel)]="school.name" />
+		</div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@slogan" for="slogan">Slogan</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="slogan" [(ngModel)]="school.slogan" />
+		</div>
+	</div> 
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@inspector" for="inspector">DEP</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="inspector" [(ngModel)]="school.inspector" />
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@inspector" for="inspector">Titre du DEP</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="inspector" [(ngModel)]="school.depGrade" />
+		</div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@director" for="director">Directeur</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="director" [(ngModel)]="school.director" />
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@address" for="address">Addresse</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="address" [(ngModel)]="school.address" />
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@phone" for="director">Telephone</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="phone" [(ngModel)]="school.phone" />
+		</div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@baremPrimaire" for="baremPrimaire">Bareme
+				Primaire</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="baremPrimaire"
+				[(ngModel)]="school.baremPrimaire" />
+		</div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@baremCollege" for="baremCollege">Bareme
+				Secondaire</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText id="baremCollege" [(ngModel)]="school.baremCollege" />
+		</div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@defaultPassword" for="defaultPassword">Mot de
+				passe par defaut</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<input pInputText type="password" id="defaultPassword"
+				[(ngModel)]="school.defaultPassword" />
+		</div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@defaultPassword" for="defaultPassword">Heures
+				bebut/fin Ecole</label>
+		</div>
+		<div class="ui-grid-col-4">
+			<p-inputMask [(ngModel)]="school.beginTime" mask="07:00"></p-inputMask>
+		</div>
+		<div class="ui-grid-col-4">
+			<p-inputMask [(ngModel)]="school.endTime" mask="18:00"></p-inputMask>
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@generateMatricule" for="generateMatricule">Generer
+				le matricule</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-checkbox [(ngModel)]="school.generateMatricule" binary="true"
+				id="generateMatricule"></p-checkbox>
+		</div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@generateRandomPassword" for="generateRandomPassword">Generer
+				le mote de passe</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-checkbox [(ngModel)]="school.generateRandomPassword" binary="true"
+				id="generateRandomPassword"></p-checkbox>
+		</div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@showReportHeader" for="showReportHeader">Afficher
+				l'entete de l'etat</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-checkbox [(ngModel)]="school.showReportHeader" binary="true"
+				id="showReportHeader"></p-checkbox>
+		</div>
+	</div>
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@displayRang" for="displayRang">Afficher le
+				rang sur les bulletins</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-checkbox [(ngModel)]="school.displayRang" binary="true"
+				id="displayRang"></p-checkbox>
+		</div>
+	</div>
+
+
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@showDefaultPassword" for="showDefaultPassword">Afficher
+				le mot de passe sur la fiche d'inscription</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-checkbox [(ngModel)]="school.showDefaultPassword" binary="true"
+				id="showDefaultPassword"></p-checkbox>
+		</div>
+	</div>
+
+		<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@LMD" for="LMD">Systeme LMD?</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-checkbox [(ngModel)]="school.lmdUsed" binary="true"
+				id="lmd"></p-checkbox>
+		</div>
+	</div>
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4">
+			<label i18n="@@reportHeader" for="reportHeader">Partie droite
+				de l'entete des Etats</label>
+		</div>
+		<div class="ui-grid-col-8">
+			<p-editor [(ngModel)]="school.reportHeader"
+				[style]="{'height':'150px'}"></p-editor>
+		</div>
+	</div>
+	<br />
+	<div class="ui-grid-row">
+		<div class="ui-grid-col-4"></div>
+		<div class="ui-grid-col-8">
+			<button type="button" pButton icon="fa fa-check" (click)="save()"
+				label="{{SAVE_LABEL}}"></button>
+		</div>
+	</div>
+</div>
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<div *ngIf="msg" class="alert alert-success">{{msg}}</div>
+
+
+<!-- Initialize Quill editor -->
+<script>
+	var quill = new Quill('#editor', {
+		theme : 'bubble'
+	});
+</script>

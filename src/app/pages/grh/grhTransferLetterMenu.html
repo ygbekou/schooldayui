@@ -1,0 +1,66 @@
+<div class="page-wrapper">
+  <header class="page-heading clearfix">
+    <h1 i18n="@@adminSpace" class="heading-title pull-left">
+      <img class="thumb" src="assets/images/scoolday.png" alt="" />
+    </h1>
+    <div class="breadcrumbs pull-right">
+      <ul class="breadcrumbs-list">
+        <li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+          ici:</li>
+        <li><a i18n="@@homeLink" href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+        <li><a i18n="@@admin" href="#">GRH</a><i class="fa fa-angle-right"></i></li>
+        <li i18n="@@statistics" class="current">Lettre de virement salaire</li>
+      </ul>
+    </div>
+    <!--//breadcrumbs-->
+  </header>
+  <div class="page-content">
+    <div [hidden]="currentUser.role===10" class="alert alert-danger"
+      i18n="@@youNeedToBeConnectedAsAdmin">Vous
+      devez etre connecte en tant que GRH</div>
+
+    <div class="row page-row" [hidden]="currentUser.role!==10">
+      <app-grh-menu></app-grh-menu>
+
+			<!--//page-sidebar-->
+      <div class="content-wrapper col-md-10 col-sm-8">
+
+				<p-tabView (onChange)="onTabChange($event)">
+
+					<p-tabPanel header="{{LETTER_NUMERO_REF}}" leftIcon="fa fa-newspaper-o">
+						<app-grh-letter-numeroRef></app-grh-letter-numeroRef>
+					</p-tabPanel>
+
+					<p-tabPanel header="{{LETTER_OJECT}}" leftIcon="fa fa-newspaper-o">
+						<app-grh-letter-object></app-grh-letter-object>
+					</p-tabPanel>
+
+          <p-tabPanel header="{{CIVILITY}}" leftIcon="fa fa-newspaper-o">
+						<app-grh-cilivility></app-grh-cilivility>
+					</p-tabPanel>
+
+					<p-tabPanel header="{{BANK}}" leftIcon="fa fa-newspaper-o">
+						<app-grh-society-bank></app-grh-society-bank>
+					</p-tabPanel>
+
+					<p-tabPanel header="Numéro Bancaire" leftIcon="fa fa-newspaper-o">
+						<app-grh-account-number></app-grh-account-number>
+					</p-tabPanel>
+
+					<p-tabPanel header="Lettre de virement" leftIcon="fa fa-newspaper-o">
+						<app-grh-letter-content></app-grh-letter-content>
+					</p-tabPanel>
+
+				</p-tabView>
+			</div>
+			<!--//content-wrapper-->
+
+
+
+      <!--//content-wrapper-->
+    </div>
+    <!--//page-row-->
+  </div>
+  <!--//page-content-->
+</div>
+

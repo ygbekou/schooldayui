@@ -1,0 +1,47 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 class="heading-title pull-left">
+			Visite guidée <span style="position: relative; left: 4%; top: 10px;">
+				<iframe
+					src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2FvisiteGuide&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId"
+					width="450" height="35" style="border: none; overflow: hidden"
+					scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+			</span>
+		</h1>
+
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li class="breadcrumbs-label">Vous etes ici:</li>
+				<li><a href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+				<li class="current">Visite guidée</li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+
+		<div class="row page-row">
+			<div class="col-md-6 col-sm-6 col-xs-12 text-center"
+				*ngFor="let anImage of images">
+				<div class="album-cover">
+					<img class="img-responsive"
+						src="assets/images/gallery/{{anImage.pic}}" alt="" />
+					<div class="desc">
+						<h4>
+							<strong> {{anImage.title}} </strong>
+						</h4>
+						<div [innerHTML]="anImage.description"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<iframe
+			src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2FvisiteGuide&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId"
+			width="450" height="80" style="border: none; overflow: hidden"
+			scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+	</div>
+	<!--//page-content-->
+</div>
+<!--//page-->
+

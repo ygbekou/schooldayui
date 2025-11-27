@@ -1,0 +1,66 @@
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 class="heading-title pull-left">Inscription aux formations</h1>
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li class="breadcrumbs-label">Vous etes ici:</li>
+				<li><a href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+				<li class="current">Inscription aux formations</li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<div class="row page-row">
+			<div class="course-wrapper col-md-8 col-sm-7">
+				<article class="course-item">
+					<div class="table-responsive">
+						<p-dataTable [value]="courseRegistrations" selectionMode="single"
+							[responsive]="true"> <p-column
+							*ngFor="let col of cols" [field]="col.field"
+							[header]="col.header"> <ng-template
+							*ngIf="col.field === 'course.cost'" let-col let-data="rowData"
+							pTemplate type="body"> <span class="col-currency">
+							{{data[ 'course' ].cost | currency:'CFA':true:'.0-0'}} </span> </ng-template> <ng-template
+							*ngIf="col.field === 'course.beginDate'" let-col
+							let-data="rowData" pTemplate type="body"> <span
+							class="col-date">{{data[ 'course' ].beginDate |
+							date:'dd/MM/yy' }}</span> </ng-template> <ng-template
+							*ngIf="col.field === 'course.endDate'" let-col let-data="rowData"
+							pTemplate type="body"> <span class="col-date">{{data[
+							'course' ].endDate | date:'dd/MM/yy' }}</span> </ng-template> </p-column> <p-footerColumnGroup>
+						<p-row> <p-column footer="Totals:" colspan="4"></p-column>
+						<p-column
+							footer="{{courseRegistrationService.courseTotalCost | currency:'CFA':true:'.0-0'}}"></p-column>
+						<p-column
+							footer="{{courseRegistrationService.courseTotalDuration}}"></p-column>
+						</p-row> </p-footerColumnGroup> </p-dataTable>
+						<br> <br>
+						<div *ngIf="success" class="alert alert-success">{{success}}</div>
+						<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+						<br>
+						<div class="ui-helper-clearfix" style="width: 100%">
+							<button type="button" pButton icon="fa fa-plus"
+								style="float: right" [disabled]="disabled" (click)="confirm()"
+								label="Confirmer"></button>
+						</div>
+					</div>
+					<!--//table-responsive-->
+
+					<!--//tabbed-info-->
+				</article>
+				<!--//course-item-->
+			</div>
+			<!--//course-wrapper-->
+			<aside
+				class="page-sidebar  col-md-3 col-md-offset-1 col-sm-4 col-sm-offset-1">
+				<section class="widget has-divider">
+					<app-contact-short></app-contact-short>
+				</section>
+				<!--//widget-->
+			</aside>
+		</div>
+		<!--//page-row-->
+	</div>
+</div>

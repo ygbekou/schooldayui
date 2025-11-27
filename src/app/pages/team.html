@@ -1,0 +1,574 @@
+<!-- <div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 i18n="@@teamLink" class="heading-title pull-left">Notre
+			Equipe</h1>
+		&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-theme"
+			href="assets/docs/organigram_iit.pdf"><i class="fa fa-download"></i>Télécharger
+			notre organigramme</a>
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+					ici:</li>
+				<li><a i18n="@@homeLink" href="index.html">Home</a><i
+					class="fa fa-angle-right"></i></li>
+				<li i18n="@@teamLink" class="current">Notre Equipe</li>
+			</ul>
+		</div>
+
+	</header>
+	<div class="page-content">
+		<div class="row page-row">
+			<div class="team-wrapper col-md-9 col-sm-8">
+
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#tab1" (click)="getMembers(1)"
+						data-toggle="tab">{{firstDept.name}}</a></li>
+
+					<li class="" *ngFor="let aDept of departments"><a
+						href="#tab{{aDept.rank}}" (click)="getMembers(aDept.rank)"
+						data-toggle="tab">{{aDept.name}}</a></li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane  active" id="tab1">
+						<div class="row page-row" *ngFor="let member of members">
+							<figure class="thumb col-md-3 col-sm-4 col-xs-6">
+								<img class="img-responsive"
+									src="assets/images/user/{{member.pic}}" alt="" />
+							</figure>
+							<div class="details col-md-9 col-sm-8 col-xs-6">
+								<h3 class="title">{{member.name}}</h3>
+								<h4>{{member.position}}</h4>
+								<div [innerHTML]="member.resume"></div>
+							</div>
+						</div>
+	
+					</div>
+
+					<div class="tab-pane " id="tab{{aDept.rank}}"
+						*ngFor="let aDept of departments">
+						<div class="row page-row" *ngFor="let member of members">
+							<figure class="thumb col-md-3 col-sm-4 col-xs-6">
+								<img class="img-responsive"
+									src="assets/images/user/{{member.pic}}" alt="" />
+							</figure>
+							<div class="details col-md-9 col-sm-8 col-xs-6">
+								<h3 class="title">{{member.name}}</h3>
+								<h4>{{member.position}}</h4>
+								<div [innerHTML]="member.resume"></div>
+							</div>
+						</div>
+			
+					</div>
+
+				</div>
+
+
+			</div>
+
+			<aside
+				class="page-sidebar  col-md-2 col-md-offset-1 col-sm-3 col-sm-offset-1" style="margin: 0px;">
+				<section class="widget has-divider">
+					<app-prospectus></app-prospectus>
+				</section>
+	
+				<section class="widget has-divider">
+					<app-testimonial-list></app-testimonial-list>
+				</section>
+			</aside>
+		</div>
+		<iframe
+			src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2Fteam&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId"
+			width="450" height="80" style="border: none; overflow: hidden"
+			scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+	
+	</div>
+
+</div> -->
+
+<div class="page-wrapper">
+	<header class="page-heading clearfix">
+		<h1 i18n="@@teamLink" class="heading-title pull-left">Équipe dirigeante</h1>
+		&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-theme" href="assets/docs/organigram_iit.pdf"><i
+				class="fa fa-download"></i>Télécharger
+			notre organigramme</a>
+		<div class="breadcrumbs pull-right">
+			<ul class="breadcrumbs-list">
+				<li i18n="@@youAreHere" class="breadcrumbs-label">Vous etes
+					ici:</li>
+				<li><a i18n="@@homeLink" href="index.html">Home</a><i class="fa fa-angle-right"></i></li>
+				<li i18n="@@teamLink" class="current">Équipe dirigeante</li>
+			</ul>
+		</div>
+		<!--//breadcrumbs-->
+	</header>
+	<div class="page-content">
+		<div class="row page-row">
+			<div class="team-wrapper col-md-9 col-sm-8">
+				<ul class="nav nav-tabs">
+					<li class="active" style="width: 20%; text-align: center;"><a data-toggle="tab" href="#tab5">Équipe
+							dirigeante</a></li>
+					<li style="width: 30%; text-align: center;"><a data-toggle="tab" href="#tab4">Formateurs internes,
+							cours technologiques</a></li>
+					<li style="width: 40%; text-align: center;"><a data-toggle="tab" href="#tab1">Service Recouvrement &
+							Opératrices des Kioks</a></li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="tab5">
+						<div class="row page-row">
+							<div class="row">
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/directeur_general.png"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/directeur_general.png" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>Pawou P. BATANA</strong>
+											</h4>
+											<div>Co-Fondateur, Directeur Général</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/conseiller_DG.jpg"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/conseiller_DG.jpg" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>Panawé BATANADO</strong>
+											</h4>
+											<div>Co-Fondateur, Conseiller du Directeur Général</div>
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+							<div class="row">
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/directeur_inovation.jpg"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/directeur_inovation.jpg" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>Ferdinand Alou P. BATANA</strong>
+											</h4>
+											<div>Directeur de l’Innovation et des Systèmes d’Information</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/mr_sedjro.jpg"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/mr_sedjro.jpg" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>Paul SEDJRO</strong>
+											</h4>
+											<div>Adjoint au Directeur Académique</div>
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+
+							<div class="row">
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/secretaire_generale.jpg"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/secretaire_generale.jpg" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>Samtou AGORO</strong>
+											</h4>
+											<div>Directeur Administratif, Financier et Comptable par intérim</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/mde_adamagnon.png"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/mde_adamagnon.png" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>Essoyomèwè ADAMAGNON</strong>
+											</h4>
+											<div>Chef de Projet, Chargée des Bourses et Aides Financières</div>
+										</div>
+									</div>
+								</div>
+
+
+
+							</div>
+
+							<div class="row">
+
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/mde_habre.jpg"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/mde_habre.jpg" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>Habré BOUWIKA</strong>
+											</h4>
+											<div>Chef Département Commercial et Formations Entreprise</div>
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+
+
+						</div>
+					</div>
+
+					<div class="tab-pane" id="tab4">
+						<div class="row">
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<div class="album-cover cerifified-item">
+									<a class="example-image-link" href="assets/images/team/conseiller_DG.jpg"
+										data-lightbox="example-1">
+										<img class="img-responsive example-image"
+											src="assets/images/team/conseiller_DG.jpg" alt="" />
+									</a>
+									<div class="desc">
+										<h4>
+											<strong>Panawé BATANADO</strong>
+										</h4>
+										<div>Co-Fondateur, Conseiller du Directeur Général</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<div class="album-cover cerifified-item">
+									<a class="example-image-link" href="assets/images/team/directeur_inovation.jpg"
+										data-lightbox="example-1">
+										<img class="img-responsive example-image"
+											src="assets/images/team/directeur_inovation.jpg" alt="" />
+									</a>
+									<div class="desc">
+										<h4>
+											<strong>Ferdinand Alou P. BATANA</strong>
+										</h4>
+										<div>Directeur de l’Innovation et des Systèmes d’Information</div>
+									</div>
+								</div>
+							</div>
+
+
+
+						</div>
+
+						<div class="row">
+
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<div class="album-cover cerifified-item">
+									<a class="example-image-link" href="assets/images/team/mr_sedjro.jpg"
+										data-lightbox="example-1">
+										<img class="img-responsive example-image" src="assets/images/team/mr_sedjro.jpg"
+											alt="" />
+									</a>
+									<div class="desc">
+										<h4>
+											<strong>Paul SEDJRO</strong>
+										</h4>
+										<div>Adjoint au Directeur Académique</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<div class="album-cover cerifified-item">
+									<a class="example-image-link" href="assets/images/team/mr_ahounda.jpg"
+										data-lightbox="example-1">
+										<img class="img-responsive example-image"
+											src="assets/images/team/mr_ahounda.jpg" alt="" />
+									</a>
+									<div class="desc">
+										<h4>
+											<strong>AHOUNDA Tote ohawa</strong>
+										</h4>
+										<div>Formateur en réseaux, systèmes et cybersécurité</div>
+									</div>
+								</div>
+							</div>
+
+
+						</div>
+						<div class="row page-row">
+							<div class="row">
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/mr_shaban.jpg"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/mr_shaban.jpg" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>SHABAN Abdoulatif Nintché</strong>
+											</h4>
+											<div>Chef du département des projets professionnels étudiants et des travaux
+												pratiques en développement d'applications</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/mr_yankika.jpg"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/mr_yankika.jpg" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>YANKIKA Jonas</strong>
+											</h4>
+											<div>Chef du département des projets professionnels étudiants et des travaux
+												pratiques en réseaux, systèmes et cybersécurité</div>
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+
+							<div class="row">
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/mr_edou.jpg"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/mr_edou.jpg" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>EDOU Dodji</strong>
+											</h4>
+											<div>Chef service travaux pratiques en développement d'applications</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/mr_gogue.jpg"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/mr_gogue.jpg" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>TAMPO Gogue</strong>
+											</h4>
+											<div>Chef service travaux pratiques en réseaux, systèmes et cybersécurité
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+
+							<div class="row">
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/mr_assou.jpg"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/mr_assou.jpg" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>ASSOU Yao Mokpokpo</strong>
+											</h4>
+											<div>Chef service projets professionnels étudiants en développement
+												d'applications</div>
+										</div>
+									</div>
+								</div>
+							
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/mr_tiinga.jpg"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/mr_tiinga.jpg" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>BATANA Tiinga</strong>
+											</h4>
+											<div>Formateur en réseaux, systèmes et Sécurité</div>
+											<div>Email : <a
+													href="mailto:tiinga.batana@ipnetinstitute.com">tiinga.batana&#64;ipnetinstitute.com</a>
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+
+							<div class="row">
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/mr_adamou.jpg"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/mr_adamou.jpg" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>ADAMOU Atiabou</strong>
+											</h4>
+											<div>Formateur en réseaux, systèmes et
+												cybersécurité</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/mr_zanou.jpg"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/mr_zanou.jpg" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>ZANOU Gbedzi David</strong>
+											</h4>
+											<div>Formateur en Webdesign, Infographie et Multimédia</div>
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+
+							<div class="row">
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/mr_amah.jpg"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/mr_amah.jpg" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>AMAH Folly</strong>
+											</h4>
+											<div>Formateur en développement d'applications</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/mr_karabou.jpg"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/mr_karabou.jpg" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>KARABOU Mondom Manzama-Esso</strong>
+											</h4>
+											<div>Formateur en développement d'applications</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- <div class="row">
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/mr_foli.jpg"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/mr_foli.jpg" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>FOLI Folikoué Kossi Yves Nicanor</strong>
+											</h4>
+											<div>Formateur en Webdesign, Infographie et Multimédia</div>
+										</div>
+									</div>
+								</div>
+									<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="album-cover cerifified-item">
+										<a class="example-image-link" href="assets/images/team/mr_amodou.jpg"
+											data-lightbox="example-1">
+											<img class="img-responsive example-image"
+												src="assets/images/team/mr_amodou.jpg" alt="" />
+										</a>
+										<div class="desc">
+											<h4>
+												<strong>AMODOU Ibrahim</strong>
+											</h4>
+											<div>Chef service projets professionnels étudiants en réseaux, systèmes et
+												cybersécurité</div>
+										</div>
+									</div>
+								</div>
+
+
+							</div> -->
+
+							
+
+
+
+						</div>
+					</div>
+
+					<div class="tab-pane " id="tab1">
+						<div class="row page-row">
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<!--//team-wrapper-->
+
+			<aside style="margin: 0px;">
+				<section class="widget has-divider">
+					<app-prospectus></app-prospectus>
+				</section>
+
+				<section class="widget has-divider">
+					<app-testimonial-list></app-testimonial-list>
+				</section>
+			</aside>
+		</div>
+		<iframe
+			src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fipnetuniversity.com%2F%23%2Fteam&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId"
+			width="450" height="80" style="border: none; overflow: hidden" scrolling="no" frameborder="0"
+			allowTransparency="true"></iframe>
+		<!--//page-row-->
+	</div>
+	<!--//page-content-->
+</div>
