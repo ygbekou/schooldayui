@@ -26,6 +26,9 @@ export class SchoolService {
       .catch(this.handleError);
   }
 
+  
+
+
   public getByNamePath = (namePath: string): Observable<School> => {
     this.actionUrl = Constants.apiServer + '/service/school/' + namePath;
 

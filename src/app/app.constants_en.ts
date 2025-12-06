@@ -174,6 +174,7 @@ export class Constants {
   public static SUBJECTS: string = "Subjects";
   public static SUCCESSFUL_CALCULATION: string = "Calculation completed successfully";
   public static TEACHER: string = "Teacher";
+  public static ADMINSCHOOL: string = "Adminschool";
   public static TERM = "Quarter";
   public static TESTIMONIES: string = "Testimonies";
   public static TITLE = "Title";

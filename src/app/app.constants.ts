@@ -144,6 +144,7 @@ export class Constants {
   public static OTHERS = "Autres";
   public static PAID = "Paye";
   public static PARENT = "Parent";
+  public static ADMINSCHOOL = "Administrateur École";
   public static FINE_PER_PERIOD = "Amende";
   public static NB_DAYS_PER_FINE = "Jours par Amende";
   public static LOAN_PERIOD = "Duree d'un pret";

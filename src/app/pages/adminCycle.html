@@ -45,11 +45,19 @@
 		<br>
 		<div class="ui-grid-row">
 			<div class="ui-grid-col-6">
-				<p-radioButton name="cycleType" [value] = "1" label="Licence & Masters"
+				<p-radioButton name="cycleType" [value] = "1" label="Primaire"
 				 [(ngModel)]="cycle.cycleType"></p-radioButton><br>
 			</div>
 			<div class="ui-grid-col-6">
-			<p-radioButton name="cycleType" [value]= "2" label="Formations Modulaires"
+				<p-radioButton name="cycleType" [value] = "2" label="Secondaire"
+				 [(ngModel)]="cycle.cycleType"></p-radioButton><br>
+			</div>
+			<div class="ui-grid-col-6">
+				<p-radioButton name="cycleType" [value] = "3" label="Universitaire"
+				 [(ngModel)]="cycle.cycleType"></p-radioButton><br>
+			</div>
+			<div class="ui-grid-col-6">
+			<p-radioButton name="cycleType" [value]= "4" label="Formations prof."
 				 [(ngModel)]="cycle.cycleType"></p-radioButton><br>
 			</div>
 

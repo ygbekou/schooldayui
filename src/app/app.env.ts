@@ -23,7 +23,7 @@ export default function envApiServer() {
 
     const scoolday = "http://www.scoolday.com";
     const prod = "https://www.ipnetuniversity.com:8443";
-    const local = "http://localhost:8080/ipnetuniversity";
+    const local = "http://localhost:8080/schoolday";
     const test = "http://test.ipnetuniversity.com:8280";
 
     if (baseLocation.includes('ipnetuniversity')) {

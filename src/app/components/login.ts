@@ -59,6 +59,7 @@ export class Login implements OnInit {
   STUDENT: string = Constants.STUDENT;
   PARENT: string = Constants.PARENT;
   TEACHER: string = Constants.TEACHER;
+  ADMINSCHOOL: string = Constants.ADMINSCHOOL;
   DEP: string = Constants.DEP;
   DCMC: string = Constants.DCMC;
   COUNTRY_RESIDENCE: string = Constants.COUNTRY_RESIDENCE;
@@ -210,11 +211,18 @@ export class Login implements OnInit {
                 //admin
                 this.router.navigate(["/admin/adminDemand"]);
               } else if (this.user.role === 4) {
+              
                 //parent
                 this.router.navigate(["/parent/parentMain"]);
               } else if (this.user.role === 6) {
                 //Kiosk
                 this.router.navigate(["/kiosk/kioskMain"]);
+
+              } else if (this.user.role === 7) {
+                //adminschool
+                this.router.navigate(["/admin/adminDemand"]);
+              
+
               } else if (this.user.role === 8) {
                 //DEP
                 this.router.navigate(["/dep/depMain"]);
@@ -430,6 +438,9 @@ export class Login implements OnInit {
                 } else if (this.user.role === 4) {
                   //parent
                   this.router.navigate(["/parent/parentMain"]);
+                } else if (this.user.role === 7) {
+                  //adminschool
+                  this.router.navigate(["/adminschool/adminschoolMain"]);
                 } else {
                   this.router.navigate(["/"]);
                 }

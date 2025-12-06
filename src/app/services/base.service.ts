@@ -62,6 +62,13 @@ export class BaseService {
       .catch(this.handleError);
   }
 
+  public getAllSchools = (): Observable<School[]> => {
+    const actionUrl = Constants.apiServer + '/service/base/getAllSchools';
+    return this.http.get(actionUrl)
+      .map((response: Response) => <School[]>response.json())
+      .catch(this.handleError);
+  }
+
 
   public getAllExpenseTypes = (): Observable<ExpenseType[]> => {
     const actionUrl = Constants.apiServer + '/service/base/getAllExpenseTypes';
