@@ -63,8 +63,20 @@
 					<li [hidden]="user.id"><a href="#/login/">Connexion</a></li>
 					<li [hidden]="!user.id"><a href="#" (click)="logout()">Déconnecter
 							{{user.firstName +' '+user.lastName}}</a></li>
-					<li [hidden]="!user.id"><a href="#/addSchool/">Ajout établissement</a></li>
-
+					<li [hidden]="!(user.role === 1 || user.role === 7)">
+						<a href="#/addSchool/"
+							style="
+								background:#2630c0;
+								color:white;
+								padding:8px 15px;
+								border-radius:6px;
+								font-weight:600;
+								display:inline-block;
+								margin-left:10px;
+							">
+							 Ajouter un établissement
+						</a>
+					</li>
 				</ul>
 				<!--//menu-top-->
 				<br />
@@ -451,7 +463,7 @@
 
 		<div *ngIf="error" class="alert alert-danger">{{error}}</div>
 
-		<button [disabled]="!loginForm.form.valid" pButton type="submit" label="Connection"></button>
+		<button [disabled]="!loginForm.form.valid" pButton type="submit" label="Connexion"></button>
 
 	</form>
 

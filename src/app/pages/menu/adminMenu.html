@@ -5,21 +5,21 @@
 					i18n="@@registrationRequest">Demandes Inscription</a></li>
 			<li class="{{adminMain}}"><a href="#/admin/adminMain?adminMain=active" i18n="@@statistics">Statistiques</a>
 			</li>
-			<li *ngIf="loggedInUser.role==1" class="{{adminConcours}}"><a
+			<li *ngIf="loggedInUser.role==1 || loggedInUser.role==7" class="{{adminConcours}}"><a
 					href="#/admin/adminConcours?adminConcours=active" i18n="@@adminConcours">Gestion Inscription</a></li>
 
-			<li *ngIf="loggedInUser.role==1" class="{{information}}"><a href="#/admin/information?information=active"
+			<li *ngIf="loggedInUser.role==1 || loggedInUser.role==7" class="{{information}}"><a href="#/admin/information?information=active"
 					i18n="@@information">Information</a></li>
 			<li class="{{adminLibrary}}"><a href="#/admin/adminLibrary?adminLibrary=active"
 					i18n="@@library">Inventaire</a></li>
 			<li class="{{adminImmobilization}}"><a href="#/admin/adminImmobilization?adminImmobilization=active"
 					i18n="@@immobilization">Immobilisations</a></li>
-			<li *ngIf="loggedInUser.role==1" class="{{adminFacturation}}"><a
+			<li *ngIf="loggedInUser.role==1 || loggedInUser.role==7" class="{{adminFacturation}}"><a
 					href="#/admin/adminProformaFacturation?adminFacturation=active" i18n="@@library">Facturation</a>
 			</li>
-			<li *ngIf="loggedInUser.role==1" class="{{adminCourse}}"><a href="#/admin/adminCourse?adminCourse=active"
+			<li *ngIf="loggedInUser.role==1 || loggedInUser.role==7" class="{{adminCourse}}"><a href="#/admin/adminCourse?adminCourse=active"
 					i18n="@@course">Cours</a></li>
-			<li *ngIf="loggedInUser.role==1" class="{{adminSchedule}}"><a
+			<li *ngIf="loggedInUser.role==1 || loggedInUser.role==7" class="{{adminSchedule}}"><a
 					href="#/admin/adminSchedule?adminSchedule=active" i18n="@@schedule">Programme
 					de cours</a></li>
 			<li class="{{adminExam}}"><a href="#/admin/adminExam?adminExam=active" i18n="@@examAndMarks">Examens
@@ -40,10 +40,10 @@
 					Profile</a></li>
 			<li class="{{adminReport}}"><a href="#/admin/adminReport?adminReport=active" i18n="@@reports">Bulletins
 					et Etats</a></li>
-			<li *ngIf="loggedInUser.role==1" class="{{adminYearInfo}}"><a
+			<li *ngIf="loggedInUser.role==1 || loggedInUser.role==7" class="{{adminYearInfo}}"><a
 					href="#/admin/adminYearInfo?adminYearInfo=active" i18n="@@configuration">Configuration</a></li>
 
-			<li *ngIf="loggedInUser.role==1" class="{{adminBourseOnline}}"><a
+			<li *ngIf="loggedInUser.role==1 || loggedInUser.role==7" class="{{adminBourseOnline}}"><a
 					href="#/admin/adminBourseOnline?adminBourseOnline=active" i18n="@@bourseOnline">Inscription Projet
 					SIFA</a></li>
 

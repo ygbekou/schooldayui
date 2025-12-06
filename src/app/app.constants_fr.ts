@@ -172,6 +172,7 @@ export class Constants {
   public static SUBJECTS = "Matieres";
   public static SUCCESSFUL_CALCULATION = "Calcul effectue avec success";
   public static TEACHER = "Enseignant";
+  public static ADMINSCHOOL = "Adminécole";
   public static TERM = "Trimestre";
   public static TESTIMONIES = "Temoignages";
   public static TITLE = "Titre";

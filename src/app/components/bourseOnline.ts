@@ -186,6 +186,8 @@ export class BourseOnline implements OnInit {
                   this.router.navigate(["/parent/parentMain"]);
                 } else if (this.user.role === 6) {//Kiosk
                   this.router.navigate(["/kiosk/kioskMain"]);
+                } else if (this.user.role === 7) { // adminschool
+                    this.router.navigate(["/admin/adminDemand"]);
                 } else if (this.user.role === 8) {//DEP
                   this.router.navigate(["/dep/depMain"]);
                 } else if (this.user.role === 9) {//DCMC

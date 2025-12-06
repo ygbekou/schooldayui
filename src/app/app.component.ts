@@ -69,19 +69,20 @@ export class AppComponent {
 
     this.route1.paramMap.subscribe((params) => {
       let schoolName = params["schoolName"];
+      if (schoolName) {
 
-      this.schoolService.getByNamePath(schoolName).subscribe(
-      (data: School) => {
-        console.log('School: ' + JSON.stringify(data))
-        Cookie.set("school", btoa(JSON.stringify(JSON.stringify(data))));
-      },
-      (error) => console.log(error),
-      () => console.log("Get School complete")
-    );
-
+        this.schoolService.getByNamePath(schoolName).subscribe(
+          (data: School) => {
+            console.log('School: ' + JSON.stringify(data))
+            Cookie.set("school", btoa(JSON.stringify(JSON.stringify(data))));
+          },
+          (error) => console.log(error),
+          () => console.log("Get School complete")
+        );
+      }
     });
 
-    
+
 
     this.cycles = [];
     this.cycleService.getAllWithCollge().subscribe(

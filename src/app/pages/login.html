@@ -38,7 +38,7 @@
 			<div *ngIf="error" class="alert alert-danger">{{error}}</div>
 
 			<button [disabled]="!loginForm.form.valid" pButton type="submit"
-				label="Connection"></button>
+				label="Connexion"></button>
 
 			<button pButton (click)="button='password'"
 				label="{{SEND_ME_MY_PASSWORD}}"></button>
@@ -145,6 +145,12 @@
 
 					<p-radioButton name="role" value="2" label="{{TEACHER}}"
 						[disabled]="activeIndex===3" [(ngModel)]="user.role"></p-radioButton>
+
+					<p-radioButton name="role" value="7" label="{{ADMINSCHOOL}}"
+						[disabled]="activeIndex===3" [(ngModel)]="user.role"></p-radioButton>
+
+
+					
 
 					<!--
 					<p-radioButton name="role" value="6" label="{{DEP}}"
