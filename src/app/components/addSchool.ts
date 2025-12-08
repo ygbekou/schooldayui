@@ -139,6 +139,8 @@ export class AddSchool implements OnInit {
           this.schoolService.save(this.school)
             .subscribe(result => {
               if (result) {
+                alert("Votre établissement est enregistré avec succès !");
+                this.router.navigate(['/admin/adminDemand']);
                 console.log(result);
               } else {
                 this.error = Constants.EMAIL_USED;

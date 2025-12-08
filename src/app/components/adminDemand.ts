@@ -55,7 +55,7 @@ export class AdminDemand implements OnInit, OnDestroy {
       console.log("Liste des écoles :", this.schools);
       for (let i = 0; i < this.schools.length; i++) {
       const school = this.schools[i];
-      if (school.id=this.selectedSchool.id){
+      if (school.id ==this.selectedSchool.id){
         console.log('schoolId', school.id)
         this.selectedSchool=school;
       }
@@ -71,7 +71,8 @@ export class AdminDemand implements OnInit, OnDestroy {
 
 schoolSelected(event) {
     console.log('event',  event)
-    Cookie.set("school", btoa(JSON.stringify(JSON.stringify(event))));
+    Cookie.set("school", btoa(JSON.stringify(event)));
+
 
   }
 filterSchool(event) {

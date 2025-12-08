@@ -440,7 +440,7 @@ export class Login implements OnInit {
                   this.router.navigate(["/parent/parentMain"]);
                 } else if (this.user.role === 7) {
                   //adminschool
-                  this.router.navigate(["/adminschool/adminschoolMain"]);
+                  this.router.navigate(["/admin/adminDemand"]);
                 } else {
                   this.router.navigate(["/"]);
                 }
